@@ -46,3 +46,42 @@ v1.1.4 was produced with an ephemeral test signer. If its private key is unavail
 After v1.1.5 is installed with the permanent key, later releases must retain the same package ID, keystore, alias and certificate, while increasing versionCode monotonically.
 
 Loss of the private signing key prevents future in-place updates under the same package identity.
+
+
+## One-step setup on the trusted Windows machine
+
+Prerequisites:
+
+- Java 17 / `keytool`
+- GitHub CLI `gh`
+- GitHub CLI authenticated to the `lesangmd` account with repository access
+
+If needed:
+
+```powershell
+winget install EclipseAdoptium.Temurin.17.JDK
+winget install GitHub.cli
+gh auth login
+```
+
+From the repository root, run:
+
+```powershell
+Set-ExecutionPolicy -Scope Process Bypass
+.\tools\SETUP-AND-SIGN-NAH-ANDROID-v1.1.5.ps1
+```
+
+The script will:
+
+1. create the permanent JKS only if one does not already exist;
+2. refuse to overwrite an existing signing identity;
+3. calculate and save the certificate SHA-256 fingerprint;
+4. export the public certificate;
+5. configure the five GitHub Actions secrets without committing them;
+6. launch the `Build signed Android release` workflow for v1.1.5 / 11005.
+
+The JKS is created by default under:
+
+`%USERPROFILE%\Documents\NAH-Android-Release-Key\NAH-Android-Release.jks`
+
+After creation, make at least two encrypted offline backups before treating v1.1.5 as the production signing baseline.
