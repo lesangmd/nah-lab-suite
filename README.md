@@ -11,6 +11,15 @@
 - Shell refresh occurs only after successful core reconciliation and never blocks first paint.
 - Persistent Offline Vault, account isolation, silent sync and in-app updater behavior are retained.
 
+## Build & signing
+
+- Source validation workflow: `.github/workflows/validate-source.yml`
+- Permanent release signing workflow: `.github/workflows/build-signed-release.yml`
+- Signing contract and secret names: `SIGNING.md`
+- Local keystore generator: `tools/GENERATE-NAH-ANDROID-RELEASE-KEY.ps1`
+
+The repository intentionally does not contain a JKS/private key. Production APK signing is blocked until the persistent NAH release signing secrets are configured in GitHub Actions.
+
 # NAH LAB SUITE Android v1.1.4 — Login Update UX Hotfix
 
 - Parent: v1.1.3 Persistent Offline Vault & In-App Updater.
