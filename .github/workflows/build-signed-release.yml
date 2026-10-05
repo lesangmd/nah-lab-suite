@@ -1,0 +1,122 @@
+name: Build signed Android release
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_version:
+        description: "Expected versionName"
+        required: true
+        default: "1.1.5"
+      release_version_code:
+        description: "Expected versionCode"
+        required: true
+        default: "11005"
+
+permissions:
+  contents: read
+
+jobs:
+  signed-release:
+    runs-on: ubuntu-latest
+    env:
+      ANDROID_HOME: /usr/local/lib/android/sdk
+      ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
+      KS_B64: ${{ secrets.NAH_ANDROID_KEYSTORE_B64 }}
+      KS_ALIAS: ${{ secrets.NAH_ANDROID_KEY_ALIAS }}
+      KS_PASS: ${{ secrets.NAH_ANDROID_KEYSTORE_PASSWORD }}
+      KEY_PASS: ${{ secrets.NAH_ANDROID_KEY_PASSWORD }}
+      EXPECTED_CERT_SHA256: ${{ secrets.NAH_ANDROID_CERT_SHA256 }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Require persistent NAH signing secrets
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "$KS_B64"
+          test -n "$KS_ALIAS"
+          test -n "$KS_PASS"
+          test -n "$KEY_PASS"
+          test -n "$EXPECTED_CERT_SHA256"
+          echo "::add-mask::$KS_PASS"
+          echo "::add-mask::$KEY_PASS"
+          echo "Persistent signing secret gate PASS"
+
+      - name: Verify release identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          EXPECTED_VERSION="${{ inputs.release_version }}"
+          EXPECTED_CODE="${{ inputs.release_version_code }}"
+          grep -q "applicationId 'vn.nah.iso15189suite'" app/build.gradle
+          grep -q "versionName '$EXPECTED_VERSION'" app/build.gradle
+          grep -q "versionCode $EXPECTED_CODE" app/build.gradle
+
+      - name: Restore persistent NAH release keystore
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/nah-signing
+          printf '%s' "$KS_B64" | base64 -d > /tmp/nah-signing/NAH-Android-Release.jks
+          test -s /tmp/nah-signing/NAH-Android-Release.jks
+          keytool -list             -keystore /tmp/nah-signing/NAH-Android-Release.jks             -alias "$KS_ALIAS"             -storepass "$KS_PASS" >/dev/null
+
+      - name: Install Android SDK packages
+        run: |
+          yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"             "platform-tools"             "platforms;android-35"             "build-tools;35.0.0"
+
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+
+      - name: Compile unsigned release
+        run: gradle :app:assembleRelease --no-daemon
+
+      - name: Align and sign with permanent NAH identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p out
+          VERSION="${{ inputs.release_version }}"
+          UNSIGNED=app/build/outputs/apk/release/app-release-unsigned.apk
+          ALIGNED=/tmp/NAH-LAB-SUITE-aligned.apk
+          SIGNED="out/NAH-LAB-SUITE-Android-v${VERSION}-release.apk"
+
+          "$ANDROID_HOME/build-tools/35.0.0/zipalign" -f 4 "$UNSIGNED" "$ALIGNED"
+
+          "$ANDROID_HOME/build-tools/35.0.0/apksigner" sign             --ks /tmp/nah-signing/NAH-Android-Release.jks             --ks-key-alias "$KS_ALIAS"             --ks-pass env:KS_PASS             --key-pass env:KEY_PASS             --v1-signing-enabled true             --v2-signing-enabled true             --v3-signing-enabled true             --out "$SIGNED"             "$ALIGNED"
+
+          "$ANDROID_HOME/build-tools/35.0.0/apksigner" verify             --verbose             --print-certs             "$SIGNED" | tee out/apksigner-verify.txt
+
+          CERT_SHA=$(
+            "$ANDROID_HOME/build-tools/35.0.0/apksigner" verify --print-certs "$SIGNED" |
+            awk -F': ' '/Signer #1 certificate SHA-256 digest/ {print tolower($2); exit}' |
+            tr -d '[:space:]'
+          )
+          EXPECTED=$(
+            printf '%s' "$EXPECTED_CERT_SHA256" |
+            tr '[:upper:]' '[:lower:]' |
+            tr -d ':[:space:]'
+          )
+
+          test -n "$CERT_SHA"
+          test "$CERT_SHA" = "$EXPECTED"
+
+          printf '%s\n' "$CERT_SHA" > out/NAH-ANDROID-RELEASE-CERT-SHA256.txt
+          "$ANDROID_HOME/build-tools/35.0.0/zipalign" -c -v 4 "$SIGNED" > out/zipalign-verify.txt
+          "$ANDROID_HOME/build-tools/35.0.0/aapt" dump badging "$SIGNED" > out/aapt-badging.txt
+          sha256sum "$SIGNED" > "out/NAH-LAB-SUITE-Android-v${VERSION}-release.apk.sha256"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nah-lab-android-signed-release
+          path: out/
+          if-no-files-found: error
+          retention-days: 14
