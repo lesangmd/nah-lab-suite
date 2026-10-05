@@ -178,23 +178,39 @@ public class MainActivity extends Activity {
     }
 
     private void loadInitialDocument() {
-        try {
-            if (HydrationManager.APP_URL.equals(HydrationManager.canonicalShellUrl(pendingUrl))) {
-                OfflineStore.CacheEntry cached = offlineStore.getShell(HydrationManager.APP_URL);
-                if (cached != null && cached.body != null && cached.body.length > 0
-                        && cached.mime != null && cached.mime.toLowerCase().contains("html")) {
-                    String html = new String(cached.body, StandardCharsets.UTF_8);
-                    webView.loadDataWithBaseURL(
-                            HydrationManager.APP_URL,
-                            html,
-                            "text/html",
-                            "UTF-8",
-                            HydrationManager.APP_URL);
-                    return;
+        final String target = pendingUrl;
+        if (!HydrationManager.APP_URL.equals(HydrationManager.canonicalShellUrl(target))) {
+            webView.loadUrl(target);
+            return;
+        }
+
+        // Read/decrypt the persistent shell off the UI thread. This keeps the
+        // Activity responsive while Android is dismissing the system splash.
+        new Thread(() -> {
+            OfflineStore.CacheEntry cached = null;
+            try { cached = offlineStore.getShell(HydrationManager.APP_URL); }
+            catch (Throwable ignored) { }
+            final OfflineStore.CacheEntry shell = cached;
+            runOnUiThread(() -> {
+                if (webView == null) return;
+                try {
+                    if (shell != null && shell.body != null && shell.body.length > 0
+                            && shell.mime != null && shell.mime.toLowerCase().contains("html")) {
+                        String html = new String(shell.body, StandardCharsets.UTF_8);
+                        webView.loadDataWithBaseURL(
+                                HydrationManager.APP_URL,
+                                html,
+                                "text/html",
+                                "UTF-8",
+                                HydrationManager.APP_URL);
+                    } else {
+                        webView.loadUrl(target);
+                    }
+                } catch (Throwable ignored) {
+                    if (webView != null) webView.loadUrl(target);
                 }
-            }
-        } catch (Throwable ignored) { }
-        webView.loadUrl(pendingUrl);
+            });
+        }, "nah-initial-shell").start();
     }
 
     private void startBackgroundWorkAfterUi() {
@@ -202,7 +218,7 @@ public class MainActivity extends Activity {
         backgroundWorkStarted = true;
 
         new Thread(() -> {
-            try { offlineStore.ensureShellContract("android-v1.1.5-web-v1.50"); }
+            try { offlineStore.ensureShellContract("android-v1.1.5-web-v1.51"); }
             catch (Throwable ignored) { }
         }, "nah-shell-contract").start();
 
@@ -244,7 +260,7 @@ public class MainActivity extends Activity {
         s.setBuiltInZoomControls(false);
         s.setDisplayZoomControls(false);
         s.setTextZoom(100);
-        s.setCacheMode(WebSettings.LOAD_DEFAULT);
+        s.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
         String ua = s.getUserAgentString();
         s.setUserAgentString((ua == null ? "" : ua) + " NAHISOAndroid/1.1.5");
 
@@ -483,6 +499,7 @@ public class MainActivity extends Activity {
         @Override
         public void onPageFinished(WebView view, String url) {
             CookieManager.getInstance().flush();
+            try { view.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT); } catch (Throwable ignored) { }
             injectLogoutCacheHook(view);
             firstUiRendered = true;
             startBackgroundWorkAfterUi();
