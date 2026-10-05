@@ -1,0 +1,29 @@
+# Android / Gradle
+.gradle/
+**/build/
+local.properties
+*.iml
+.idea/
+
+# Signing credentials — never commit
+*.jks
+*.keystore
+*.p12
+*.pfx
+*.pem
+*.key
+*.crt
+*.cer
+*.der
+*.base64
+*.b64
+keystore.properties
+signing.properties
+
+# Generated packages
+*.apk
+*.aab
+
+# OS
+.DS_Store
+Thumbs.db
