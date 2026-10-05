@@ -1,10 +1,11 @@
 # NAH LAB SUITE Android v1.1.5 — Instant Local Shell Startup
 
+- Requires Web v1.51.
 - Parent: v1.1.4 Login Update UX Hotfix.
 - Source-only candidate: no production APK is released until a persistent NAH Android release keystore is locked.
 - Preserves the last-known-good WebApp shell across routine native upgrades instead of deleting it.
-- Loads the cached HTML shell directly with the canonical HTTPS base URL before any refresh.
-- Lets the native Activity render one frame before WebView initialization to shorten the system splash phase.
+- Loads the cached HTML shell directly with the canonical HTTPS base URL before any refresh; shell decrypt/read is moved off the UI thread.
+- Lets the native Activity render one frame before WebView initialization to shorten the system splash phase and uses cache-first WebView startup until the first page finishes.
 - When logged out, reveals the login form as soon as the local document is committed instead of waiting for startup network checks to finish.
 - Moves Core Hydration, Deep Hydration, shell refresh, JobScheduler and update checks behind the first visible UI.
 - Core synchronization begins after the UI is visible; Deep Hydration is delayed for 60 seconds.
