@@ -1,0 +1,78 @@
+name: Validate Android v1.1.5 source
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - "app/**"
+      - "build.gradle"
+      - "settings.gradle"
+      - "gradle.properties"
+      - ".github/workflows/validate-source.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    env:
+      ANDROID_HOME: /usr/local/lib/android/sdk
+      ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Contract checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q "applicationId 'vn.nah.iso15189suite'" app/build.gradle
+          grep -q "versionCode 11005" app/build.gradle
+          grep -q "versionName '1.1.5'" app/build.gradle
+          grep -q "NAHISOAndroid/1.1.5" app/src/main/java/vn/nah/iso15189suite/MainActivity.java
+          grep -q "NAHISOAndroid/1.1.5" app/src/main/java/vn/nah/iso15189suite/HydrationManager.java
+          grep -q "android-v1.1.5-web-v1.50" app/src/main/java/vn/nah/iso15189suite/MainActivity.java
+          grep -q "loadDataWithBaseURL" app/src/main/java/vn/nah/iso15189suite/MainActivity.java
+          grep -q "onPageCommitVisible" app/src/main/java/vn/nah/iso15189suite/MainActivity.java
+          ! grep -R "injectCheckButton" app/src/main/java
+
+      - name: Install Android SDK packages
+        run: |
+          yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"             "platform-tools"             "platforms;android-35"             "build-tools;35.0.0"
+
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+
+      - name: Compile unsigned release
+        run: gradle :app:assembleRelease --no-daemon
+
+      - name: Verify unsigned release metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+          APK=app/build/outputs/apk/release/app-release-unsigned.apk
+          test -f "$APK"
+          "$ANDROID_HOME/build-tools/35.0.0/aapt" dump badging "$APK" | tee aapt-badging.txt
+          grep -q "package: name='vn.nah.iso15189suite'" aapt-badging.txt
+          grep -q "versionCode='11005'" aapt-badging.txt
+          grep -q "versionName='1.1.5'" aapt-badging.txt
+          sha256sum "$APK" | tee unsigned-release.sha256
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nah-lab-android-v1.1.5-unsigned-validation
+          path: |
+            app/build/outputs/apk/release/app-release-unsigned.apk
+            aapt-badging.txt
+            unsigned-release.sha256
+          if-no-files-found: error
+          retention-days: 7
