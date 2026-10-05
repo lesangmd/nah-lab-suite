@@ -38,7 +38,7 @@ jobs:
           grep -q "versionName '1.1.5'" app/build.gradle
           grep -q "NAHISOAndroid/1.1.5" app/src/main/java/vn/nah/iso15189suite/MainActivity.java
           grep -q "NAHISOAndroid/1.1.5" app/src/main/java/vn/nah/iso15189suite/HydrationManager.java
-          grep -q "android-v1.1.5-web-v1.50" app/src/main/java/vn/nah/iso15189suite/MainActivity.java
+          grep -q "android-v1.1.5-web-v1.51" app/src/main/java/vn/nah/iso15189suite/MainActivity.java
           grep -q "loadDataWithBaseURL" app/src/main/java/vn/nah/iso15189suite/MainActivity.java
           grep -q "onPageCommitVisible" app/src/main/java/vn/nah/iso15189suite/MainActivity.java
           ! grep -R "injectCheckButton" app/src/main/java
