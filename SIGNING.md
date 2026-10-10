@@ -5,8 +5,8 @@ This repository is configured for one permanent Android signing identity.
 ## Locked application identity
 
 - Package: `vn.nah.iso15189suite`
-- Current release candidate: `v1.1.5`
-- Current versionCode: `11005`
+- Current release candidate: `v1.1.6`
+- Current versionCode: `11006`
 - Signing model: one persistent NAH-controlled release keystore for v1.1.5 and every later Android release
 
 Do not replace the signing key after v1.1.5 is accepted. Android in-place upgrades require the same signing certificate.
@@ -35,7 +35,7 @@ Keep at least two encrypted offline backups of the JKS file. Store passwords sep
 
 ## Build flow
 
-1. `Validate Android v1.1.5 source` compiles an unsigned release.
+1. `Validate Android v1.1.6 source` compiles an unsigned release.
 2. After all five secrets exist, manually run `Build signed Android release`.
 3. The signing workflow builds directly from this repository, restores the JKS only from encrypted GitHub Actions secrets, zipaligns and signs the APK, verifies the certificate SHA-256 against `NAH_ANDROID_CERT_SHA256`, and outputs the signed APK as a workflow artifact.
 
@@ -85,3 +85,9 @@ The JKS is created by default under:
 `%USERPROFILE%\Documents\NAH-Android-Release-Key\NAH-Android-Release.jks`
 
 After creation, make at least two encrypted offline backups before treating v1.1.5 as the production signing baseline.
+
+## Update 1.1.6 / Web 1.58.12
+
+The native-sync-web-1.58.12 branch contains the current update. Validation succeeded. The signing run stopped at the permanent-secret gate because one or more required signing values were absent.
+
+Reuse the existing permanent JKS, alias, passwords and approved certificate fingerprint. Restore the five named Actions secrets, then run Build signed Android release on branch native-sync-web-1.58.12 with version 1.1.6 and versionCode 11006. Do not run the older 1.1.5 setup script for this update; it can create a new key if none exists. Do not create a replacement key for an in-place upgrade. Private signing material should be configured directly on a trusted computer, never uploaded to the chat or repository.
