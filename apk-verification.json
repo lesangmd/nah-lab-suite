@@ -1,0 +1,17 @@
+{
+  "signing": "PASS",
+  "zipAlignment": "PASS",
+  "signatureSchemes": [
+    "v1",
+    "v2",
+    "v3"
+  ],
+  "certificateSha256": "6b33b13104b53c124e5b675c10223306dcbdefbd05674a86be94793473b6790d",
+  "apkSha256": "cd95b55908d0918cc8c821456e2a8deaca7bb7626fec5772f8ef86da03bca31e",
+  "package": "vn.nah.iso15189suite",
+  "versionName": "1.1.6",
+  "versionCode": 11006,
+  "sourceCiRun": 38051253727,
+  "compiledPayloadUnchanged": true,
+  "deviceInstallTest": false
+}

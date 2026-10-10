@@ -1,9 +1,11 @@
-# NAH LAB SUITE Android 1.1.6 — Web 1.58.12
+# NAH LAB SUITE Android 1.1.6 — NEW SIGNING BASELINE
 
-Package vn.nah.iso15189suite; versionCode 11006; Android 8+; target SDK 35.
+Web UI 1.58.12; package vn.nah.iso15189suite; versionCode 11006; Android 8+.
 
-Bundled public HTML/CSS/JS match Web 1.58.12. Existing account vault and signing identity are preserved. First UI renders before network sync. Older cached UI falls back to bundled 1.58.12; newer server UI is retained. UI refresh runs even when the account dataset has not changed. Authentication and operational data still use the server and encrypted account-scoped cache. No test credentials or mock operational data are bundled.
+This is the first release signed with the new permanent baseline key authorized on 2026-10-10. Uninstall the old app before installing this release. Synchronize any local-only data before uninstalling; Android removes the app vault during uninstall. Future updates must retain this package ID and baseline signing certificate and increment versionCode.
 
-Build: Gradle 8.9, JDK 17, Android SDK 35, `gradle :app:assembleRelease`. The resulting unsigned APK is validation only. Use the existing permanent signing secrets and certificate fingerprint in SIGNING.md to produce an installable update. No new signing key is generated.
+The signed APK passed apksigner verification (v2/v3), certificate identity and zip alignment checks. Compiled payload matches successful CI run 38051253727. No physical Android installation test has been performed.
 
-CI validates compilation and release identity. The isolated native-sync-web-1.58.12 branch also attempts the existing permanent-key signing workflow; it fails closed if secrets are missing.
+UI matches Web 1.58.12. Bundled public shell replaces older UI caches and preserves newer ones. UI refresh also runs when the account dataset is unchanged. No test account or mock operational data is included.
+
+Build with JDK17, Gradle8.9 and SDK35: gradle :app:assembleRelease. See SIGNING.md for the locked certificate and future signing setup. Private key material belongs only in the separate owner backup and Actions secrets, never in Git.

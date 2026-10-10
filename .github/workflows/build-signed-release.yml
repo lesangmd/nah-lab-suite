@@ -1,4 +1,4 @@
-name: Build signed Android release
+name: Build signed Android release — baseline v1.1.6
 
 on:
   push:
@@ -46,6 +46,9 @@ jobs:
           test -n "$KS_PASS"
           test -n "$KEY_PASS"
           test -n "$EXPECTED_CERT_SHA256"
+          BASELINE_CERT=$(python3 -c 'import json; print(json.load(open("signing-baseline.json"))["certificateSha256"])')
+          PROVIDED_CERT=$(printf '%s' "$EXPECTED_CERT_SHA256" | tr '[:upper:]' '[:lower:]' | tr -d ':[:space:]')
+          test "$PROVIDED_CERT" = "$BASELINE_CERT"
           echo "::add-mask::$KS_PASS"
           echo "::add-mask::$KEY_PASS"
           echo "Persistent signing secret gate PASS"

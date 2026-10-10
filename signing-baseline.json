@@ -1,0 +1,9 @@
+{
+  "baseline": "Android 1.1.6 / Web 1.58.12",
+  "package": "vn.nah.iso15189suite",
+  "versionName": "1.1.6",
+  "versionCode": 11006,
+  "certificateSha256": "6b33b13104b53c124e5b675c10223306dcbdefbd05674a86be94793473b6790d",
+  "keyAlias": "nah-lab-suite-baseline-v116",
+  "migration": "Uninstall the old signed application before installing this baseline. Future versions must reuse this key."
+}
