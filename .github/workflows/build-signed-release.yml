@@ -1,16 +1,18 @@
-name: Build signed Android release
+name: Build signed Android release — baseline v1.1.6
 
 on:
+  push:
+    branches: [ native-sync-web-1.58.12 ]
   workflow_dispatch:
     inputs:
       release_version:
         description: "Expected versionName"
         required: true
-        default: "1.1.5"
+        default: "1.1.6"
       release_version_code:
         description: "Expected versionCode"
         required: true
-        default: "11005"
+        default: "11006"
 
 permissions:
   contents: read
@@ -44,6 +46,9 @@ jobs:
           test -n "$KS_PASS"
           test -n "$KEY_PASS"
           test -n "$EXPECTED_CERT_SHA256"
+          BASELINE_CERT=$(python3 -c 'import json; print(json.load(open("signing-baseline.json"))["certificateSha256"])')
+          PROVIDED_CERT=$(printf '%s' "$EXPECTED_CERT_SHA256" | tr '[:upper:]' '[:lower:]' | tr -d ':[:space:]')
+          test "$PROVIDED_CERT" = "$BASELINE_CERT"
           echo "::add-mask::$KS_PASS"
           echo "::add-mask::$KEY_PASS"
           echo "Persistent signing secret gate PASS"
@@ -52,8 +57,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          EXPECTED_VERSION="${{ inputs.release_version }}"
-          EXPECTED_CODE="${{ inputs.release_version_code }}"
+          EXPECTED_VERSION="${{ inputs.release_version || '1.1.6' }}"
+          EXPECTED_CODE="${{ inputs.release_version_code || '11006' }}"
           grep -q "applicationId 'vn.nah.iso15189suite'" app/build.gradle
           grep -q "versionName '$EXPECTED_VERSION'" app/build.gradle
           grep -q "versionCode $EXPECTED_CODE" app/build.gradle
@@ -84,7 +89,7 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p out
-          VERSION="${{ inputs.release_version }}"
+          VERSION="${{ inputs.release_version || '1.1.6' }}"
           UNSIGNED=app/build/outputs/apk/release/app-release-unsigned.apk
           ALIGNED=/tmp/NAH-LAB-SUITE-aligned.apk
           SIGNED="out/NAH-LAB-SUITE-Android-v${VERSION}-release.apk"
@@ -120,3 +125,4 @@ jobs:
           path: out/
           if-no-files-found: error
           retention-days: 14
+

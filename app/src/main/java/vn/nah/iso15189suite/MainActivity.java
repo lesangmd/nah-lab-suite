@@ -191,12 +191,17 @@ public class MainActivity extends Activity {
             try { cached = offlineStore.getShell(HydrationManager.APP_URL); }
             catch (Throwable ignored) { }
             final OfflineStore.CacheEntry shell = cached;
+            String initialHtml = null;
+            try {
+                String saved = shell == null || shell.body == null ? null : new String(shell.body, StandardCharsets.UTF_8);
+                initialHtml = FactoryShell.isCurrent(saved) ? saved : FactoryShell.read(this);
+            } catch (Throwable ignored) { }
+            final String bundledOrCachedHtml = initialHtml;
             runOnUiThread(() -> {
                 if (webView == null) return;
                 try {
-                    if (shell != null && shell.body != null && shell.body.length > 0
-                            && shell.mime != null && shell.mime.toLowerCase().contains("html")) {
-                        String html = new String(shell.body, StandardCharsets.UTF_8);
+                    if (bundledOrCachedHtml != null) {
+                        String html = bundledOrCachedHtml;
                         webView.loadDataWithBaseURL(
                                 HydrationManager.APP_URL,
                                 html,
@@ -218,7 +223,7 @@ public class MainActivity extends Activity {
         backgroundWorkStarted = true;
 
         new Thread(() -> {
-            try { offlineStore.ensureShellContract("android-v1.1.5-web-v1.51"); }
+            try { offlineStore.ensureShellContract("android-v1.1.6-web-v1.58.12"); }
             catch (Throwable ignored) { }
         }, "nah-shell-contract").start();
 
@@ -262,7 +267,7 @@ public class MainActivity extends Activity {
         s.setTextZoom(100);
         s.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
         String ua = s.getUserAgentString();
-        s.setUserAgentString((ua == null ? "" : ua) + " NAHISOAndroid/1.1.5");
+        s.setUserAgentString((ua == null ? "" : ua) + " NAHISOAndroid/1.1.6");
 
         CookieManager cm = CookieManager.getInstance();
         cm.setAcceptCookie(true);
@@ -358,6 +363,7 @@ public class MainActivity extends Activity {
     private void requestSilentCore(boolean refreshShell) {
         if (coreSyncInFlight || !networkAvailable()) return;
         if (!refreshShell && offlineStore.lastSyncMs() > 0L
+                && !"1".equals(offlineStore.getMeta("shell_refresh_pending"))
                 && System.currentTimeMillis() - offlineStore.lastSyncMs() < HydrationManager.CORE_MIN_REFRESH_MS) return;
         String cookie = currentCookie();
         if (cookie == null || cookie.trim().isEmpty()) return;
@@ -454,6 +460,10 @@ public class MainActivity extends Activity {
             try {
                 String url = request.getUrl().toString();
                 String method = request.getMethod() == null ? "GET" : request.getMethod().toUpperCase();
+                if ("GET".equals(method)) {
+                    WebResourceResponse bundled = FactoryShell.asset(MainActivity.this, url);
+                    if (bundled != null) return bundled;
+                }
 
                 if (url.contains("/nah-lab-iso/__android_offline_lock__")) {
                     offlineStore.revokeValidationKeepVault();
@@ -480,7 +490,14 @@ public class MainActivity extends Activity {
                 if ("GET".equals(method)) {
                     String canonical = HydrationManager.canonicalShellUrl(url);
                     OfflineStore.CacheEntry entry = offlineStore.getShell(canonical);
-                    if (entry != null) return cachedShell(entry);
+                    if (entry != null) {
+                        if (HydrationManager.APP_URL.equals(canonical)
+                                && !FactoryShell.isCurrent(new String(entry.body, StandardCharsets.UTF_8))) {
+                            return new WebResourceResponse("text/html", "UTF-8",
+                                    new ByteArrayInputStream(FactoryShell.read(MainActivity.this).getBytes(StandardCharsets.UTF_8)));
+                        }
+                        return cachedShell(entry);
+                    }
                 }
             } catch (Throwable ignored) { }
             return null;
@@ -723,3 +740,4 @@ public class MainActivity extends Activity {
                 .show();
     }
 }
+

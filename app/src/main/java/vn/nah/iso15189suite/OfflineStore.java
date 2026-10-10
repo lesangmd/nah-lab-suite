@@ -219,10 +219,11 @@ final class OfflineStore extends SQLiteOpenHelper {
         if (contract == null || contract.isEmpty()) return;
         String current = getMeta("shell_contract");
         if (contract.equals(current)) return;
-        // v1.1.5: do not delete the last-known-good WebApp shell on a routine
+        // v1.1.6: do not delete the last-known-good WebApp shell on a routine
         // native-version change. The existing shell is the instant-start fallback;
         // a fresh shell is fetched only after the first UI is already visible.
         setMeta("shell_contract", contract);
+        setMeta("shell_refresh_pending", "1");
     }
 
     synchronized void invalidateShellCache() {
@@ -260,3 +261,4 @@ final class OfflineStore extends SQLiteOpenHelper {
         }
     }
 }
+

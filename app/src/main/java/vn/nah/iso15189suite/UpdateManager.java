@@ -28,7 +28,7 @@ import java.util.concurrent.Executors;
 
 final class UpdateManager {
     static final int CURRENT_VERSION_CODE = 11005;
-    static final String CURRENT_VERSION = "1.1.5";
+    static final String CURRENT_VERSION = "1.1.6";
     static final String MANIFEST_URL = "https://sachyhoc.com/wp-json/nah-iso15189/v1/app/update-manifest";
     static final int REQUEST_UNKNOWN_APPS = 1803;
 
@@ -77,7 +77,7 @@ final class UpdateManager {
                 c.setConnectTimeout(12_000);
                 c.setReadTimeout(18_000);
                 c.setRequestProperty("Accept", "application/json");
-                c.setRequestProperty("User-Agent", "NAHISOAndroid/1.1.5");
+                c.setRequestProperty("User-Agent", "NAHISOAndroid/1.1.6");
                 int code = c.getResponseCode();
                 if (code != 200) throw new IllegalStateException("HTTP " + code);
                 byte[] body;
@@ -207,3 +207,4 @@ final class UpdateManager {
         return sb.toString();
     }
 }
+

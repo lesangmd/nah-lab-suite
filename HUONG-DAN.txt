@@ -1,0 +1,7 @@
+BASELINE MỚI: ANDROID 1.1.6 / WEB 1.58.12
+1. Đồng bộ dữ liệu trước khi gỡ bản cũ. Dữ liệu chỉ lưu trên máy sẽ bị xóa khi gỡ ứng dụng.
+2. Gỡ NAH LAB SUITE Android bản cũ.
+3. Cài NAH-LAB-SUITE-Android-v1.1.6-NEW-BASELINE-signed.apk.
+4. Đăng nhập và chờ đồng bộ dữ liệu tài khoản.
+Các bản sau dùng lại khóa mới này để cài đè. Cất giữ gói PRIVATE-KEY-BACKUP riêng; không chia sẻ kèm APK.
+APK đã xác minh chữ ký, chứng thư và zip alignment; chưa thử cài trên thiết bị thật.
