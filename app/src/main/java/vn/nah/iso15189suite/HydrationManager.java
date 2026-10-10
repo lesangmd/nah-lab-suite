@@ -26,7 +26,7 @@ final class HydrationManager {
     static final String FULL_MIRROR_URL = REST_BASE + "desktop/mirror/full";
     static final String CONTENT_URL = REST_BASE + "desktop/content/bundle";
     static final String MANIFEST_URL = REST_BASE + "desktop/content/manifest";
-    static final String UA_MARKER = "NAHISOAndroid/1.1.5";
+    static final String UA_MARKER = "NAHISOAndroid/1.1.6";
 
     static final long CORE_MIN_REFRESH_MS = 60L * 1000L;
     static final long DEEP_REFRESH_MS = 12L * 60L * 60L * 1000L;
@@ -53,6 +53,7 @@ final class HydrationManager {
             boolean success = false;
             try {
                 final boolean shellRefreshDue = refreshShell
+                        || "1".equals(store.getMeta("shell_refresh_pending"))
                         || !store.hasShell(APP_URL)
                         || System.currentTimeMillis() - store.lastShellSyncMs() > 24L * 60L * 60L * 1000L;
                 if (cookie == null || cookie.trim().isEmpty()) {
@@ -74,6 +75,9 @@ final class HydrationManager {
                         } else if (!refreshShell && !remoteDatasetVersion.isEmpty()
                                 && remoteDatasetVersion.equals(store.getMeta("dataset_version"))
                                 && store.getEndpoint("bootstrap") != null) {
+                            if (shellRefreshDue) {
+                                try { refreshShell(store, cookie, baseUserAgent); } catch (Throwable ignored) { }
+                            }
                             store.setLastValidatedNow();
                             store.setMeta("last_sync_ms", String.valueOf(System.currentTimeMillis()));
                             if (callback != null) callback.onFinished(true, 200);
@@ -179,8 +183,8 @@ final class HydrationManager {
     private static void refreshShell(OfflineStore store, String cookie, String baseUserAgent) throws Exception {
         HttpResult shell = httpGet(APP_URL, cookie, baseUserAgent, 30_000, MAX_RESOURCE_BYTES + 1024);
         if (shell.status != 200 || shell.body == null || shell.body.length == 0) return;
-        store.putShell(APP_URL, mimeOnly(shell.contentType, "text/html"), charsetOf(shell.contentType), shell.body);
         String html = new String(shell.body, StandardCharsets.UTF_8);
+        if (!FactoryShell.isCurrent(html)) return;
         Matcher m = ASSET_PATTERN.matcher(html);
         Set<String> urls = new HashSet<>();
         while (m.find() && urls.size() < 40) {
@@ -197,17 +201,21 @@ final class HydrationManager {
         }
 
         int total = shell.body.length;
+        boolean complete = true;
         for (String url : urls) {
-            if (total >= MAX_SHELL_TOTAL_BYTES) break;
+            if (total >= MAX_SHELL_TOTAL_BYTES) { complete = false; break; }
             try {
                 HttpResult r = httpGet(url, cookie, baseUserAgent, 30_000, MAX_RESOURCE_BYTES + 1024);
-                if (r.status != 200 || r.body == null || r.body.length == 0 || r.body.length > MAX_RESOURCE_BYTES) continue;
+                if (r.status != 200 || r.body == null || r.body.length == 0 || r.body.length > MAX_RESOURCE_BYTES) { complete = false; continue; }
                 total += r.body.length;
-                if (total > MAX_SHELL_TOTAL_BYTES) break;
+                if (total > MAX_SHELL_TOTAL_BYTES) { complete = false; break; }
                 store.putShell(url, mimeOnly(r.contentType, guessMime(url)), charsetOf(r.contentType), r.body);
-            } catch (Throwable ignored) { }
+            } catch (Throwable ignored) { complete = false; }
         }
+        if (!complete) return;
+        store.putShell(APP_URL, mimeOnly(shell.contentType, "text/html"), charsetOf(shell.contentType), shell.body);
         store.setMeta("last_shell_sync_ms", String.valueOf(System.currentTimeMillis()));
+        store.setMeta("shell_refresh_pending", "0");
     }
 
     private static HttpResult httpGet(String url, String cookie, String baseUserAgent, int timeoutMs, int maxBytes) throws Exception {
@@ -290,3 +298,4 @@ final class HydrationManager {
         return "application/octet-stream";
     }
 }
+
