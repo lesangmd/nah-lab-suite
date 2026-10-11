@@ -1,0 +1,16 @@
+Verifies
+Verified using v1 scheme (JAR signing): false
+Verified using v2 scheme (APK Signature Scheme v2): true
+Verified using v3 scheme (APK Signature Scheme v3): true
+Verified using v4 scheme (APK Signature Scheme v4): false
+Verified for SourceStamp: false
+Number of signers: 1
+Signer #1 certificate DN: CN=NAH LAB SUITE Android Baseline 1.1.6, O=NAH, C=VN
+Signer #1 certificate SHA-256 digest: 6b33b13104b53c124e5b675c10223306dcbdefbd05674a86be94793473b6790d
+Signer #1 certificate SHA-1 digest: c096419afeb4e4c0add7a7c9ea194522442a1a50
+Signer #1 certificate MD5 digest: e911c127cd4f4ec38304fccab60b283e
+Signer #1 key algorithm: RSA
+Signer #1 key size (bits): 4096
+Signer #1 public key SHA-256 digest: f50eb9760b9079de65de7c8323c508164b6aa70da23fa5ca29e8af97b396146a
+Signer #1 public key SHA-1 digest: 129cf86d0f36d2c57d125bbd594105ce7e938f69
+Signer #1 public key MD5 digest: 13bd9d3142b4544c931c9d66d45c5bb4
