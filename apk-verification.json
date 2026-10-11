@@ -7,11 +7,11 @@
     "v3"
   ],
   "certificateSha256": "6b33b13104b53c124e5b675c10223306dcbdefbd05674a86be94793473b6790d",
-  "apkSha256": "cd95b55908d0918cc8c821456e2a8deaca7bb7626fec5772f8ef86da03bca31e",
+  "apkSha256": "3baad67a64e724db65dd8b14e778bb9fe9008aac92c5b6d80444ba83eb0db4dc",
   "package": "vn.nah.iso15189suite",
-  "versionName": "1.1.6",
-  "versionCode": 11006,
-  "sourceCiRun": 38051253727,
+  "versionName": "1.1.7",
+  "versionCode": 11007,
+  "sourceCiRun": 38106973502,
   "compiledPayloadUnchanged": true,
   "deviceInstallTest": false
 }
