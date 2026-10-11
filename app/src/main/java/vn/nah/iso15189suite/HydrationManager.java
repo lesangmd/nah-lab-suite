@@ -26,7 +26,7 @@ final class HydrationManager {
     static final String FULL_MIRROR_URL = REST_BASE + "desktop/mirror/full";
     static final String CONTENT_URL = REST_BASE + "desktop/content/bundle";
     static final String MANIFEST_URL = REST_BASE + "desktop/content/manifest";
-    static final String UA_MARKER = "NAHISOAndroid/1.1.6";
+    static final String UA_MARKER = "NAHISOAndroid/" + BuildConfig.VERSION_NAME;
 
     static final long CORE_MIN_REFRESH_MS = 60L * 1000L;
     static final long DEEP_REFRESH_MS = 12L * 60L * 60L * 1000L;

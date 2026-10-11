@@ -223,7 +223,7 @@ public class MainActivity extends Activity {
         backgroundWorkStarted = true;
 
         new Thread(() -> {
-            try { offlineStore.ensureShellContract("android-v1.1.6-web-v1.58.12"); }
+            try { offlineStore.ensureShellContract("android-v1.1.7-web-v1.58.13"); }
             catch (Throwable ignored) { }
         }, "nah-shell-contract").start();
 
@@ -267,7 +267,7 @@ public class MainActivity extends Activity {
         s.setTextZoom(100);
         s.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
         String ua = s.getUserAgentString();
-        s.setUserAgentString((ua == null ? "" : ua) + " NAHISOAndroid/1.1.6");
+        s.setUserAgentString((ua == null ? "" : ua) + " NAHISOAndroid/" + BuildConfig.VERSION_NAME);
 
         CookieManager cm = CookieManager.getInstance();
         cm.setAcceptCookie(true);

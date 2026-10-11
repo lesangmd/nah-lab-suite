@@ -10,8 +10,8 @@ import java.util.regex.Pattern;
 
 /** Public UI only. Account data stays in the encrypted, account-scoped vault. */
 final class FactoryShell {
-    static final String VERSION = "1.58.12";
-    private static final String PREFIX = "https://sachyhoc.com/nah-lab-iso/native-shell-v1.58.12/assets/";
+    static final String VERSION = "1.58.13";
+    private static final String PREFIX = "https://sachyhoc.com/nah-lab-iso/native-shell-v1.58.13/assets/";
     private static final Pattern VERSION_PATTERN = Pattern.compile("[\\\"']?version[\\\"']?\\s*:\\s*[\\\"']([0-9]+\\.[0-9]+(?:\\.[0-9]+)?)[\\\"']");
 
     static boolean isCurrent(String html) {
