@@ -1,4 +1,4 @@
-name: Build signed Android release — baseline v1.1.7
+name: Build signed Android release — baseline key v1.1.6
 
 on:
   push:
