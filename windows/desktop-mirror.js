@@ -223,7 +223,7 @@ async function boundedFetch(input,init={},timeoutMs=15000){
   if(signal?.aborted)abort();
   else signal?.addEventListener('abort',abort,{once:true});
   const timer=setTimeout(abort,timeoutMs);
-  try{return await nativeFetch(input,{...init,signal:controller.signal})}
+  try{const res=await nativeFetch(input,{...init,signal:controller.signal});const bytes=await res.arrayBuffer();return new Response([204,205,304].includes(res.status)?null:bytes,{status:res.status,statusText:res.statusText,headers:res.headers})}
   finally{clearTimeout(timer);signal?.removeEventListener('abort',abort)}
 }
 async function remoteJson(url,init,cacheKey){
@@ -256,7 +256,7 @@ async function fullSync(reason='periodic'){
   })();
   return syncPromise;
 }
-function scheduleSync(reason){setTimeout(()=>fullSync(reason),100)}
+function scheduleSync(reason){setTimeout(()=>fullSync(reason).then(ok=>{if(ok&&['startup','login','reconnect'].includes(reason))setTimeout(()=>fullSync('deep'),60000)}),100)}
 
 async function handleLogin(input,init){
   if(!onlineHint())return errorResponse(503,'Máy đang ngoại tuyến. Cần kết nối Internet để đăng nhập lần đầu.','desktop_offline_login');
