@@ -471,7 +471,8 @@ public class MainActivity extends Activity {
                             && !key.startsWith("auth/")
                             && !key.startsWith("desktop/mirror/full")
                             && !key.startsWith("desktop/content/")
-                            && offlineStore.offlineEligible()) {
+                            && offlineStore.offlineEligible()
+                            && !networkAvailable()) {
                         String body = offlineStore.getEndpoint(key);
                         if (body != null) return cachedJson(body);
                     }
@@ -480,7 +481,8 @@ public class MainActivity extends Activity {
                 if ("GET".equals(method)) {
                     String canonical = HydrationManager.canonicalShellUrl(url);
                     OfflineStore.CacheEntry entry = offlineStore.getShell(canonical);
-                    if (entry != null) return cachedShell(entry);
+                    // Online requests should reach the server; cached resources are the offline fallback.
+                    if (entry != null && !networkAvailable()) return cachedShell(entry);
                 }
             } catch (Throwable ignored) { }
             return null;
