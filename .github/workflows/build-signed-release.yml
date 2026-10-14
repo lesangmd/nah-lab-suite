@@ -2,17 +2,17 @@ name: Build signed Android release — baseline key v1.1.6
 
 on:
   push:
-    branches: [ "fix/native-dataset-20261014" ]
+    branches: [ "fix/native-dataset-20261014" , release/android-v1.1.12-nah-labsuite ]
   workflow_dispatch:
     inputs:
       release_version:
         description: "Expected versionName"
         required: true
-        default: "1.1.11"
+        default: "1.1.12"
       release_version_code:
         description: "Expected versionCode"
         required: true
-        default: "11011"
+        default: "11012"
 
 permissions:
   contents: read
@@ -21,8 +21,8 @@ jobs:
   signed-release:
     runs-on: ubuntu-latest
     env:
-      RELEASE_VERSION: ${{ inputs.release_version || '1.1.11' }}
-      RELEASE_VERSION_CODE: ${{ inputs.release_version_code || '11011' }}
+      RELEASE_VERSION: ${{ inputs.release_version || '1.1.12' }}
+      RELEASE_VERSION_CODE: ${{ inputs.release_version_code || '11012' }}
       ANDROID_HOME: /usr/local/lib/android/sdk
       ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
       KS_B64: ${{ secrets.NAH_ANDROID_KEYSTORE_B64 }}
