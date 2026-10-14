@@ -1,15 +1,22 @@
-# Android permanent signing identity and 1.1.9 release baseline
+# NAH LabSuite Android — Permanent signing baseline (14 October 2026)
 
-Android 1.1.9 / Web UI 1.58.25 is the current distribution baseline. It reuses the new permanent signing identity introduced at 1.1.6. See release-baseline-v1.1.9.json. Do not generate another key for this release: that would prevent existing 1.1.6 and later installations from updating in place.
+**Application ID:** `vn.nah.iso15189suite`  
+**New baseline:** Android `1.1.12` / `versionCode 11012`  
+**Signing keystore:** PKCS12, alias `nah-labsuite-release`  
+**Certificate SHA-256:** `76a2a3289bd26bc255caa3465f609a1b83992b3f4fe0b44813e67296e01d52ac`
 
-The owner authorized a new signing key and uninstall/reinstall migration on 2026-10-10. The old signing identity is retired for this release stream.
+The new signer supersedes Android 1.1.11's previous certificate. **Uninstall Android 1.1.11 or earlier before installing this new baseline; preserve server-side data first.** Future releases must use the **same** PKCS12 keystore and certificate and increase `versionCode`. Never generate another routine signing key or silently change the package ID or fingerprint.
 
-Locked identity: package vn.nah.iso15189suite, baseline versionName 1.1.6, versionCode 11006. Public certificate SHA256: 6b33b13104b53c124e5b675c10223306dcbdefbd05674a86be94793473b6790d
+The release keystore and all passwords are private and **must never be committed into this public repository, an APK, or the WordPress plugin**. The user owns an encrypted PKCS12 backup and must configure these GitHub Actions repository secrets locally using authenticated GitHub CLI:
 
-Keep the separate private backup securely. It contains the JKS and credentials required for every future in-place update. Never regenerate the key, commit the backup, or distribute it with the APK. Increase versionCode for each future APK.
+- `NAH_ANDROID_KEYSTORE_B64` — base64 of the PKCS12 bytes (single line).
+- `NAH_ANDROID_KEY_ALIAS` — `nah-labsuite-release`.
+- `NAH_ANDROID_KEYSTORE_PASSWORD` — keystore password.
+- `NAH_ANDROID_KEY_PASSWORD` — same password for this PKCS12 entry.
+- `NAH_ANDROID_CERT_SHA256` — the exact fingerprint above without colons.
 
-To configure future builds, restore the five existing Actions secret names from this new backup: NAH_ANDROID_KEYSTORE_B64, NAH_ANDROID_KEY_ALIAS, NAH_ANDROID_KEYSTORE_PASSWORD, NAH_ANDROID_KEY_PASSWORD, NAH_ANDROID_CERT_SHA256. tools/CONFIGURE-BASELINE-v1.1.6.ps1 reads the backup on the owner's trusted Windows computer, validates the expected certificate, and configures these secrets. It never generates a replacement key.
+Use the private `CAI-DAT-GITHUB-SECRETS.cmd` from the protected owner recovery kit (downloaded separately; not stored in GitHub). This performs `gh secret set -f - --repo lesangmd/nah-lab-suite` and transmits the values to GitHub Actions Secrets; only the secret names can be listed afterward. These secrets **have not been configured by ChatGPT** because the GitHub connector lacks the needed API permission.
 
-The workflow rejects a certificate that differs from signing-baseline.json. Run Build signed Android release on the current candidate branch with version 1.1.6 and code 11006, or use the same secrets for later releases. The delivered baseline APK was signed locally; Actions signing requires these secrets to be configured separately.
+Run the GitHub Actions `build-signed-release.yml` workflow on `release/android-v1.1.12-nah-labsuite`. Require successful compilation, zipalign, `apksigner verify --print-certs`, the pinned certificate check, checksum and an install test on an Android device before declaring production. Release candidate WebApp v1.58.32 is not production until these checks and user acceptance pass.
 
-Before initial installation, synchronize local-only data, uninstall the old app, install the signed baseline APK, log in and let account data synchronize again. Future versions signed with this new key can update in place.
+**Windows Native baseline is locked at v1.3.20 Taskbar behavior.** Do not change its process/window identification while working on Android releases.
