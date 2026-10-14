@@ -1,4 +1,4 @@
-name: Build signed Android release — baseline key v1.1.6
+name: Build NAH LabSuite signed Android release — new baseline 1.1.12
 
 on:
   push:
