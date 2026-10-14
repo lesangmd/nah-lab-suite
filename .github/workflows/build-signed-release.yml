@@ -1,18 +1,18 @@
-name: Build NAH LabSuite signed Android release — new baseline 1.1.12
+name: Build NAH LabSuite signed Android release — new baseline 1.1.13
 
 on:
   push:
-    branches: [ "fix/native-dataset-20261014" , release/android-v1.1.12-nah-labsuite ]
+    branches: [ "fix/native-dataset-20261014" , release/android-v1.1.13-activity-render-fix ]
   workflow_dispatch:
     inputs:
       release_version:
         description: "Expected versionName"
         required: true
-        default: "1.1.12"
+        default: "1.1.13"
       release_version_code:
         description: "Expected versionCode"
         required: true
-        default: "11012"
+        default: "11013"
 
 permissions:
   contents: read
@@ -21,8 +21,8 @@ jobs:
   signed-release:
     runs-on: ubuntu-latest
     env:
-      RELEASE_VERSION: ${{ inputs.release_version || '1.1.12' }}
-      RELEASE_VERSION_CODE: ${{ inputs.release_version_code || '11012' }}
+      RELEASE_VERSION: ${{ inputs.release_version || '1.1.13' }}
+      RELEASE_VERSION_CODE: ${{ inputs.release_version_code || '11013' }}
       ANDROID_HOME: /usr/local/lib/android/sdk
       ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
       KS_B64: ${{ secrets.NAH_ANDROID_KEYSTORE_B64 }}

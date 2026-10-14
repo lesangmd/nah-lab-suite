@@ -1,8 +1,8 @@
-name: Validate Android v1.1.12 source
+name: Validate Android v1.1.13 source
 
 on:
   push:
-    branches: [ main, "fix/native-dataset-20261014" , release/android-v1.1.12-nah-labsuite ]
+    branches: [ main, "fix/native-dataset-20261014" , release/android-v1.1.13-activity-render-fix ]
     paths:
       - "app/**"
       - "build.gradle"
@@ -35,9 +35,9 @@ jobs:
           set -euo pipefail
           grep -q "applicationId 'vn.nah.iso15189suite'" app/build.gradle
           grep -q 'name="app_name">NAH LabSuite<' app/src/main/res/values/strings.xml
-          grep -q "versionCode 11012" app/build.gradle
-          grep -q "versionName '1.1.12'" app/build.gradle
-          grep -q "android-v1.1.12-web-v1.58.31" app/src/main/java/vn/nah/iso15189suite/MainActivity.java
+          grep -q "versionCode 11013" app/build.gradle
+          grep -q "versionName '1.1.13'" app/build.gradle
+          grep -q "android-v1.1.13-web-v1.58.34" app/src/main/java/vn/nah/iso15189suite/MainActivity.java
           grep -q "loadDataWithBaseURL" app/src/main/java/vn/nah/iso15189suite/MainActivity.java
           grep -q "onPageCommitVisible" app/src/main/java/vn/nah/iso15189suite/MainActivity.java
           ! grep -R "injectCheckButton" app/src/main/java
@@ -62,13 +62,13 @@ jobs:
           test -f "$APK"
           "$ANDROID_HOME/build-tools/35.0.0/aapt" dump badging "$APK" | tee aapt-badging.txt
           grep -q "package: name='vn.nah.iso15189suite'" aapt-badging.txt
-          grep -q "versionCode='11012'" aapt-badging.txt
-          grep -q "versionName='1.1.12'" aapt-badging.txt
+          grep -q "versionCode='11013'" aapt-badging.txt
+          grep -q "versionName='1.1.13'" aapt-badging.txt
           sha256sum "$APK" | tee unsigned-release.sha256
 
       - uses: actions/upload-artifact@v4
         with:
-          name: nah-iso-android-v1.1.12-unsigned-validation
+          name: nah-iso-android-v1.1.13-unsigned-validation
           path: |
             app/build/outputs/apk/release/app-release-unsigned.apk
             aapt-badging.txt
