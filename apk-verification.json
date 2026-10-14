@@ -1,0 +1,17 @@
+{
+  "signing": "PASS",
+  "zipAlignment": "PASS",
+  "signatureSchemes": [
+    "v1",
+    "v2",
+    "v3"
+  ],
+  "certificateSha256": "6b33b13104b53c124e5b675c10223306dcbdefbd05674a86be94793473b6790d",
+  "apkSha256": "3baad67a64e724db65dd8b14e778bb9fe9008aac92c5b6d80444ba83eb0db4dc",
+  "package": "vn.nah.iso15189suite",
+  "versionName": "1.1.7",
+  "versionCode": 11007,
+  "sourceCiRun": 38106973502,
+  "compiledPayloadUnchanged": true,
+  "deviceInstallTest": false
+}

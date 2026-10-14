@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">NAH LAB SUITE</string>
+    <string name="app_name">NAH ISO</string>
     <string name="app_url">https://sachyhoc.com/nah-lab-iso/</string>
     <string name="offline_title">Không thể kết nối</string>
     <string name="offline_message">Vui lòng kiểm tra kết nối Internet và thử lại.</string>

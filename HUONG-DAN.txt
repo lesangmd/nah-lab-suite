@@ -1,0 +1,4 @@
+ANDROID 1.1.7 / WEB 1.58.13
+Cài đè lên baseline 1.1.6 đã ký bằng khóa mới. Không cần gỡ 1.1.6. Bản cũ hơn sử dụng khóa khác phải gỡ trước.
+Màn hình đăng nhập lấy phiên bản thực từ ứng dụng; Hero mới đồng bộ Web và Windows.
+Giữ khóa baseline 1.1.6 cho mọi bản cập nhật sau.
