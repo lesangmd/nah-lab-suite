@@ -1,4 +1,4 @@
-name: Build NAH LabSuite signed Android release — new baseline 1.1.12
+name: Build NAH LabSuite signed Android release — new baseline 1.1.13
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
       release_version:
         description: "Expected versionName"
         required: true
-        default: "1.1.12"
+        default: "1.1.13"
       release_version_code:
         description: "Expected versionCode"
         required: true
@@ -21,7 +21,7 @@ jobs:
   signed-release:
     runs-on: ubuntu-latest
     env:
-      RELEASE_VERSION: ${{ inputs.release_version || '1.1.12' }}
+      RELEASE_VERSION: ${{ inputs.release_version || '1.1.13' }}
       RELEASE_VERSION_CODE: ${{ inputs.release_version_code || '11013' }}
       ANDROID_HOME: /usr/local/lib/android/sdk
       ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
