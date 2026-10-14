@@ -80,6 +80,7 @@ public class MainActivity extends Activity {
     private boolean deepSyncInFlight = false;
     private boolean firstUiRendered = false;
     private boolean backgroundWorkStarted = false;
+    private volatile boolean useOfflineFallback = false;
     private int earlySyncProbe = 0;
     private String lastObservedCookie = "";
 
@@ -148,6 +149,7 @@ public class MainActivity extends Activity {
                 ? getString(R.string.app_url)
                 : url;
         browserButton.setVisibility(View.GONE);
+        useOfflineFallback = false;
 
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
@@ -179,6 +181,13 @@ public class MainActivity extends Activity {
 
     private void loadInitialDocument() {
         final String target = pendingUrl;
+        // Live Web is authoritative whenever the device has validated Internet.
+        // Local shell is strictly the unavailable-network fallback.
+        if (networkAvailable()) {
+            webView.loadUrl(target);
+            return;
+        }
+        useOfflineFallback = true;
         if (!HydrationManager.APP_URL.equals(HydrationManager.canonicalShellUrl(target))) {
             webView.loadUrl(target);
             return;
@@ -223,7 +232,7 @@ public class MainActivity extends Activity {
         backgroundWorkStarted = true;
 
         new Thread(() -> {
-            try { offlineStore.ensureShellContract("android-v1.1.7-web-v1.58.13"); }
+            try { offlineStore.ensureShellContract("android-v1.1.11-web-v1.58.29"); }
             catch (Throwable ignored) { }
         }, "nah-shell-contract").start();
 
@@ -265,7 +274,7 @@ public class MainActivity extends Activity {
         s.setBuiltInZoomControls(false);
         s.setDisplayZoomControls(false);
         s.setTextZoom(100);
-        s.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+        s.setCacheMode(networkAvailable() ? WebSettings.LOAD_NO_CACHE : WebSettings.LOAD_CACHE_ELSE_NETWORK);
         String ua = s.getUserAgentString();
         s.setUserAgentString((ua == null ? "" : ua) + " NAHISOAndroid/" + BuildConfig.VERSION_NAME);
 
@@ -460,10 +469,6 @@ public class MainActivity extends Activity {
             try {
                 String url = request.getUrl().toString();
                 String method = request.getMethod() == null ? "GET" : request.getMethod().toUpperCase();
-                if ("GET".equals(method)) {
-                    WebResourceResponse bundled = FactoryShell.asset(MainActivity.this, url);
-                    if (bundled != null) return bundled;
-                }
 
                 if (url.contains("/nah-lab-iso/__android_offline_lock__")) {
                     offlineStore.revokeValidationKeepVault();
@@ -475,7 +480,12 @@ public class MainActivity extends Activity {
                     return null;
                 }
 
-                if ("GET".equals(method) && url.startsWith(HydrationManager.REST_BASE)) {
+                if ("GET".equals(method) && (useOfflineFallback || !networkAvailable())) {
+                    WebResourceResponse bundled = FactoryShell.asset(MainActivity.this, url);
+                    if (bundled != null) return bundled;
+                }
+
+                if ((useOfflineFallback || !networkAvailable()) && "GET".equals(method) && url.startsWith(HydrationManager.REST_BASE)) {
                     String key = HydrationManager.normalizeRestKey(url);
                     if (key != null
                             && !key.startsWith("auth/")
@@ -487,7 +497,7 @@ public class MainActivity extends Activity {
                     }
                 }
 
-                if ("GET".equals(method)) {
+                if ((useOfflineFallback || !networkAvailable()) && "GET".equals(method)) {
                     String canonical = HydrationManager.canonicalShellUrl(url);
                     OfflineStore.CacheEntry entry = offlineStore.getShell(canonical);
                     if (entry != null) {
@@ -525,18 +535,31 @@ public class MainActivity extends Activity {
         @Override
         public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
             if (!request.isForMainFrame()) return;
-            if (offlineStore.hasShell(HydrationManager.APP_URL)) {
-                view.postDelayed(() -> view.loadUrl(HydrationManager.APP_URL), 120L);
-            } else {
-                showOffline();
+            // Render the bundled shell once; never retry an unreachable URL indefinitely.
+            if (!useOfflineFallback) {
+                useOfflineFallback = true;
+                try {
+                    view.stopLoading();
+                    String html = FactoryShell.read(MainActivity.this);
+                    view.loadDataWithBaseURL(HydrationManager.APP_URL, html,
+                            "text/html", "UTF-8", HydrationManager.APP_URL);
+                    return;
+                } catch (Throwable ignored) { }
             }
+            showOffline();
         }
 
         @Override
         public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
             if (request.isForMainFrame() && errorResponse.getStatusCode() >= 500) {
-                if (offlineStore.hasShell(HydrationManager.APP_URL)) view.loadUrl(HydrationManager.APP_URL);
-                else showOffline();
+                if (!useOfflineFallback) {
+                    useOfflineFallback = true;
+                    try {
+                        view.stopLoading();
+                        view.loadDataWithBaseURL(HydrationManager.APP_URL, FactoryShell.read(MainActivity.this),
+                                "text/html", "UTF-8", HydrationManager.APP_URL);
+                    } catch (Throwable ignored) { showOffline(); }
+                } else showOffline();
             }
         }
 

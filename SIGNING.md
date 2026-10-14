@@ -1,4 +1,6 @@
-# Android 1.1.6 new permanent signing baseline
+# Android permanent signing identity and 1.1.9 release baseline
+
+Android 1.1.9 / Web UI 1.58.25 is the current distribution baseline. It reuses the new permanent signing identity introduced at 1.1.6. See release-baseline-v1.1.9.json. Do not generate another key for this release: that would prevent existing 1.1.6 and later installations from updating in place.
 
 The owner authorized a new signing key and uninstall/reinstall migration on 2026-10-10. The old signing identity is retired for this release stream.
 

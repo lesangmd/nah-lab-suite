@@ -2543,6 +2543,10 @@ body.nah-ui-v158{background:var(--bg)!important}
 .nah-ui-v158 .home-layout-v1585 .home-section-title,.hl-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin:0 0 18px!important}.hl-heading>div,.nah-ui-v158 .home-layout-v1585 .home-section-title>div{min-width:0;flex:1}.hl-heading h3,.nah-ui-v158 .home-layout-v1585 .home-section-title h3,.nah-ui-v158 .home-layout-v1585 .home-section-head-v158 h3{font-size:19px!important;line-height:1.4!important;margin:4px 0 0!important}.hl-heading small,.nah-ui-v158 .home-layout-v1585 .home-section-title small,.nah-ui-v158 .home-layout-v1585 .home-section-head-v158 small{font-size:11px!important;letter-spacing:.06em;color:var(--hl-green);font-weight:700}.nah-ui-v158 .home-layout-v1585 .home-text-link{font-size:13px!important;white-space:normal!important;flex-shrink:0;max-width:125px;text-align:right;line-height:1.6}.nah-ui-v158 .home-layout-v1585 .section-symbol{display:none!important}
 .nah-ui-v158 .home-layout-v1585 .home-priority-list{max-height:none!important;overflow:visible!important;padding:0!important;display:grid;gap:10px}.nah-ui-v158 .home-layout-v1585 .home-priority-item{grid-template-columns:44px minmax(0,1fr) 105px!important;gap:12px!important;padding:12px!important;background:var(--surface)!important;border:1px solid var(--line);align-items:start!important;margin:0!important}.nah-ui-v158 .home-layout-v1585 .home-priority-copy strong{font-size:15px!important;line-height:1.6!important;white-space:normal!important;display:block!important;-webkit-line-clamp:unset!important}.nah-ui-v158 .home-layout-v1585 .home-priority-copy small{font-size:12px!important;line-height:1.6!important;white-space:normal!important}.nah-ui-v158 .home-layout-v1585 .home-priority-status{display:grid!important;gap:6px!important;justify-items:end!important;align-items:start!important}.hl-task-status{font-size:12px;color:var(--hl-muted);font-style:normal;line-height:1.6;text-align:right}.hl-overdue-label{font-size:12px;color:var(--hl-danger);border:1px solid currentColor;padding:2px 8px;border-radius:6px;white-space:nowrap}.nah-ui-v158 .home-layout-v1585 .hl-overdue .priority-date{border-color:var(--hl-danger)!important;color:var(--hl-danger)!important;background:var(--surface)!important}
 .hl-road-stages{display:grid;gap:10px}.hl-road-stage{display:grid;gap:6px;text-align:left;font:inherit;color:var(--text);background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px;cursor:pointer;width:100%;min-width:0}.hl-road-stage small{font-size:12px;color:var(--hl-green);font-weight:650}.hl-road-stage strong{font-size:16px;line-height:1.55}.hl-road-stage span{font-size:13px;color:var(--hl-muted)}.hl-road-stage:hover{border-color:var(--hl-green)}.hl-road-connector{color:var(--hl-green);text-align:center;line-height:1;font-size:20px}.hl-road-summary,.hl-road-end,.hl-road-empty{font-size:13px;color:var(--hl-muted);margin:14px 0}.hl-road-actions{display:flex;flex-wrap:wrap;gap:8px}.hl-full-roadmap{--hl-green:var(--brand-deep);--hl-muted:var(--muted);display:grid;gap:12px}.hl-full-roadmap .hl-road-stage{font-size:15px}
+.planned-accreditation{margin:0 0 20px}.planned-milestone-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}.planned-milestone{display:flex;align-items:flex-start;gap:10px;text-align:left;min-width:0;min-height:142px;padding:15px;border:1px solid var(--line);border-radius:12px;background:linear-gradient(125deg,var(--surface) 54%,color-mix(in srgb,var(--brand-soft) 28%,var(--surface)));color:var(--text);font:inherit;cursor:pointer;transition:border-color .18s ease,transform .18s ease}.planned-milestone:hover,.planned-milestone:focus-visible{border-color:var(--brand);transform:translateY(-2px)}.planned-milestone.in-window{border-color:color-mix(in srgb,var(--brand) 55%,var(--line))}.planned-milestone-number{font-size:12px;font-weight:750;color:var(--brand-deep);background:var(--brand-soft);border-radius:8px;padding:5px 6px}.planned-milestone-copy{display:grid;gap:8px;min-width:0;flex:1}.planned-milestone-copy strong{font-size:15px;line-height:1.4}.planned-milestone-copy small{font-size:13px;color:var(--text);font-weight:650;line-height:1.4}.planned-milestone-copy em{font-size:12px;color:var(--muted);font-style:normal}.planned-milestone-arrow{color:var(--brand);font-size:20px;line-height:1}.planned-accreditation-note,.planned-detail-note{color:var(--muted);font-size:13px;line-height:1.55;margin:12px 0 0}.planned-detail-period{font-weight:700;color:var(--brand-deep)}.planned-detail-tasks{padding-left:22px;line-height:1.6}.planned-detail-tasks li+li{margin-top:8px}
+@media(max-width:1300px){.planned-milestone-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:800px){.planned-milestone-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.planned-milestone{min-height:126px}}
+@media(max-width:520px){.planned-milestone-grid{grid-template-columns:1fr}.planned-milestone{min-height:0;padding:13px}.planned-milestone-copy{gap:5px}}
 .hl-progress-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.hl-progress-item{border:1px solid var(--line);border-radius:10px;padding:16px;display:grid;gap:10px}.hl-progress-item>strong{font-size:14px;line-height:1.6}.hl-progress-item>b{font-size:28px;color:var(--hl-green);line-height:1.3}.hl-progress-track{display:block;height:6px;border-radius:5px;background:var(--surface3);overflow:hidden;width:100%}.hl-progress-track i{display:block;height:100%;background:var(--hl-green,var(--brand));border-radius:5px}
 .hl-quality-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.hl-quality-stat{display:flex;flex-direction:column;align-items:flex-start;gap:8px;text-align:left;padding:16px 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--text);font:inherit;min-width:0;cursor:pointer}.hl-quality-stat>span{display:grid;place-items:center;width:32px;height:32px;color:var(--hl-green)}.hl-quality-stat svg{width:24px;height:24px}.hl-quality-stat>strong{font-size:27px;line-height:1.3;color:var(--hl-green)}.hl-quality-stat>b{font-size:14px;line-height:1.6;font-weight:650;overflow-wrap:normal;word-break:normal}.hl-quality-stat>small{font-size:12px;line-height:1.6;color:var(--hl-muted)}.home-layout-v1585 .hl-danger{color:var(--hl-danger)!important}
 .hl-team-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}.hl-person{display:grid;grid-template-columns:38px minmax(0,1fr);align-items:center;gap:12px;padding:16px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--text);text-align:left;font:inherit;min-width:0;cursor:pointer}.hl-person>strong{font-size:15px;line-height:1.5;overflow-wrap:anywhere}.hl-person>.team-avatar{width:38px;height:38px;font-size:15px}.hl-person-stats{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.hl-person-stats>span{display:grid;gap:6px}.hl-person-stats small{font-size:12px;color:var(--hl-muted);line-height:1.5}.hl-person-stats b{font-size:20px;line-height:1.3}.hl-person>.hl-progress-track{grid-column:1/-1}.hl-person:hover{border-color:var(--hl-green)}
@@ -2701,3 +2705,323 @@ body.nah-ui-v158{background:var(--bg)!important}
 @media(max-width:767px){.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern{grid-template-columns:minmax(0,1fr)!important;gap:20px!important;padding:23px!important;border-radius:22px!important}.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern .hero-refined-copy h2{font-size:28px!important;line-height:1.2!important}.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern .hero-refined-hospital{font-size:10px!important}.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern .hero-refined-kicker{margin-top:13px!important}.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern .hero-refined-art{height:160px!important;transform:none!important;border-radius:15px!important}.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern .hero-refined-art img{object-position:center 40%!important}.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern .hero-refined-description{font-size:14px!important;margin:15px 0 10px!important}.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern .hero-refined-greeting{margin-bottom:16px!important}.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern .hero-refined-actions .btn{flex:1 1 130px!important;font-size:13px!important}}
 @media(max-width:360px){.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern{padding:19px!important}.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern .hero-refined-copy h2{font-size:25px!important}.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern .hero-refined-actions .btn{flex-basis:100%!important}}
 @media(prefers-reduced-motion:reduce){.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern .hero-refined-actions .btn:hover{transform:none}}
+
+/* 1.58.14 · A bright, hospital-wide identity across sign-in and home. */
+body:has(#loginView:not([hidden])) .bottom-dock-wrap,
+body:has(#loginView:not([hidden])) .dock-menu-panel,
+body:has(#loginView:not([hidden])) .rail-tooltip{display:none!important}
+.nah-ui-v158 .login-view{background:radial-gradient(circle at 2% 8%,#dbf8eb 0,transparent 35%),radial-gradient(circle at 94% 84%,#e5f4ff 0,transparent 30%),#fbfdfc!important}
+.nah-ui-v158 .login-shell{grid-template-columns:minmax(0,1.22fr) minmax(350px,.74fr);gap:clamp(20px,3vw,48px)}
+.nah-ui-v158 .login-brand-panel{display:grid!important;grid-template-columns:minmax(0,1fr)!important;grid-template-rows:auto auto minmax(180px,1fr) auto!important;gap:0!important;min-height:min(680px,calc(100dvh - 80px));padding:clamp(24px,3vw,46px)!important;border:1px solid #d9ede4!important;border-radius:32px!important;background:linear-gradient(155deg,#fff 0%,#f7fdf9 52%,#eff9f9 100%)!important;box-shadow:0 24px 70px #174d3820!important}
+.nah-ui-v158 .login-brand-head{grid-column:1!important;grid-row:1!important;gap:16px!important;align-items:center!important}
+.nah-ui-v158 .login-logo{width:76px!important;height:76px!important;max-width:none!important;object-fit:contain!important;padding:5px!important;border:1px solid #e1efe8!important;border-radius:20px!important;box-shadow:0 8px 20px #155c3612!important}
+.nah-ui-v158 .login-hospital-name{font-size:14px!important;line-height:1.45!important;color:#176348!important}.nah-ui-v158 .login-hospital-name small{display:block;font-size:11px;color:#607a6c}
+.nah-ui-v158 .login-copy{grid-column:1!important;grid-row:2!important;align-self:start!important;margin:23px 0 12px!important;max-width:740px!important}
+.nah-ui-v158 .login-copy .eyebrow{color:#087c5b!important;letter-spacing:.11em!important;font-size:11px!important;font-weight:800!important}
+.nah-ui-v158 .login-copy h1{font-size:clamp(31px,3.1vw,48px)!important;line-height:1.1!important;color:#17392d!important;letter-spacing:-.04em!important;margin:10px 0 11px!important}.nah-ui-v158 .login-copy h1 span{color:#078d69!important}
+.nah-ui-v158 .login-copy p{color:#496d5e!important;max-width:620px!important;font-size:15px!important;line-height:1.6!important}
+.nah-ui-v158 .login-visual{grid-column:1!important;grid-row:3!important;position:relative!important;inset:auto!important;min-height:180px!important;width:100%!important;height:100%!important;border:1px solid #d5eee6!important;border-radius:22px!important;box-shadow:0 12px 28px #12584213!important;overflow:hidden!important}
+.nah-ui-v158 .login-visual::before{display:none!important}.nah-ui-v158 .login-visual img{width:100%!important;height:100%!important;object-fit:cover!important;object-position:center 46%!important;transform:none!important}
+.nah-ui-v158 .login-features{grid-column:1!important;grid-row:4!important;margin-top:18px!important;gap:8px!important}.nah-ui-v158 .login-features span{background:#fff!important;color:#13664b!important;border:1px solid #cae7d7!important;font-size:11px!important}
+.nah-ui-v158 .login-card{background:#fff!important;border:1px solid #daebe2!important;box-shadow:0 24px 60px #1a614018!important;padding:clamp(25px,3vw,38px)!important}.nah-ui-v158 .login-card h2{color:#183b2c!important}.nah-ui-v158 .login-card input{background:#f8fbfa!important;border-color:#d8e9e0!important}.nah-ui-v158 .login-card .btn.primary{background:#08a66e!important;border-color:#08a66e!important;color:#fff!important}
+.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern{background:radial-gradient(circle at 8% 0%,#e0f8ed 0,transparent 35%),linear-gradient(117deg,#fff 0%,#f5fcf9 56%,#eaf7ff 100%)!important;border-color:#d5eae1!important;box-shadow:0 18px 40px #12523c16!important}
+.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern::before{background:radial-gradient(circle at 100% 0%,#e1f5fd,transparent 50%)!important}.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern::after{opacity:.23}
+.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern .hero-refined-hospital{color:#37745d!important}.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern .hero-refined-kicker{color:#087b58!important}.hero-brand-dot{background:#08b879;box-shadow:0 0 0 5px #0bad6c20}
+.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern .hero-refined-copy h2{color:#173b2e!important}.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern .hero-refined-copy h2 span{color:#078f69!important}
+.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern .hero-refined-description,.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern .hero-refined-greeting{color:#4c6e60!important}.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern .hero-refined-greeting strong{color:#12674a!important}
+.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern .hero-refined-actions .btn{background:#fff!important;border-color:#c6dfd2!important;color:#175c44!important}.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern .hero-refined-actions .btn.primary{background:#08a66e!important;border-color:#08a66e!important;color:#fff!important;box-shadow:0 8px 18px #077b5230!important}
+.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern .hero-refined-art{background:#fff!important;border:5px solid #fff!important;box-shadow:0 16px 34px #1c765a26!important;transform:none!important}.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern .hero-refined-art:after{display:none!important}.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern .hero-refined-art-caption{font-size:10px!important;color:#16674b!important}
+@media(max-width:1180px){.nah-ui-v158 .login-shell{grid-template-columns:minmax(0,1fr) minmax(320px,.75fr)}.nah-ui-v158 .login-brand-panel{min-height:600px}.nah-ui-v158 .login-copy h1{font-size:34px!important}}
+@media(max-width:820px){.nah-ui-v158 .login-shell{display:block!important;padding:0 14px!important}.nah-ui-v158 .login-brand-panel{display:none!important}.nah-ui-v158 .login-card{max-width:510px;margin:40px auto!important}.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern .hero-refined-art{transform:none!important}}
+@media(max-width:520px){.nah-ui-v158 .login-card{margin:12px auto!important;padding:22px!important}.nah-ui-v158 .login-card-wrap{padding:0!important}.nah-ui-v158 .login-view{padding:18px 0!important}}
+
+/* 1.58.15 · Compact home Hero; a single hospital visual anchors the message. */
+.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern{grid-template-columns:minmax(0,1.7fr) minmax(220px,.75fr)!important;gap:22px!important;padding:22px 26px!important;min-height:0!important;border-radius:22px!important}
+.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern .hero-refined-copy h2{font-size:clamp(25px,2.25vw,34px)!important;line-height:1.17!important;max-width:720px!important}
+.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern .hero-refined-kicker{margin:9px 0 10px!important}.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern .hero-refined-description{margin:10px 0 7px!important;font-size:14px!important;line-height:1.5!important}.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern .hero-refined-greeting{margin-bottom:13px!important}
+.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern .hero-refined-art{height:220px!important;min-height:0!important;max-height:220px!important;border-radius:17px!important;margin:0!important;border-width:3px!important}.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern .hero-refined-art img{object-position:center 55%!important}
+@media(max-width:1100px){.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern{grid-template-columns:minmax(0,1.6fr) minmax(190px,.7fr)!important;padding:21px!important;gap:17px!important}.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern .hero-refined-art{height:205px!important}}
+@media(max-width:767px){.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern{display:flex!important;flex-direction:column!important;gap:12px!important;padding:19px!important}.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern .hero-refined-copy h2{font-size:clamp(25px,5.2vw,31px)!important}.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern .hero-refined-art{width:100%!important;height:145px!important;max-height:145px!important;margin:0!important;border-radius:14px!important}.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern .hero-refined-greeting{margin-bottom:12px!important}}
+@media(max-width:390px){.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern{padding:16px!important}.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern .hero-refined-art{height:125px!important;max-height:125px!important}}
+
+/* 1.58.16 · Actual hospital photo, softly faded into the compact Hero. */
+.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern{display:block!important;min-height:250px!important;background:linear-gradient(115deg,#fff 0%,#f9fffc 48%,#eef8f5 100%)!important}
+.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern .hero-refined-copy{position:relative!important;z-index:3!important;max-width:69%!important}
+.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern .hero-refined-art{position:absolute!important;z-index:1!important;inset:0 0 0 auto!important;display:block!important;width:59%!important;height:100%!important;min-height:0!important;max-height:none!important;margin:0!important;border:0!important;border-radius:0!important;box-shadow:none!important;overflow:hidden!important;pointer-events:none!important;opacity:.82!important;-webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 36%);mask-image:linear-gradient(90deg,transparent 0%,#000 36%)}
+.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern .hero-refined-art img{display:block!important;width:100%!important;height:100%!important;object-fit:cover!important;object-position:50% 22%!important;filter:saturate(.84) brightness(1.08)!important}
+.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern .hero-refined-art::after{display:block!important;position:absolute!important;inset:0!important;content:""!important;background:linear-gradient(0deg,#f7fdf9 0%,#f7fdf9dd 11%,transparent 52%),linear-gradient(90deg,#fff9,transparent 45%)!important}
+@media(max-width:1100px){.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern .hero-refined-copy{max-width:72%!important}.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern .hero-refined-art{width:57%!important;opacity:.68!important}}
+@media(max-width:767px){.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern{min-height:0!important;padding:20px!important}.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern .hero-refined-copy{max-width:100%!important}.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern .hero-refined-art{width:100%!important;height:100%!important;opacity:.24!important;-webkit-mask-image:linear-gradient(180deg,#000,transparent 93%);mask-image:linear-gradient(180deg,#000,transparent 93%)}.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern .hero-refined-art img{object-position:center 20%!important}.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern .hero-refined-art::after{background:linear-gradient(90deg,#ffffff77,#ffffff99),linear-gradient(0deg,#fff,transparent 85%)!important}}
+
+/* 1.58.17 · Quiet, image-free Hero. White fades into pale mint at the right. */
+.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern{position:relative!important;isolation:isolate!important;display:block!important;min-height:0!important;padding:25px 30px!important;overflow:hidden!important;border:1px solid #d7e9e2!important;border-radius:24px!important;background:linear-gradient(100deg,#ffffff 0%,#fbfffd 43%,#e9f7f2 100%)!important;box-shadow:0 14px 32px #11573b10!important}
+.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern::before{content:""!important;position:absolute!important;z-index:-1!important;inset:auto -8% -135% auto!important;width:min(58vw,720px)!important;height:570px!important;border-radius:50%!important;border:1px solid #9ddbc464!important;box-shadow:0 0 0 35px #b8e9d626,0 0 0 82px #cdeee125,0 0 0 144px #ddf5ea28!important;background:radial-gradient(ellipse at 48% 20%,#e3f5ed7a,transparent 68%)!important;transform:rotate(-13deg)!important;pointer-events:none!important}
+.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern::after{content:""!important;position:absolute!important;z-index:-1!important;right:-8%!important;top:-105%!important;bottom:auto!important;left:auto!important;width:min(42vw,500px)!important;height:470px!important;border:1px solid #cbe9df82!important;border-radius:50%!important;box-shadow:0 0 0 44px #e4f7ef30!important;transform:rotate(24deg)!important;pointer-events:none!important}
+.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern .hero-refined-copy{position:relative!important;z-index:1!important;max-width:900px!important}
+.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern .hero-refined-art{display:none!important}
+.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern .hero-refined-copy h2{max-width:790px!important;font-size:clamp(27px,2.45vw,37px)!important;line-height:1.16!important}
+.nah-ui-v158 .bottom-dock .dock-tab.expanded:not(.active){background:color-mix(in srgb,var(--brand-soft) 52%,var(--surface))!important;color:var(--brand-deep)!important;box-shadow:none!important}
+@media(max-width:767px){.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern{padding:22px!important}.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern::before{width:460px!important;height:350px!important;right:-190px!important;bottom:-250px!important}.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern::after{display:none!important}.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern .hero-refined-copy h2{font-size:clamp(26px,5.3vw,32px)!important}}
+@media(max-width:390px){.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern{padding:18px!important}}
+
+/* 1.58.18 · Compact hierarchy for module headers, lifecycle and metrics. */
+.nah-ui-v158 #content :is(.module-hero,.knowledge-hero.compact,.qms-hero,.qd2429-hero,.admin-hero){background:var(--surface)!important;border:1px solid var(--line)!important;box-shadow:0 6px 18px rgba(21,68,48,.045)!important;border-radius:18px!important;padding:20px 24px!important;margin-bottom:14px!important}
+.nah-ui-v158 #content :is(.module-hero,.knowledge-hero.compact,.qms-hero,.qd2429-hero,.admin-hero) h2{font-size:clamp(22px,2vw,27px)!important;line-height:1.25!important;margin:4px 0 7px!important;color:var(--text)!important}
+.nah-ui-v158 #content :is(.module-hero,.knowledge-hero.compact,.qms-hero,.qd2429-hero,.admin-hero) p{font-size:13px!important;line-height:1.55!important;color:var(--muted)!important}
+.nah-ui-v158 #content :is(.module-hero,.knowledge-hero.compact,.qms-hero,.qd2429-hero,.admin-hero) :is(.btn.primary,.doc-reading-badge){box-shadow:none!important}
+.nah-ui-v158 #content .doc-stepper-label{margin:15px 0 8px;color:var(--muted);font-size:10px;font-weight:800;letter-spacing:.08em}
+.nah-ui-v158 #content .doc-stepper{display:grid!important;grid-template-columns:repeat(6,minmax(0,1fr))!important;gap:0!important;margin:0 0 14px!important;padding:8px 10px!important;border:1px solid var(--line)!important;border-radius:14px!important;background:var(--surface)!important;overflow:visible!important}
+.nah-ui-v158 #content .doc-step{min-width:0!important;min-height:38px!important;gap:6px!important;padding:5px 8px!important;border:0!important;border-right:1px solid var(--line)!important;border-radius:0!important;box-shadow:none!important;background:transparent!important}
+.nah-ui-v158 #content .doc-step:last-child{border-right:0!important}.nah-ui-v158 #content .doc-step i{width:21px;height:21px;flex:none;font-size:10px}.nah-ui-v158 #content .doc-step span{font-size:11px;line-height:1.25;font-weight:650}
+.nah-ui-v158 #content .doc-kpi-grid{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:9px!important;margin:0 0 9px!important}
+.nah-ui-v158 #content .doc-kpi{min-width:0;min-height:88px;padding:12px 14px!important;border:1px solid var(--line)!important;border-radius:13px!important;background:var(--surface)!important;box-shadow:none!important}
+.nah-ui-v158 #content .doc-kpi small{font-size:11.5px!important;line-height:1.35!important;color:var(--muted)!important;letter-spacing:0!important}.nah-ui-v158 #content .doc-kpi strong{font-size:25px!important;line-height:1.1!important;margin-top:8px!important;color:var(--text)!important}
+.nah-ui-v158 #content .doc-alert-strip{display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin:0 0 20px;min-height:27px;color:var(--muted);font-size:11.5px}
+.nah-ui-v158 #content .doc-alert-item{display:inline-flex;align-items:center;gap:7px;padding:5px 9px;border:1px solid var(--sem-warning-line,#e5d8ad);border-radius:9px;background:var(--surface);color:var(--text)}.nah-ui-v158 #content .doc-alert-item strong{font-size:13px;color:var(--semantic-warning,#a15e13)}.nah-ui-v158 #content .doc-alert-clear{color:var(--muted)}
+.nah-ui-v158 #content :is(.team-kpis,.resource-kpis,.competency-kpis,.mq-kpis,.pa-kpis,.qms-kpi-grid,.ec-kpi-grid,.cert-kpi-grid) :is(.card,.qms-kpi,.ec-kpi,.cert-kpi){background:var(--surface)!important;border-color:var(--line)!important;box-shadow:none!important;border-radius:13px!important}
+.nah-ui-v158 #content :is(.team-kpis,.resource-kpis,.competency-kpis,.mq-kpis,.pa-kpis,.qms-kpi-grid,.ec-kpi-grid,.cert-kpi-grid) strong{font-variant-numeric:tabular-nums}
+@media(max-width:1100px){.nah-ui-v158 #content .doc-kpi-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}.nah-ui-v158 #content .doc-stepper{grid-template-columns:repeat(3,minmax(0,1fr))!important}.nah-ui-v158 #content .doc-step:nth-child(3){border-right:0!important}}
+@media(max-width:600px){.nah-ui-v158 #content :is(.module-hero,.knowledge-hero.compact,.qms-hero,.qd2429-hero,.admin-hero){padding:17px!important}.nah-ui-v158 #content .doc-stepper{grid-template-columns:repeat(2,minmax(0,1fr))!important}.nah-ui-v158 #content .doc-step:nth-child(3){border-right:1px solid var(--line)!important}.nah-ui-v158 #content .doc-step:nth-child(even){border-right:0!important}.nah-ui-v158 #content .doc-kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}.nah-ui-v158 #content .doc-kpi{min-height:74px;padding:10px 12px!important}}
+
+/* 1.58.19 · A restrained white-to-mint wash for compact metric cards. */
+.nah-ui-v158 #content :is(.doc-kpi-grid,.team-kpis,.resource-kpis,.competency-kpis,.mq-kpis,.pa-kpis,.qms-kpi-grid,.ec-kpi-grid,.cert-kpi-grid,.qd2429-kpis) > :is(.doc-kpi,.card,.qms-kpi,.ec-kpi,.cert-kpi,div){
+  background:linear-gradient(108deg,var(--surface) 0%,color-mix(in srgb,var(--surface) 66%,#d9f3e8) 100%)!important;
+  border:1px solid color-mix(in srgb,var(--line) 85%,#a6d9c2)!important;
+  box-shadow:0 5px 14px rgba(23,85,60,.035)!important;
+}
+.nah-ui-v158 #content :is(.module-hero,.knowledge-hero.compact,.qms-hero,.qd2429-hero,.admin-hero){
+  background:linear-gradient(108deg,var(--surface) 0%,color-mix(in srgb,var(--surface) 80%,#e1f5ed) 100%)!important;
+}
+.nah-ui-v158 #content :is(.doc-kpi-grid,.team-kpis,.resource-kpis,.competency-kpis,.mq-kpis,.pa-kpis,.qms-kpi-grid,.ec-kpi-grid,.cert-kpi-grid,.qd2429-kpis) .danger strong{color:var(--semantic-danger,#ad3834)!important}
+:root[data-theme="dark"] .nah-ui-v158 #content :is(.doc-kpi-grid,.team-kpis,.resource-kpis,.competency-kpis,.mq-kpis,.pa-kpis,.qms-kpi-grid,.ec-kpi-grid,.cert-kpi-grid,.qd2429-kpis) > :is(.doc-kpi,.card,.qms-kpi,.ec-kpi,.cert-kpi,div){background:linear-gradient(108deg,var(--surface) 0%,color-mix(in srgb,var(--surface) 88%,#316e52) 100%)!important}
+
+.nah-ui-v158 #content :is(.team-kpis,.resource-kpis,.competency-kpis,.mq-kpis,.pa-kpis,.qms-kpi-grid,.ec-kpi-grid,.cert-kpi-grid) .warning strong{color:var(--semantic-warning,#a46a19)!important}
+:root[data-theme="dark"] .nah-ui-v158 #content :is(.module-hero,.knowledge-hero.compact,.qms-hero,.qd2429-hero,.admin-hero){background:linear-gradient(108deg,var(--surface) 0%,color-mix(in srgb,var(--surface) 90%,#316e52) 100%)!important}
+
+/* 1.58.20 · Native-ready login with a clear visual frame and compact mobile art. */
+.nah-ui-v158 .login-view{background:radial-gradient(circle at 2% 8%,#e8f8f1,transparent 31%),radial-gradient(circle at 100% 90%,#e9f5fb,transparent 38%),#fbfdfc!important}
+.nah-ui-v158 .login-shell{grid-template-columns:minmax(0,1.08fr) minmax(380px,.75fr)!important;gap:clamp(24px,3vw,50px)!important}
+.nah-ui-v158 .login-brand-panel{min-height:min(640px,calc(100dvh - 70px))!important;background:linear-gradient(135deg,#fff 0%,#f9fefb 55%,#edf8f5 100%)!important;box-shadow:0 22px 55px #17523a15!important}
+.nah-ui-v158 .login-copy{margin-top:17px!important}.nah-ui-v158 .login-copy h1{font-size:clamp(31px,2.9vw,46px)!important}.nah-ui-v158 .login-copy p{font-size:14px!important}
+.nah-ui-v158 .login-visual{min-height:180px!important;max-height:290px!important;border:3px solid #fff!important;border-radius:19px!important;box-shadow:0 12px 26px #2b765723!important}.nah-ui-v158 .login-visual img{object-position:center 55%!important}
+.nah-ui-v158 .login-card{position:relative!important;border-radius:25px!important;box-shadow:0 22px 55px #12513819!important}.nah-ui-v158 .login-card::before{content:"";position:absolute;inset:0 0 auto;height:4px;border-radius:25px 25px 0 0;background:linear-gradient(90deg,#0bae76,#95dfbd,#d5f2e5)}
+.nah-ui-v158 .login-card h2{font-size:clamp(26px,2.3vw,31px)!important;letter-spacing:-.025em!important}.nah-ui-v158 .login-card>p{margin-bottom:21px!important}.nah-ui-v158 .login-card input:focus{outline:2px solid #69cf9b!important;outline-offset:1px!important}.nah-ui-v158 .login-card .btn.primary.large{background:linear-gradient(110deg,#069d69,#087f61)!important;border:0!important;box-shadow:0 8px 16px #087b542b!important}
+.nah-ui-v158 .mobile-login-art{display:none}
+@media(max-width:820px){.nah-ui-v158 .login-shell{display:block!important;max-width:560px!important;margin:auto!important}.nah-ui-v158 .login-card-wrap{min-height:0!important}.nah-ui-v158 .login-card{margin:12px auto!important;padding:22px!important}.nah-ui-v158 .mobile-login-brand{display:flex!important;align-items:center!important;margin-bottom:13px!important}.nah-ui-v158 .mobile-login-art{display:block;height:130px;margin:0 0 18px;border:1px solid #d7ece3;border-radius:16px;overflow:hidden;background:#f5fbf8}.nah-ui-v158 .mobile-login-art img{display:block;width:100%;height:100%;object-fit:cover;object-position:center 56%}}
+@media(max-width:390px){.nah-ui-v158 .login-card{padding:17px!important}.nah-ui-v158 .mobile-login-art{height:105px;margin-bottom:15px}.nah-ui-v158 .login-card h2{font-size:24px!important}}
+:root[data-theme="dark"] .nah-ui-v158 .login-brand-panel{background:linear-gradient(135deg,#14251e,#1c342a)!important}:root[data-theme="dark"] .nah-ui-v158 .login-card{background:var(--surface)!important}:root[data-theme="dark"] .nah-ui-v158 .login-card input{background:var(--surface2)!important}
+
+/* 1.58.22: keep rail labels readable on every highlighted surface. */
+@media (min-width:768px) and (hover:hover) and (pointer:fine){
+  .nah-ui-v158 .bottom-dock .dock-tab.active{
+    background:#e7f5ec!important;color:#075e3d!important;
+    box-shadow:inset 0 0 0 1px #bfe6d0!important
+  }
+  .nah-ui-v158 .bottom-dock .dock-tab.active :is(.dock-tab-icon,.dock-tab-label){color:#075e3d!important}
+  .nah-ui-v158 .bottom-dock .dock-tab.active .dock-tab-icon{
+    background:#d5efdf!important;border-color:#b6e0c8!important
+  }
+  .nah-ui-v158 .bottom-dock:has(.dock-tab:hover) .dock-tab.active:not(:hover):not(.expanded),
+  body.nah-ui-v158.dock-menu-open .bottom-dock .dock-tab.active:not(.expanded){
+    background:transparent!important;color:var(--muted)!important;box-shadow:none!important
+  }
+  .nah-ui-v158 .bottom-dock:has(.dock-tab:hover) .dock-tab.active:not(:hover):not(.expanded) :is(.dock-tab-icon,.dock-tab-label),
+  body.nah-ui-v158.dock-menu-open .bottom-dock .dock-tab.active:not(.expanded) :is(.dock-tab-icon,.dock-tab-label){color:var(--muted)!important}
+  .nah-ui-v158 .bottom-dock:has(.dock-tab:hover) .dock-tab.active:not(:hover):not(.expanded) .dock-tab-icon,
+  body.nah-ui-v158.dock-menu-open .bottom-dock .dock-tab.active:not(.expanded) .dock-tab-icon{
+    background:var(--surface2)!important;border-color:var(--line)!important
+  }
+  .nah-ui-v158 .bottom-dock .dock-tab:is(:hover,.expanded,:focus-visible){
+    background:linear-gradient(90deg,#b4eacd 0%,#d6f4e4 100%)!important;
+    color:#064e34!important;box-shadow:inset 4px 0 #078b56,0 8px 18px rgba(7,126,76,.13)!important
+  }
+  .nah-ui-v158 .bottom-dock .dock-tab:is(:hover,.expanded,:focus-visible) :is(.dock-tab-icon,.dock-tab-label){color:#064e34!important}
+  .nah-ui-v158 .bottom-dock .dock-tab:is(:hover,.expanded,:focus-visible) .dock-tab-icon{
+    background:#eafaf1!important;border-color:#83d6aa!important
+  }
+  :root[data-theme="dark"] .nah-ui-v158 .bottom-dock .dock-tab.active{
+    background:#204a37!important;color:#d5f8e3!important;box-shadow:inset 0 0 0 1px #3b7858!important
+  }
+  :root[data-theme="dark"] .nah-ui-v158 .bottom-dock .dock-tab.active :is(.dock-tab-icon,.dock-tab-label){color:#d5f8e3!important}
+  :root[data-theme="dark"] .nah-ui-v158 .bottom-dock .dock-tab:is(:hover,.expanded,:focus-visible){
+    background:#276d4a!important;color:#f0fff6!important;box-shadow:inset 4px 0 #71d69b!important
+  }
+  :root[data-theme="dark"] .nah-ui-v158 .bottom-dock .dock-tab:is(:hover,.expanded,:focus-visible) :is(.dock-tab-icon,.dock-tab-label){color:#f0fff6!important}
+  :root[data-theme="dark"] .nah-ui-v158 .bottom-dock .dock-tab:is(:hover,.expanded,:focus-visible) .dock-tab-icon{background:#20553b!important;border-color:#59b27d!important}
+  :root[data-theme="dark"] .nah-ui-v158 .bottom-dock:has(.dock-tab:hover) .dock-tab.active:not(:hover):not(.expanded),
+  :root[data-theme="dark"] body.nah-ui-v158.dock-menu-open .bottom-dock .dock-tab.active:not(.expanded){background:transparent!important;color:var(--muted)!important;box-shadow:none!important}
+  :root[data-theme="dark"] .nah-ui-v158 .bottom-dock:has(.dock-tab:hover) .dock-tab.active:not(:hover):not(.expanded) :is(.dock-tab-icon,.dock-tab-label),
+  :root[data-theme="dark"] body.nah-ui-v158.dock-menu-open .bottom-dock .dock-tab.active:not(.expanded) :is(.dock-tab-icon,.dock-tab-label){color:var(--muted)!important}
+}
+
+/* 1.58.23: the full ISO/QD 2429 title remains readable in the login panel. */
+.nah-ui-v158 .login-copy h1{font-size:clamp(29px,2.45vw,39px)!important;line-height:1.16!important;letter-spacing:-.025em!important;overflow-wrap:normal!important}
+@media(max-width:1180px){.nah-ui-v158 .login-copy h1{font-size:clamp(28px,2.75vw,34px)!important}}
+
+/* v1.58.24 — One dark palette. Components draw from these tokens rather than
+   retaining the light theme's literal text, border and gradient colours. */
+:root[data-theme="dark"]{
+  --bg:#0b1822;--surface:#122530;--surface2:#1b303b;--surface3:#29434b;
+  --text:#f0f7f5;--muted:#b7cbc9;--line:#3b555b;
+  --brand:#0b7d59;--brand-strong:#086a4c;--brand-deep:#83e7b5;--brand-soft:#1c4238;
+  --danger:#ff9ba5;--warning:#ffd08a;--blue:#a6c9ff;
+  --shadow:0 14px 36px #020c16a8;--ui158-shadow:0 12px 32px #020c1699;
+  --dark-cta:#087c59;--dark-accent:#83e7b5;--dark-soft:#bdd2ca;
+  --dark-hero:linear-gradient(112deg,#142e32 0%,#15343a 56%,#1b3d3e 100%);
+  --dark-login:radial-gradient(circle at 5% 7%,#193c3b 0,transparent 31%),linear-gradient(135deg,#0b1822,#102531);
+  --dark-brand-panel:linear-gradient(145deg,#19372e,#1a3131 65%,#1a3038);
+  --dark-card:linear-gradient(110deg,var(--surface),color-mix(in srgb,var(--surface) 84%,#285247));
+  --semantic-warning:#ffd08a;--semantic-danger:#ff9ba5;
+  color-scheme:dark;
+}
+:root[data-theme="dark"] body.nah-ui-v158{
+  color:var(--text)!important;background:var(--bg)!important
+}
+:root[data-theme="dark"] body.nah-ui-v158 .login-view{
+  background:var(--dark-login)!important;color:var(--text)!important
+}
+:root[data-theme="dark"] body.nah-ui-v158 .login-shell{
+  background:var(--bg)!important;border-color:var(--line)!important
+}
+:root[data-theme="dark"] body.nah-ui-v158 .login-brand-panel{
+  background:var(--dark-brand-panel)!important;border-color:var(--line)!important;
+  box-shadow:0 22px 55px #020c1680!important
+}
+:root[data-theme="dark"] body.nah-ui-v158 .login-card{
+  background:var(--surface)!important;border-color:var(--line)!important;
+  box-shadow:0 24px 60px #020c1699!important
+}
+:root[data-theme="dark"] body.nah-ui-v158 :is(.login-hospital-name,.login-copy h1,.login-card h2){
+  color:var(--text)!important
+}
+:root[data-theme="dark"] body.nah-ui-v158 :is(.login-hospital-name small,.login-copy p,.login-card>p,.login-card label,.login-card small){
+  color:var(--dark-soft)!important
+}
+:root[data-theme="dark"] body.nah-ui-v158 :is(.login-copy .eyebrow,.login-copy h1 span,.login-card .eyebrow){
+  color:var(--dark-accent)!important
+}
+:root[data-theme="dark"] body.nah-ui-v158 .login-features span{
+  background:var(--surface2)!important;color:var(--text)!important;border-color:var(--line)!important
+}
+:root[data-theme="dark"] body.nah-ui-v158 .login-card input{
+  background:var(--surface2)!important;color:var(--text)!important;border-color:#66817f!important
+}
+:root[data-theme="dark"] body.nah-ui-v158 .login-card input::placeholder{color:#b9cbc6!important;opacity:1}
+:root[data-theme="dark"] body.nah-ui-v158 .login-card .btn.primary,
+:root[data-theme="dark"] body.nah-ui-v158 .login-card .btn.primary.large{
+  background:var(--dark-cta)!important;border-color:var(--dark-cta)!important;color:#fff!important
+}
+:root[data-theme="dark"] body.nah-ui-v158 .login-visual{
+  background:var(--surface2)!important;border-color:var(--line)!important
+}
+:root[data-theme="dark"] body.nah-ui-v158 .login-logo,
+:root[data-theme="dark"] body.nah-ui-v158 .mobile-login-brand img{
+  background:#fff!important;border-color:var(--line)!important
+}
+:root[data-theme="dark"] body.nah-ui-v158 .mobile-login-art{
+  background:var(--surface2)!important;border-color:var(--line)!important
+}
+:root[data-theme="dark"] body.nah-ui-v158 .home-layout-v1585{
+  --hl-green:var(--dark-accent);--hl-muted:var(--dark-soft);
+  --hl-soft:var(--brand-soft);--hl-danger:var(--danger)
+}
+:root[data-theme="dark"] body.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern{
+  background:var(--dark-hero)!important;border-color:var(--line)!important;
+  box-shadow:var(--ui158-shadow)!important
+}
+:root[data-theme="dark"] body.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern::before{
+  border-color:#71bea366!important;box-shadow:0 0 0 35px #4da98316,0 0 0 82px #58b39318,0 0 0 144px #6bc4a319!important;
+  background:radial-gradient(ellipse at 48% 20%,#69bb9633,transparent 68%)!important
+}
+:root[data-theme="dark"] body.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern::after{
+  border-color:#72bba755!important;box-shadow:0 0 0 44px #60b29317!important;
+  background:radial-gradient(circle at 100% 0%,#347b7344,transparent 50%)!important
+}
+:root[data-theme="dark"] body.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern .hero-refined-copy h2{
+  color:var(--text)!important
+}
+:root[data-theme="dark"] body.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern .hero-refined-copy h2 span{
+  color:var(--dark-accent)!important
+}
+:root[data-theme="dark"] body.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern :is(.hero-refined-hospital,.hero-refined-kicker,.hero-refined-greeting strong){
+  color:var(--dark-accent)!important
+}
+:root[data-theme="dark"] body.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern :is(.hero-refined-description,.hero-refined-greeting){
+  color:var(--dark-soft)!important
+}
+:root[data-theme="dark"] body.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern .hero-refined-actions .btn{
+  background:var(--surface2)!important;border-color:var(--line)!important;color:var(--text)!important
+}
+:root[data-theme="dark"] body.nah-ui-v158 .home-layout-v1585 .home-hero-v158.hero-refined.hero-modern .hero-refined-actions .btn.primary{
+  background:var(--dark-cta)!important;border-color:var(--dark-cta)!important;color:#fff!important
+}
+:root[data-theme="dark"] body.nah-ui-v158 :is(.home-access-card,.home-priority-item,.hl-road-stage,.hl-quality-stat,.hl-person,.mc-handbook-card,.mc-work-item){
+  background:var(--surface)!important;color:var(--text)!important;border-color:var(--line)!important
+}
+:root[data-theme="dark"] body.nah-ui-v158 :is(.home-access-card,.home-priority-item,.hl-road-stage,.hl-quality-stat,.hl-person,.mc-handbook-card,.mc-work-item):hover{
+  background:var(--surface2)!important;border-color:var(--dark-accent)!important
+}
+:root[data-theme="dark"] body.nah-ui-v158 .module-clarity{
+  --mc-accent:var(--dark-accent);--mc-soft:var(--brand-soft);--mc-muted:var(--dark-soft)
+}
+:root[data-theme="dark"] body.nah-ui-v158 #content :is(.module-hero,.knowledge-hero.compact,.qms-hero,.qd2429-hero,.admin-hero),
+:root[data-theme="dark"] body.nah-ui-v158 #content :is(.doc-kpi-grid,.team-kpis,.resource-kpis,.competency-kpis,.mq-kpis,.pa-kpis,.qms-kpi-grid,.ec-kpi-grid,.cert-kpi-grid,.qd2429-kpis)>:is(.doc-kpi,.card,.qms-kpi,.ec-kpi,.cert-kpi,div){
+  background:var(--dark-card)!important;border-color:var(--line)!important;color:var(--text)!important
+}
+:root[data-theme="dark"] body.nah-ui-v158 :is(.home-kpi-v158,.home-block-v158,.mc-intro,.mc-panel,.card){
+  border-color:var(--line)!important;color:var(--text)
+}
+:root[data-theme="dark"] body.nah-ui-v158 :is(.home-section-title small,.mc-eyebrow,.mc-index,.mc-card-link,.hl-road-stage small){
+  color:var(--dark-accent)!important
+}
+:root[data-theme="dark"] body.nah-ui-v158 .quality-status.danger{background:#39232b!important}
+:root[data-theme="dark"] body.nah-ui-v158 .quality-status.warning{background:#3b3125!important}
+:root[data-theme="dark"] body.nah-ui-v158 .quality-status.good{background:#1d3b30!important}
+:root[data-theme="dark"] body.nah-ui-v158 .bottom-dock .dock-tab:is(:hover,.expanded,:focus-visible){
+  background:#20583f!important;color:#effff4!important
+}
+:root[data-theme="dark"] body.nah-ui-v158 .bottom-dock .dock-tab:is(:hover,.expanded,:focus-visible) :is(.dock-tab-icon,.dock-tab-label){
+  color:#effff4!important
+}
+:root[data-theme="dark"] body.nah-ui-v158 :is(.badge.done,.badge.closed,.badge.approved,.badge.active){
+  background:#1c4134!important;color:#b2f1ce!important;border-color:#3b7456!important
+}
+:root[data-theme="dark"] body.nah-ui-v158 :is(.badge.overdue,.badge.critical){
+  background:#45282f!important;color:#ffc0c8!important;border-color:#78505a!important
+}
+:root[data-theme="dark"] body.nah-ui-v158 :is(.badge.in_progress,.badge.review,.badge.open){
+  background:#203850!important;color:#c0dcff!important;border-color:#456381!important
+}
+:root[data-theme="dark"] body.nah-ui-v158 :is(.badge.new,.badge.draft){
+  background:#443927!important;color:#ffe0a5!important;border-color:#776039!important
+}
+:root[data-theme="dark"] body.nah-ui-v158 :is(.btn.danger,.login-error){
+  background:#41272e!important;color:#ffc0c8!important;border-color:#78505a!important
+}
+:root[data-theme="dark"] body.nah-ui-v158 .quality-status:is(.danger,.warning,.good)>span{
+  background:color-mix(in srgb,currentColor 13%,var(--surface2))!important
+}
+
+
+/* v1.58.25: the supplied Phase 2 hospital photograph, with gently fading edges. */
+body.nah-ui-v158 .login-visual,
+body.nah-ui-v158 .mobile-login-art{
+  background:transparent!important;border:0!important;box-shadow:none!important;
+  overflow:hidden!important
+}
+body.nah-ui-v158 .login-visual::before{display:none!important}
+body.nah-ui-v158 .login-visual img,
+body.nah-ui-v158 .mobile-login-art img{
+  display:block;width:100%!important;height:100%!important;max-width:none!important;
+  object-fit:cover!important;object-position:center 44%!important;
+  opacity:1!important;transform:none!important;
+  -webkit-mask-image:radial-gradient(ellipse 85% 86% at 50% 47%,#000 55%,rgba(0,0,0,.88) 73%,transparent 100%);
+  mask-image:radial-gradient(ellipse 85% 86% at 50% 47%,#000 55%,rgba(0,0,0,.88) 73%,transparent 100%)
+}
+@media(max-width:820px){
+  body.nah-ui-v158 .mobile-login-art{height:clamp(112px,30vw,148px)!important;margin-bottom:16px!important}
+}
+:root[data-theme="dark"] body.nah-ui-v158 .login-visual,
+:root[data-theme="dark"] body.nah-ui-v158 .mobile-login-art{
+  background:transparent!important;border:0!important;box-shadow:none!important
+}

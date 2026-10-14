@@ -2,17 +2,17 @@ name: Build signed Android release — baseline key v1.1.6
 
 on:
   push:
-    branches: [ native-sync-web-1.58.12 ]
+    branches: [ "fix/native-dataset-20261014" ]
   workflow_dispatch:
     inputs:
       release_version:
         description: "Expected versionName"
         required: true
-        default: "1.1.7"
+        default: "1.1.11"
       release_version_code:
         description: "Expected versionCode"
         required: true
-        default: "11007"
+        default: "11011"
 
 permissions:
   contents: read
@@ -21,6 +21,8 @@ jobs:
   signed-release:
     runs-on: ubuntu-latest
     env:
+      RELEASE_VERSION: ${{ inputs.release_version || '1.1.11' }}
+      RELEASE_VERSION_CODE: ${{ inputs.release_version_code || '11011' }}
       ANDROID_HOME: /usr/local/lib/android/sdk
       ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
       KS_B64: ${{ secrets.NAH_ANDROID_KEYSTORE_B64 }}
@@ -57,11 +59,11 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          EXPECTED_VERSION="${{ inputs.release_version || '1.1.7' }}"
-          EXPECTED_CODE="${{ inputs.release_version_code || '11007' }}"
+          EXPECTED_VERSION="$RELEASE_VERSION"
+          EXPECTED_CODE="$RELEASE_VERSION_CODE"
           grep -q "applicationId 'vn.nah.iso15189suite'" app/build.gradle
           grep -q "versionName '$EXPECTED_VERSION'" app/build.gradle
-          grep -q "versionCode $EXPECTED_CODE" app/build.gradle
+          grep -Eq "^ *versionCode ${EXPECTED_CODE}$" app/build.gradle
 
       - name: Restore persistent NAH release keystore
         shell: bash
@@ -89,7 +91,7 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p out
-          VERSION="${{ inputs.release_version || '1.1.7' }}"
+          VERSION="$RELEASE_VERSION"
           UNSIGNED=app/build/outputs/apk/release/app-release-unsigned.apk
           ALIGNED=/tmp/NAH-LAB-SUITE-aligned.apk
           SIGNED="out/NAH-LAB-SUITE-Android-v${VERSION}-release.apk"
@@ -118,6 +120,10 @@ jobs:
           "$ANDROID_HOME/build-tools/35.0.0/zipalign" -c -v 4 "$SIGNED" > out/zipalign-verify.txt
           "$ANDROID_HOME/build-tools/35.0.0/aapt" dump badging "$SIGNED" > out/aapt-badging.txt
           sha256sum "$SIGNED" > "out/NAH-LAB-SUITE-Android-v${VERSION}-release.apk.sha256"
+
+      - name: Remove restored private keystore
+        if: always()
+        run: rm -rf /tmp/nah-signing
 
       - uses: actions/upload-artifact@v4
         with:
