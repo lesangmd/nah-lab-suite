@@ -76,6 +76,12 @@ final class HydrationManager {
                                 && store.getEndpoint("bootstrap") != null) {
                             store.setLastValidatedNow();
                             store.setMeta("last_sync_ms", String.valueOf(System.currentTimeMillis()));
+                            // Dataset unchanged does not imply that the HTML/JS shell is current.
+                            // Refresh a due shell before completing this fast-path.
+                            if (shellRefreshDue) {
+                                try { refreshShell(store, cookie, baseUserAgent); }
+                                catch (Throwable ignored) { }
+                            }
                             if (callback != null) callback.onFinished(true, 200);
                             return;
                         }
