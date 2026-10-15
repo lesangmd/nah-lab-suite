@@ -386,6 +386,10 @@ public class MainActivity extends Activity {
                 refreshShell,
                 (success, status) -> runOnUiThread(() -> {
                     coreSyncInFlight = false;
+                    if (success && webView != null) {
+                        try { webView.evaluateJavascript("window.dispatchEvent(new Event('nah-lab-native-sync'));", null); }
+                        catch (Throwable ignored) { }
+                    }
                     if ((status == 401 || status == 403) && offlineStore.lastSyncMs() > 0) {
                         offlineStore.revokeValidationKeepVault();
                     }
@@ -408,6 +412,10 @@ public class MainActivity extends Activity {
                 force,
                 (success, status) -> runOnUiThread(() -> {
                     deepSyncInFlight = false;
+                    if (success && webView != null) {
+                        try { webView.evaluateJavascript("window.dispatchEvent(new Event('nah-lab-native-sync'));", null); }
+                        catch (Throwable ignored) { }
+                    }
                     if ((status == 401 || status == 403) && offlineStore.lastSyncMs() > 0) {
                         offlineStore.revokeValidationKeepVault();
                     }
