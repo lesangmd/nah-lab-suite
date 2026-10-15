@@ -232,7 +232,7 @@ public class MainActivity extends Activity {
         backgroundWorkStarted = true;
 
         new Thread(() -> {
-            try { offlineStore.ensureShellContract("android-v1.1.13-web-v1.58.34"); }
+            try { offlineStore.ensureShellContract("android-v1.1.14-web-v1.58.43"); }
             catch (Throwable ignored) { }
         }, "nah-shell-contract").start();
 
@@ -386,6 +386,10 @@ public class MainActivity extends Activity {
                 refreshShell,
                 (success, status) -> runOnUiThread(() -> {
                     coreSyncInFlight = false;
+                    if (success && webView != null) {
+                        try { webView.evaluateJavascript("window.dispatchEvent(new Event('nah-lab-native-sync'));", null); }
+                        catch (Throwable ignored) { }
+                    }
                     if ((status == 401 || status == 403) && offlineStore.lastSyncMs() > 0) {
                         offlineStore.revokeValidationKeepVault();
                     }
@@ -408,6 +412,10 @@ public class MainActivity extends Activity {
                 force,
                 (success, status) -> runOnUiThread(() -> {
                     deepSyncInFlight = false;
+                    if (success && webView != null) {
+                        try { webView.evaluateJavascript("window.dispatchEvent(new Event('nah-lab-native-sync'));", null); }
+                        catch (Throwable ignored) { }
+                    }
                     if ((status == 401 || status == 403) && offlineStore.lastSyncMs() > 0) {
                         offlineStore.revokeValidationKeepVault();
                     }

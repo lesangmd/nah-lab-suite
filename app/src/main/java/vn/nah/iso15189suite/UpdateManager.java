@@ -31,6 +31,11 @@ final class UpdateManager {
     static final String CURRENT_VERSION = BuildConfig.VERSION_NAME;
     static final String MANIFEST_URL = "https://sachyhoc.com/wp-json/nah-iso15189/v1/app/update-manifest";
     static final int REQUEST_UNKNOWN_APPS = 1803;
+    // Pinned production signing certificate. An update with a different signer
+    // cannot replace the installed package without a destructive reinstall.
+    static final String RELEASE_CERT_SHA256 = "76a2a3289bd26bc255caa3465f609a1b83992b3f4fe0b44813e67296e01d52ac";
+    private volatile long lastAutomaticCheckAtMs = 0L;
+    private static final long AUTOMATIC_CHECK_INTERVAL_MS = 5L * 60L * 1000L;
 
     private final Activity activity;
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -71,6 +76,9 @@ final class UpdateManager {
     }
 
     void check(boolean userInitiated) {
+        long now = System.currentTimeMillis();
+        if (!userInitiated && now - lastAutomaticCheckAtMs < AUTOMATIC_CHECK_INTERVAL_MS) return;
+        if (!userInitiated) lastAutomaticCheckAtMs = now;
         executor.execute(() -> {
             try {
                 HttpURLConnection c = (HttpURLConnection) new URL(MANIFEST_URL).openConnection();
@@ -84,7 +92,8 @@ final class UpdateManager {
                 try (InputStream in = c.getInputStream()) { body = readAll(in, 2 * 1024 * 1024); }
                 JSONObject root = new JSONObject(new String(body, java.nio.charset.StandardCharsets.UTF_8));
                 JSONObject android = root.optJSONObject("platforms") == null ? null : root.optJSONObject("platforms").optJSONObject("android");
-                if (android == null || !android.optBoolean("available", false)) {
+                if (android == null || !android.optBoolean("available", false)
+                        || !android.optBoolean("releaseReady", false)) {
                     if (userInitiated) toast("Chưa có gói cập nhật Android mới trên kênh ổn định.");
                     return;
                 }
@@ -97,13 +106,31 @@ final class UpdateManager {
                 String url = android.optString("downloadUrl", "");
                 String sha = android.optString("sha256", "").toLowerCase(Locale.ROOT);
                 String notes = android.optString("releaseNotes", "");
-                if (!isSafeUpdateUrl(url) || !sha.matches("^[a-f0-9]{64}$")) throw new IllegalStateException("Invalid update metadata");
-                activity.runOnUiThread(() -> new AlertDialog.Builder(activity)
-                        .setTitle("Có phiên bản NAH LAB SUITE mới")
-                        .setMessage("Android v" + version + (notes.isEmpty() ? "" : "\n\n" + notes))
-                        .setNegativeButton("Để sau", null)
-                        .setPositiveButton("Tải và cài đặt", (d,w) -> download(url, sha, version))
-                        .show());
+                boolean mandatory = android.optBoolean("mandatory", false)
+                        || CURRENT_VERSION_CODE < android.optInt("minimumSupportedVersionCode", 0);
+                String remoteSigner = android.optString("signerCertificateSha256", "")
+                        .replace(":", "").replaceAll("\\s+", "").toLowerCase(Locale.ROOT);
+                if (!isSafeUpdateUrl(url) || !sha.matches("^[a-f0-9]{64}$"))
+                    throw new IllegalStateException("Invalid update metadata");
+                if (mandatory && !RELEASE_CERT_SHA256.equals(remoteSigner)) {
+                    if (userInitiated) toast("Bản cập nhật có chứng chỉ ký khác. Vui lòng liên hệ quản trị hệ thống trước khi cài.");
+                    return;
+                }
+                activity.runOnUiThread(() -> {
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(activity)
+                            .setTitle(mandatory ? "Bạn cần cập nhật ứng dụng" : "Có phiên bản NAH LabSuite mới")
+                            .setMessage((mandatory
+                                    ? "Đã có phiên bản mới hơn với dữ liệu, tính năng và các sửa lỗi mới. "
+                                      + "Bạn cần cập nhật để tiếp tục sử dụng."
+                                    : "Đã có phiên bản mới.") + "\n\nAndroid v" + version
+                                    + (notes.isEmpty() ? "" : "\n\n" + notes))
+                            .setPositiveButton("Tải và cài đặt", (d,w) -> download(url, sha, version));
+                    if (!mandatory) dialog.setNegativeButton("Để sau", null);
+                    AlertDialog shown = dialog.create();
+                    shown.setCancelable(!mandatory);
+                    shown.setCanceledOnTouchOutside(!mandatory);
+                    shown.show();
+                });
             } catch (Throwable e) {
                 if (userInitiated) toast("Chưa thể kiểm tra cập nhật. Vui lòng thử lại khi có kết nối mạng.");
             }
