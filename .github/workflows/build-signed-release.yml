@@ -1,18 +1,16 @@
-name: Build NAH LabSuite signed Android release — new baseline 1.1.13
+name: Build NAH LabSuite signed Android release — new baseline 1.1.15
 
 on:
-  push:
-    branches: [ "fix/native-dataset-20261014" , release/android-v1.1.13-activity-render-fix ]
   workflow_dispatch:
     inputs:
       release_version:
         description: "Expected versionName"
         required: true
-        default: "1.1.13"
+        default: "1.1.15"
       release_version_code:
         description: "Expected versionCode"
         required: true
-        default: "11013"
+        default: "11015"
 
 permissions:
   contents: read
@@ -21,8 +19,8 @@ jobs:
   signed-release:
     runs-on: ubuntu-latest
     env:
-      RELEASE_VERSION: ${{ inputs.release_version || '1.1.13' }}
-      RELEASE_VERSION_CODE: ${{ inputs.release_version_code || '11013' }}
+      RELEASE_VERSION: ${{ inputs.release_version || '1.1.15' }}
+      RELEASE_VERSION_CODE: ${{ inputs.release_version_code || '11015' }}
       ANDROID_HOME: /usr/local/lib/android/sdk
       ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
       KS_B64: ${{ secrets.NAH_ANDROID_KEYSTORE_B64 }}
@@ -51,6 +49,7 @@ jobs:
           BASELINE_CERT=$(python3 -c 'import json; print(json.load(open("signing-baseline.json"))["certificateSha256"])')
           PROVIDED_CERT=$(printf '%s' "$EXPECTED_CERT_SHA256" | tr '[:upper:]' '[:lower:]' | tr -d ':[:space:]')
           test "$PROVIDED_CERT" = "$BASELINE_CERT"
+          test "$BASELINE_CERT" = "76a2a3289bd26bc255caa3465f609a1b83992b3f4fe0b44813e67296e01d52ac"
           echo "::add-mask::$KS_PASS"
           echo "::add-mask::$KEY_PASS"
           echo "Persistent signing secret gate PASS"

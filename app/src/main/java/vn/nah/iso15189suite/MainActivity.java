@@ -232,7 +232,7 @@ public class MainActivity extends Activity {
         backgroundWorkStarted = true;
 
         new Thread(() -> {
-            try { offlineStore.ensureShellContract("android-v1.1.13-web-v1.58.34"); }
+            try { offlineStore.ensureShellContract("android-v1.1.15-web-v1.58.56"); }
             catch (Throwable ignored) { }
         }, "nah-shell-contract").start();
 

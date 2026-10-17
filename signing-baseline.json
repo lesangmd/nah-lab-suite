@@ -1,12 +1,11 @@
 {
-  "baseline": "Android 1.1.12 / Web 1.58.32 — New signing identity",
-  "package": "vn.nah.iso15189suite",
-  "versionName": "1.1.12",
-  "versionCode": 11012,
+  "applicationId": "vn.nah.iso15189suite",
+  "baselineVersion": "1.1.12",
+  "baselineVersionCode": 11012,
+  "releaseVersion": "1.1.15",
+  "releaseVersionCode": 11015,
+  "webVersion": "1.58.56",
   "certificateSha256": "76a2a3289bd26bc255caa3465f609a1b83992b3f4fe0b44813e67296e01d52ac",
-  "keyAlias": "nah-labsuite-release",
-  "keyStoreType": "PKCS12",
-  "migration": "Previously signed Android v1.1.11 must be uninstalled before installing new v1.1.12. Preserve this keystore and signer for every subsequent release.",
-  "status": "new-baseline-signed-candidate-pending-device-qa-and-github-secrets",
-  "signingKeyBundled": false
+  "signingKeyBundled": false,
+  "releaseState": "HOLD_UNTIL_SOURCE_PARITY_SIGNED_APK_AND_INSTALL_OVER_QA"
 }
