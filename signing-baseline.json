@@ -1,11 +1,18 @@
 {
+  "baselineName": "NAH Android 1.1.15 NEW signing identity — 2026-10-17",
   "applicationId": "vn.nah.iso15189suite",
-  "baselineVersion": "1.1.12",
-  "baselineVersionCode": 11012,
+  "baselineVersion": "1.1.15",
+  "baselineVersionCode": 11015,
   "releaseVersion": "1.1.15",
   "releaseVersionCode": 11015,
   "webVersion": "1.58.56",
-  "certificateSha256": "76a2a3289bd26bc255caa3465f609a1b83992b3f4fe0b44813e67296e01d52ac",
+  "certificateSha256": "d528e789425c8914d5034c98c00aff8b1f407fee4fdd5584683cbfe81218752c",
+  "expectedCertSha256": "d528e789425c8914d5034c98c00aff8b1f407fee4fdd5584683cbfe81218752c",
+  "keyAlias": "nah-iso-android-baseline-2026",
+  "keyStoreType": "PKCS12",
   "signingKeyBundled": false,
-  "releaseState": "HOLD_UNTIL_SOURCE_PARITY_SIGNED_APK_AND_INSTALL_OVER_QA"
+  "installOverOldSignature": false,
+  "requiresMigrationFromPreviousSigner": true,
+  "releaseReady": false,
+  "releaseState": "HOLD_PENDING_FULL_SOURCE_SYNC_SIGNING_SECRETS_MIGRATION_AND_DEVICE_QA"
 }

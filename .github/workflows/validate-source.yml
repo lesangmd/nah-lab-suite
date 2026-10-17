@@ -2,7 +2,7 @@ name: Validate Android v1.1.15 source
 
 on:
   push:
-    branches: [ main, "fix/native-dataset-20261014" , release/android-v1.1.15-activity-render-fix ]
+    branches: [ main, "fix/native-dataset-20261014" , release/android-v1.1.15-web-v1.58.56-signing-gate ]
     paths:
       - "app/**"
       - "build.gradle"
@@ -41,6 +41,7 @@ jobs:
           grep -q "loadDataWithBaseURL" app/src/main/java/vn/nah/iso15189suite/MainActivity.java
           grep -q "onPageCommitVisible" app/src/main/java/vn/nah/iso15189suite/MainActivity.java
           ! grep -R "injectCheckButton" app/src/main/java
+          python3 tools/verify-source-release.py
           python3 tools/verify-source-release.py
 
       - name: Install Android SDK packages

@@ -1,4 +1,4 @@
-name: Build NAH LabSuite signed Android release — new baseline 1.1.15
+name: NAH Android 1.1.15 signing baseline (HOLD)
 
 on:
   workflow_dispatch:
@@ -46,10 +46,11 @@ jobs:
           test -n "$KS_PASS"
           test -n "$KEY_PASS"
           test -n "$EXPECTED_CERT_SHA256"
+          python3 tools/verify-source-release.py
           BASELINE_CERT=$(python3 -c 'import json; print(json.load(open("signing-baseline.json"))["certificateSha256"])')
           PROVIDED_CERT=$(printf '%s' "$EXPECTED_CERT_SHA256" | tr '[:upper:]' '[:lower:]' | tr -d ':[:space:]')
           test "$PROVIDED_CERT" = "$BASELINE_CERT"
-          test "$BASELINE_CERT" = "76a2a3289bd26bc255caa3465f609a1b83992b3f4fe0b44813e67296e01d52ac"
+          test "$BASELINE_CERT" = "d528e789425c8914d5034c98c00aff8b1f407fee4fdd5584683cbfe81218752c"
           echo "::add-mask::$KS_PASS"
           echo "::add-mask::$KEY_PASS"
           echo "Persistent signing secret gate PASS"
@@ -72,7 +73,11 @@ jobs:
           mkdir -p /tmp/nah-signing
           printf '%s' "$KS_B64" | base64 -d > /tmp/nah-signing/NAH-Android-Release.jks
           test -s /tmp/nah-signing/NAH-Android-Release.jks
-          keytool -list             -keystore /tmp/nah-signing/NAH-Android-Release.jks             -alias "$KS_ALIAS"             -storepass "$KS_PASS" >/dev/null
+          keytool -list -keystore /tmp/nah-signing/NAH-Android-Release.jks -storetype PKCS12 -alias "$KS_ALIAS" -storepass "$KS_PASS" >/dev/null
+          keytool -exportcert -keystore /tmp/nah-signing/NAH-Android-Release.jks -storetype PKCS12 -alias "$KS_ALIAS" -storepass "$KS_PASS" -file /tmp/nah-signing/signer-cert.der >/dev/null
+          ACTUAL_SIGNER=$(sha256sum /tmp/nah-signing/signer-cert.der | cut -d ' ' -f1)
+          test "$ACTUAL_SIGNER" = "$EXPECTED_CERT_SHA256"
+          cmp /tmp/nah-signing/signer-cert.der release-certificate.der
           keytool -exportcert -alias "$KS_ALIAS" -keystore /tmp/nah-signing/NAH-Android-Release.jks -storetype PKCS12 -storepass "$KS_PASS" -file /tmp/nah-signing/cert.der >/dev/null
           CERT_HASH=$(sha256sum /tmp/nah-signing/cert.der | cut -d ' ' -f1)
           EXPECTED_HASH=$(printf '%s' "$EXPECTED_CERT_SHA256" | tr '[:upper:]' '[:lower:]' | tr -d ':[:space:]')
