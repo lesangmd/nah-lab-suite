@@ -12,6 +12,16 @@ jobs:
       WIN_THUMB: ${{ secrets.NAH_WINDOWS_CERT_THUMBPRINT }}
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Require complete and consistent Native source
+        shell: pwsh
+        run: |
+          python tools/verify-source-release.py
+          if ($LASTEXITCODE -ne 0) { throw 'Source release gate failed' }
+          python tools/verify-native-parity.py
+          if ($LASTEXITCODE -ne 0) { throw 'Cross-platform parity gate failed' }
       - name: Check prerequisites and trust policy
         shell: pwsh
         run: |

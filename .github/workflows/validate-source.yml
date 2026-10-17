@@ -9,6 +9,9 @@ on:
       - "settings.gradle"
       - "gradle.properties"
       - ".github/workflows/validate-source.yml"
+      - "tools/verify-source-release.py"
+      - "tools/verify-native-parity.py"
+      - "native/windows/**"
   workflow_dispatch:
 
 permissions:
@@ -42,6 +45,7 @@ jobs:
           grep -q "onPageCommitVisible" app/src/main/java/vn/nah/iso15189suite/MainActivity.java
           ! grep -R "injectCheckButton" app/src/main/java
           python3 tools/verify-source-release.py
+          python3 tools/verify-native-parity.py
           python3 tools/verify-source-release.py
 
       - name: Install Android SDK packages
