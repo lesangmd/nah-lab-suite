@@ -1,0 +1,11 @@
+{
+  "version": "1.3.27",
+  "webVersion": "1.58.56",
+  "certificateThumbprintSha1": "77EFA11665FC70E54D392A3582AFB2C2F484230E",
+  "certificateSha256": "c57cb4a850ee74b82ce59c04e50d58a6d16d9b258905680ddc91bd446cfd86c9",
+  "authenticode": "SELF_SIGNED_INTERNAL_ONLY",
+  "publiclyTrusted": false,
+  "requiresManagedEndpointCertificateTrust": true,
+  "releaseReady": false,
+  "manifestPublishAllowed": false
+}

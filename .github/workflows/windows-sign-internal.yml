@@ -1,0 +1,57 @@
+name: Windows 1.3.27 internal signing (HOLD)
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  internal-candidate:
+    runs-on: windows-latest
+    env:
+      WIN_PFX_B64: ${{ secrets.NAH_WINDOWS_PFX_B64 }}
+      WIN_PFX_PASS: ${{ secrets.NAH_WINDOWS_PFX_PASSWORD }}
+      WIN_THUMB: ${{ secrets.NAH_WINDOWS_CERT_THUMBPRINT }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check prerequisites and trust policy
+        shell: pwsh
+        run: |
+          $ErrorActionPreference='Stop'
+          if (-not (Test-Path 'native/windows/native_webview2.c') -or -not (Test-Path 'native/windows/BUILD-X64.cmd')) { throw 'HOLD: full Windows source not synced' }
+          if (-not $env:WIN_PFX_B64 -or -not $env:WIN_PFX_PASS -or -not $env:WIN_THUMB) { throw 'HOLD: signing secrets not configured' }
+          $meta=Get-Content 'native/windows/signer-baseline.json' -Raw | ConvertFrom-Json
+          if ($meta.certificateThumbprintSha1 -ne $env:WIN_THUMB.ToUpperInvariant()) { throw 'HOLD: signer mismatch' }
+          if ($meta.publiclyTrusted -ne $false -or $meta.releaseReady -ne $false) { throw 'HOLD: unexpected public release flag' }
+      - name: Compile Windows x64
+        shell: cmd
+        working-directory: native/windows
+        run: BUILD-X64.cmd
+      - name: Sign EXE with internal-only Authenticode identity
+        shell: pwsh
+        run: |
+          $ErrorActionPreference='Stop'
+          $pfx=Join-Path $env:RUNNER_TEMP 'NAH-signing.pfx'
+          try {
+            [IO.File]::WriteAllBytes($pfx,[Convert]::FromBase64String($env:WIN_PFX_B64))
+            $exe=Join-Path $PWD 'native/windows/NAH-LAB-SUITE.exe'
+            $pw=ConvertTo-SecureString $env:WIN_PFX_PASS -AsPlainText -Force
+            $cert=Import-PfxCertificate -FilePath $pfx -Password $pw -CertStoreLocation Cert:\CurrentUser\My
+            if ($cert.Thumbprint -ne $env:WIN_THUMB.ToUpperInvariant()) { throw 'HOLD: wrong PFX cert' }
+            $tool=Get-ChildItem -Path (Join-Path ${env:ProgramFiles(x86)} 'Windows Kits/10/bin') -Recurse -Filter signtool.exe | Where-Object { $_.FullName -like '*x64*' } | Select-Object -First 1 -ExpandProperty FullName
+            if (-not $tool) { throw 'signtool.exe not available' }
+            & $tool sign /fd SHA256 /f $pfx /p $env:WIN_PFX_PASS /tr 'http://timestamp.digicert.com' /td SHA256 $exe
+            if ($LASTEXITCODE -ne 0) { throw 'Authenticode signing failed' }
+            $got=(Get-AuthenticodeSignature -FilePath $exe).SignerCertificate
+            if (-not $got -or $got.Thumbprint -ne $env:WIN_THUMB.ToUpperInvariant()) { throw 'EXE signer mismatch' }
+            'SELF-SIGNED INTERNAL SIGNER. NOT PUBLICLY TRUSTED.' | Set-Content 'native/windows/INTERNAL-TRUST-REQUIRED.txt'
+          } finally {
+            Remove-Item $pfx -Force -ErrorAction SilentlyContinue
+            if ($env:WIN_THUMB) { Remove-Item ("Cert:\CurrentUser\My\" + $env:WIN_THUMB) -Force -ErrorAction SilentlyContinue }
+          }
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows-v1.3.27-INTERNAL-ONLY-NO-AUTO-UPDATE
+          path: |
+            native/windows/NAH-LAB-SUITE.exe
+            native/windows/INTERNAL-TRUST-REQUIRED.txt
+          if-no-files-found: error
+          retention-days: 7
