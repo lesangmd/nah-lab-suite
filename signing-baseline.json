@@ -1,12 +1,18 @@
 {
-  "baseline": "Android 1.1.12 / Web 1.58.32 — New signing identity",
-  "package": "vn.nah.iso15189suite",
-  "versionName": "1.1.12",
-  "versionCode": 11012,
-  "certificateSha256": "76a2a3289bd26bc255caa3465f609a1b83992b3f4fe0b44813e67296e01d52ac",
-  "keyAlias": "nah-labsuite-release",
+  "baselineName": "NAH Android v1.1.15 NEW signing identity — 2026-10-17",
+  "applicationId": "vn.nah.iso15189suite",
+  "baselineVersion": "1.1.15",
+  "baselineVersionCode": 11015,
+  "releaseVersion": "1.1.15",
+  "releaseVersionCode": 11015,
+  "webVersion": "1.58.56",
+  "certificateSha256": "d528e789425c8914d5034c98c00aff8b1f407fee4fdd5584683cbfe81218752c",
+  "expectedCertSha256": "d528e789425c8914d5034c98c00aff8b1f407fee4fdd5584683cbfe81218752c",
+  "keyAlias": "nah-iso-android-baseline-2026",
   "keyStoreType": "PKCS12",
-  "migration": "Previously signed Android v1.1.11 must be uninstalled before installing new v1.1.12. Preserve this keystore and signer for every subsequent release.",
-  "status": "new-baseline-signed-candidate-pending-device-qa-and-github-secrets",
-  "signingKeyBundled": false
+  "signingKeyBundled": false,
+  "installOverOldSignature": false,
+  "requiresMigrationFromPreviousSigner": true,
+  "releaseReady": false,
+  "releaseState": "HOLD_SIGNING_GITHUB_SECRETS_DATA_MIGRATION_AND_DEVICE_QA"
 }

@@ -58,7 +58,7 @@ public class MainActivity extends Activity {
     private static final long INITIAL_DEEP_SYNC_DELAY_MS = 60L * 1000L;
     private static final long POST_UI_CORE_DELAY_MS = 8L * 1000L;
     private static final long FOREGROUND_SYNC_START_DELAY_MS = 15L * 1000L;
-    private static final long UPDATE_CHECK_DELAY_MS = 45L * 1000L;
+    private static final long UPDATE_CHECK_DELAY_MS = 5L * 1000L;
 
     private FrameLayout webContainer;
     private LinearLayout offlinePanel;
@@ -232,7 +232,7 @@ public class MainActivity extends Activity {
         backgroundWorkStarted = true;
 
         new Thread(() -> {
-            try { offlineStore.ensureShellContract("android-v1.1.13-web-v1.58.34"); }
+            try { offlineStore.ensureShellContract("android-v1.1.15-web-v1.58.56"); }
             catch (Throwable ignored) { }
         }, "nah-shell-contract").start();
 
@@ -386,6 +386,10 @@ public class MainActivity extends Activity {
                 refreshShell,
                 (success, status) -> runOnUiThread(() -> {
                     coreSyncInFlight = false;
+                    if (success && webView != null) {
+                        try { webView.evaluateJavascript("window.dispatchEvent(new Event('nah-lab-native-sync'));", null); }
+                        catch (Throwable ignored) { }
+                    }
                     if ((status == 401 || status == 403) && offlineStore.lastSyncMs() > 0) {
                         offlineStore.revokeValidationKeepVault();
                     }
@@ -408,6 +412,10 @@ public class MainActivity extends Activity {
                 force,
                 (success, status) -> runOnUiThread(() -> {
                     deepSyncInFlight = false;
+                    if (success && webView != null) {
+                        try { webView.evaluateJavascript("window.dispatchEvent(new Event('nah-lab-native-sync'));", null); }
+                        catch (Throwable ignored) { }
+                    }
                     if ((status == 401 || status == 403) && offlineStore.lastSyncMs() > 0) {
                         offlineStore.revokeValidationKeepVault();
                     }
@@ -719,6 +727,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
+        if (updateManager != null) updateManager.check(false);
         applyImmersiveMode();
         if (firstUiRendered) {
             handler.postDelayed(() -> requestSilentCore(false), 5_000L);

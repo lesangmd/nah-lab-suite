@@ -62,21 +62,26 @@ final class HydrationManager {
                 }
 
                 String remoteDatasetVersion = "";
+                String remoteContentVersion = "";
                 String remoteUserRef = "";
                 try {
                     HttpResult manifest = httpGet(DATASET_MANIFEST_URL, cookie, baseUserAgent, 20_000, 2 * 1024 * 1024);
                     if (manifest.status == 200 && manifest.body != null) {
                         JSONObject meta = new JSONObject(new String(manifest.body, StandardCharsets.UTF_8));
                         remoteDatasetVersion = meta.optString("datasetVersion", "");
+                        remoteContentVersion = meta.optString("contentVersion", "");
                         remoteUserRef = meta.optString("userRef", "");
                         String cachedUser = store.getMeta("user_ref");
                         if (cachedUser != null && !cachedUser.isEmpty() && !remoteUserRef.isEmpty() && !cachedUser.equals(remoteUserRef)) {
                             store.clearUserData();
                         } else if (!refreshShell && !remoteDatasetVersion.isEmpty()
                                 && remoteDatasetVersion.equals(store.getMeta("dataset_version"))
-                                && store.getEndpoint("bootstrap") != null) {
-                            if (shellRefreshDue) {
-                                try { refreshShell(store, cookie, baseUserAgent); } catch (Throwable ignored) { }
+                                && hasMandatoryCatalog(store)
+                                && store.getEndpoint("__content_bundle__") != null
+                                && remoteContentVersion.equals(store.getMeta("content_version"))
+                                && System.currentTimeMillis() - store.lastContentSyncMs() < CONTENT_REFRESH_MS) {
+                            if (shellRefreshDue || !remoteContentVersion.equals(store.getMeta("shell_content_version"))) {
+                                try { refreshShell(store, cookie, baseUserAgent); store.setMeta("shell_content_version", remoteContentVersion); } catch (Throwable ignored) { }
                             }
                             store.setLastValidatedNow();
                             store.setMeta("last_sync_ms", String.valueOf(System.currentTimeMillis()));
@@ -91,7 +96,7 @@ final class HydrationManager {
                 if (mirror.status == 200 && mirror.body != null) {
                     JSONObject root = new JSONObject(new String(mirror.body, StandardCharsets.UTF_8));
                     JSONObject endpointCache = root.optJSONObject("endpointCache");
-                    if (endpointCache != null && endpointCache.length() > 0) {
+                    if (endpointCache != null && endpointCache.length() > 0 && validCoreCatalog(endpointCache)) {
                         String incomingUser = root.optString("userRef", "");
                         String cachedUser = store.getMeta("user_ref");
                         if (cachedUser != null && !cachedUser.isEmpty() && !incomingUser.isEmpty() && !cachedUser.equals(incomingUser)) {
@@ -108,13 +113,15 @@ final class HydrationManager {
                     }
                 }
 
-                if (success && System.currentTimeMillis() - store.lastContentSyncMs() > CONTENT_REFRESH_MS) {
-                    refreshStaticContent(store, cookie, baseUserAgent);
+                if (success && (store.getEndpoint("__content_bundle__") == null
+                        || !remoteContentVersion.equals(store.getMeta("content_version"))
+                        || System.currentTimeMillis() - store.lastContentSyncMs() > CONTENT_REFRESH_MS)) {
+                    if (refreshStaticContent(store, cookie, baseUserAgent)) store.setMeta("content_version", remoteContentVersion);
                 }
                 // Shell refresh is deliberately last: it must never delay the first
                 // visible UI or the compact core reconciliation.
-                if (success && shellRefreshDue) {
-                    try { refreshShell(store, cookie, baseUserAgent); } catch (Throwable ignored) { }
+                if (success && (shellRefreshDue || !remoteContentVersion.equals(store.getMeta("shell_content_version")))) {
+                    try { refreshShell(store, cookie, baseUserAgent); store.setMeta("shell_content_version", remoteContentVersion); } catch (Throwable ignored) { }
                 }
             } catch (Throwable ignored) {
                 success = false;
@@ -142,7 +149,10 @@ final class HydrationManager {
                 if (mirror.status == 200 && mirror.body != null) {
                     JSONObject root = new JSONObject(new String(mirror.body, StandardCharsets.UTF_8));
                     JSONObject endpointCache = root.optJSONObject("endpointCache");
-                    if (endpointCache != null && endpointCache.length() > 0) {
+                    if (endpointCache != null && endpointCache.length() > 0 && validCoreCatalog(endpointCache)) {
+                        String incomingUser = root.optString("userRef", "");
+                        String cachedUser = store.getMeta("user_ref");
+                        if (cachedUser != null && !cachedUser.isEmpty() && !incomingUser.isEmpty() && !cachedUser.equals(incomingUser)) store.clearUserData();
                         store.mergeEndpointCache(endpointCache);
                         store.putEndpoint("__full_mirror_meta__", root.toString());
                         store.setMeta("snapshot_version", root.optString("version", ""));
@@ -161,23 +171,52 @@ final class HydrationManager {
         });
     }
 
-    private static void refreshStaticContent(OfflineStore store, String cookie, String baseUserAgent) {
-        boolean any = false;
+    private static boolean validCoreCatalog(JSONObject endpoints) {
+        JSONObject handbook = endpoints.optJSONObject("knowledge/handbook");
+        return handbook != null && handbook.optJSONArray("formTemplates") != null
+                && handbook.optJSONArray("formTemplates").length() > 0
+                && handbook.optJSONArray("recordsCatalog") != null
+                && endpoints.has("bootstrap") && endpoints.has("knowledge/qd2429")
+                && endpoints.optJSONArray("records?module=forms") != null
+                && endpoints.optJSONArray("records?module=documents") != null;
+    }
+
+    private static boolean hasMandatoryCatalog(OfflineStore store) {
+        try {
+            String raw = store.getEndpoint("knowledge/handbook");
+            if (raw == null) return false;
+            JSONObject handbook = new JSONObject(raw);
+            return store.getEndpoint("bootstrap") != null
+                    && handbook.optJSONArray("formTemplates") != null
+                    && handbook.optJSONArray("formTemplates").length() > 0
+                    && handbook.optJSONArray("recordsCatalog") != null
+                    && store.getEndpoint("records?module=forms") != null
+                    && store.getEndpoint("records?module=documents") != null;
+        } catch (Throwable ignored) { return false; }
+    }
+
+    private static boolean refreshStaticContent(OfflineStore store, String cookie, String baseUserAgent) {
+        boolean contentReady = false;
         try {
             HttpResult content = httpGet(CONTENT_URL, cookie, baseUserAgent, 60_000, 64 * 1024 * 1024);
             if (content.status == 200 && content.body != null) {
-                store.putEndpoint("__content_bundle__", new String(content.body, StandardCharsets.UTF_8));
-                any = true;
+                JSONObject payload = new JSONObject(new String(content.body, StandardCharsets.UTF_8));
+                if (payload.optJSONArray("isoForms") != null && payload.optJSONArray("isoForms").length() > 0
+                        && payload.optJSONArray("procedures") != null
+                        && payload.optJSONObject("qdForms") != null) {
+                    store.putEndpoint("__content_bundle__", payload.toString());
+                    contentReady = true;
+                }
             }
         } catch (Throwable ignored) { }
         try {
             HttpResult manifest = httpGet(MANIFEST_URL, cookie, baseUserAgent, 30_000, MAX_RESOURCE_BYTES + 1024);
             if (manifest.status == 200 && manifest.body != null) {
                 store.putEndpoint("__content_manifest__", new String(manifest.body, StandardCharsets.UTF_8));
-                any = true;
             }
         } catch (Throwable ignored) { }
-        if (any) store.setMeta("last_content_sync_ms", String.valueOf(System.currentTimeMillis()));
+        if (contentReady) store.setMeta("last_content_sync_ms", String.valueOf(System.currentTimeMillis()));
+        return contentReady;
     }
 
     private static void refreshShell(OfflineStore store, String cookie, String baseUserAgent) throws Exception {
