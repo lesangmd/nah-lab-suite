@@ -63,6 +63,7 @@ jobs:
           grep -q "applicationId 'vn.nah.iso15189suite'" app/build.gradle
           grep -q "versionName '$EXPECTED_VERSION'" app/build.gradle
           grep -Eq "^ *versionCode ${EXPECTED_CODE}$" app/build.gradle
+          python3 tools/verify-source-release.py
 
       - name: Restore persistent NAH release keystore
         shell: bash
@@ -72,6 +73,12 @@ jobs:
           printf '%s' "$KS_B64" | base64 -d > /tmp/nah-signing/NAH-Android-Release.jks
           test -s /tmp/nah-signing/NAH-Android-Release.jks
           keytool -list             -keystore /tmp/nah-signing/NAH-Android-Release.jks             -alias "$KS_ALIAS"             -storepass "$KS_PASS" >/dev/null
+          keytool -exportcert -alias "$KS_ALIAS" -keystore /tmp/nah-signing/NAH-Android-Release.jks -storetype PKCS12 -storepass "$KS_PASS" -file /tmp/nah-signing/cert.der >/dev/null
+          CERT_HASH=$(sha256sum /tmp/nah-signing/cert.der | awk '{print           keytool -list             -keystore /tmp/nah-signing/NAH-Android-Release.jks             -alias "$KS_ALIAS"             -storepass "$KS_PASS" >/dev/null
+}')
+          EXPECTED_HASH=$(printf '%s' "$EXPECTED_CERT_SHA256" | tr '[:upper:]' '[:lower:]' | tr -d ':[:space:]')
+          test "$CERT_HASH" = "$EXPECTED_HASH"
+          cmp /tmp/nah-signing/cert.der release-certificate.der
 
       - name: Install Android SDK packages
         run: |
