@@ -1,5 +1,5 @@
 {
-  "baselineName": "NAH Android 1.1.15 NEW signing identity — 2026-10-17",
+  "baselineName": "NAH Android v1.1.15 NEW signing identity — 2026-10-17",
   "applicationId": "vn.nah.iso15189suite",
   "baselineVersion": "1.1.15",
   "baselineVersionCode": 11015,
@@ -14,5 +14,5 @@
   "installOverOldSignature": false,
   "requiresMigrationFromPreviousSigner": true,
   "releaseReady": false,
-  "releaseState": "HOLD_PENDING_FULL_SOURCE_SYNC_SIGNING_SECRETS_MIGRATION_AND_DEVICE_QA"
+  "releaseState": "HOLD_SIGNING_GITHUB_SECRETS_DATA_MIGRATION_AND_DEVICE_QA"
 }
