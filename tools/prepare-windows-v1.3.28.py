@@ -93,7 +93,7 @@ def main(root):
         s = p.read_text(encoding="utf-8-sig")
         s = s.replace("const VERSION='1.3.25'", f"const VERSION='{RELEASE}'")
         s = s.replace("Windows Native v1.3.25", "Windows Native v" + RELEASE)
-        s = s.replace(WEB_OLD, WEB_NEW)
+        s = s.replace('1.58.52', WEB_NEW).replace(WEB_OLD, WEB_NEW)
         if f"const VERSION='{RELEASE}'" not in s or "version:'1.58.58'" not in s:
             raise RuntimeError(f"{name}: cannot update mirror version")
         write_if_different(p, s)
