@@ -1,0 +1,116 @@
+name: NAH Native candidate packages (unsigned, HOLD)
+on:
+  push:
+    branches:
+      - release/android-v1.1.15-web-v1.58.56-signing-gate
+    paths:
+      - "app/**"
+      - "native/windows/**"
+      - "webapp/**"
+      - "tools/**"
+      - ".github/workflows/native-candidate-build.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  android-source-candidate:
+    runs-on: ubuntu-latest
+    env:
+      ANDROID_HOME: /usr/local/lib/android/sdk
+      ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Verify new baseline and full Web parity
+        run: |
+          python3 tools/verify-source-release.py
+          python3 tools/verify-native-parity.py
+      - name: Install Android SDK
+        run: |
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platform-tools" "platforms;android-35" "build-tools;35.0.0"
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+      - name: Compile Android release candidate without signing
+        run: gradle :app:assembleRelease --no-daemon
+      - name: Verify unsigned APK and package
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p publish
+          test -s app/build/outputs/apk/release/app-release-unsigned.apk
+          cp app/build/outputs/apk/release/app-release-unsigned.apk publish/NAH-LabSuite-Android-v1.1.15-UNSIGNED-NOT-INSTALLABLE.apk
+          "$ANDROID_HOME/build-tools/35.0.0/aapt" dump badging publish/*.apk > publish/aapt-badging.txt
+          grep -q "package: name='vn.nah.iso15189suite' versionCode='11015' versionName='1.1.15'" publish/aapt-badging.txt
+          sha256sum publish/*.apk > publish/SHA256SUMS.txt
+          printf '%s\n' 'Unsigned Android build. NOT installable; NOT a production release.' 'A signed APK requires the new fixed PKCS12 certificate and GitHub Actions Secrets.' 'Do NOT uninstall an existing application to migrate without verified offline backups.' > publish/README-HOLD.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Android-v1.1.15-unsigned-HOLD
+          path: publish/
+          if-no-files-found: error
+          retention-days: 14
+  windows-x64-candidate:
+    runs-on: windows-latest
+    env:
+      PYTHONUTF8: '1'
+      PYTHONIOENCODING: utf-8
+    steps:
+      - name: Configure Windows checkout for reproducible LF resources
+        shell: pwsh
+        run: git config --global core.autocrlf false
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate cross-platform source
+        shell: pwsh
+        run: |
+          python tools/verify-source-release.py
+          if ($LASTEXITCODE -ne 0) { throw 'Android source validation failed' }
+          python tools/verify-native-parity.py
+          if ($LASTEXITCODE -ne 0) { throw 'Windows source validation failed' }
+      - name: Discover LLVM build tools
+        shell: pwsh
+        run: |
+          $clang=(Get-Command clang.exe -ErrorAction SilentlyContinue)
+          $lld=(Get-Command lld-link.exe -ErrorAction SilentlyContinue)
+          if (-not $clang -or -not $lld) {
+            $llvm='C:\Program Files\LLVM\bin'
+            if (Test-Path (Join-Path $llvm 'clang.exe')) { $env:PATH = "$llvm;$env:PATH"; $llvm | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append }
+          }
+          if (-not (Get-Command clang.exe -ErrorAction SilentlyContinue)) { throw 'clang.exe not installed' }
+          if (-not (Get-Command lld-link.exe -ErrorAction SilentlyContinue)) { throw 'lld-link.exe not installed' }
+      - name: Compile Windows Native x64
+        shell: cmd
+        working-directory: native/windows
+        run: BUILD-X64.cmd
+      - name: Package unsigned Windows executable and offline assets
+        shell: pwsh
+        run: |
+          $ErrorActionPreference='Stop'
+          $src=Join-Path $PWD 'native/windows'
+          $dst=Join-Path $PWD 'publish/NAH-LabSuite-Windows-v1.3.27'
+          New-Item -ItemType Directory -Path $dst -Force | Out-Null
+          foreach ($file in @('NAH-LAB-SUITE.exe','INSTALL-OR-UPDATE.ps1','INSTALL-OR-UPDATE.cmd','NAH-UPDATE.ps1','NAH-UPDATE.cmd','signer-baseline.json')) {
+            $path=Join-Path $src $file
+            if (-not (Test-Path $path)) { throw "Missing $file" }
+            Copy-Item -LiteralPath $path -Destination $dst -Force
+          }
+          Copy-Item -LiteralPath (Join-Path $src 'offline') -Destination $dst -Recurse
+          'UNSIGNED WINDOWS X64 CANDIDATE ONLY. The self-signed internal Authenticode workflow has NOT been run. Production AUTO-UPDATE remains HOLD.' | Set-Content (Join-Path $dst 'README-HOLD.txt')
+          $files=@(Get-ChildItem $dst -Recurse -File | ForEach-Object {
+            [pscustomobject]@{path=$_.FullName.Substring($dst.Length+1).Replace('\','/');sha256=(Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant()}
+          })
+          $files | ConvertTo-Json -Depth 4 | Set-Content (Join-Path $dst 'SHA256-FILES.json') -Encoding UTF8
+          Compress-Archive -Path $dst -DestinationPath 'publish/NAH-LabSuite-Windows-v1.3.27-Web-v1.58.56-UNSIGNED-HOLD.zip' -CompressionLevel Optimal
+          Get-FileHash publish/NAH-LabSuite-Windows-v1.3.27-Web-v1.58.56-UNSIGNED-HOLD.zip | Format-List | Out-File publish/ZIP-SHA256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Windows-v1.3.27-unsigned-HOLD
+          path: publish/
+          if-no-files-found: error
+          retention-days: 14

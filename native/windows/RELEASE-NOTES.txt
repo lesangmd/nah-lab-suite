@@ -1,0 +1,1 @@
+Windows Native v1.3.18 / WebApp v1.58.30: Việt hóa dữ liệu kế hoạch tại nguồn; bổ sung chẩn đoán AppUserModelID cho shortcut; giữ nguyên bộ đồng bộ và logo chuẩn.

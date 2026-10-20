@@ -1,0 +1,5 @@
+WINDOWS NATIVE 1.3.9 / WEB 1.58.22
+Giải nén toàn bộ ZIP. Đóng ứng dụng đang chạy, sau đó chạy INSTALL-OR-UPDATE.cmd. Bộ cài sao chép EXE và thư mục offline vào đường dẫn cố định trong LOCALAPPDATA\Programs\NAH LAB SUITE, tạo shortcut Start Menu và mở ứng dụng. Không cần quyền quản trị.
+Nếu taskbar còn biểu tượng đã ghim từ thư mục ZIP cũ: bỏ ghim biểu tượng cũ một lần, mở NAH LAB SUITE từ Start Menu, ghim biểu tượng đang chạy. Các lần cập nhật tiếp theo chạy cùng INSTALL-OR-UPDATE.cmd để giữ nguyên đường dẫn ghim.
+Nếu đây là lần đầu ở đường dẫn cố định, đăng nhập trực tuyến một lần để tạo hồ sơ và đồng bộ dữ liệu. Không có phiên hợp lệ thì màn hình đăng nhập sẽ xuất hiện; không tự mở hồ sơ khách 'Thư viện ngoại tuyến'. Khi tài khoản đã được xác thực nhưng mất kết nối, bản sao ngoại tuyến vẫn chỉ đọc cho đến khi kết nối lại.
+Dữ liệu WebView2 nằm riêng trong LOCALAPPDATA\NAH LAB SUITE\WebView2Data; bộ cài không xóa vùng này. Chưa thử trên máy Windows thật.

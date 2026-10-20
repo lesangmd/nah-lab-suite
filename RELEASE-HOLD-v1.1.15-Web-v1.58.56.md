@@ -1,0 +1,3 @@
+# NAH LabSuite Android 1.1.15 / Web 1.58.56 (HOLD)
+
+This branch is for review only, not production. Preserve application ID `vn.nah.iso15189suite`, versionCode 11015, and Android v1.1.12 signing certificate SHA-256 `76a2a3289bd26bc255caa3465f609a1b83992b3f4fe0b44813e67296e01d52ac`. Never commit private keystores or passwords. The GitHub signing workflow is manual-only while offline assets need to be synchronized from the candidate source ZIP. Do not announce an APK unless `apksigner verify --print-certs`, `aapt dump badging`, SHA-256 and `adb install -r` on a test device pass without data loss. Auto-update `releaseReady` stays `false`.

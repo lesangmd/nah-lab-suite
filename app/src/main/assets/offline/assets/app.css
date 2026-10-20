@@ -3025,3 +3025,277 @@ body.nah-ui-v158 .mobile-login-art img{
 :root[data-theme="dark"] body.nah-ui-v158 .mobile-login-art{
   background:transparent!important;border:0!important;box-shadow:none!important
 }
+
+/* v1.58.39: consistent controlled ISO/QD2429 form print and PDF/DOCX preview */
+.iso-form-print-v2{font-family:Arial,"Noto Sans",sans-serif!important;font-size:11pt;line-height:1.4;color:#111!important;background:#fff!important;max-width:210mm!important;width:100%;padding:10mm!important;box-sizing:border-box;overflow:visible!important}
+.iso-form-print-v2 *{box-sizing:border-box}
+.iso-form-print-v2 .iso-form-header{display:grid;grid-template-columns:minmax(0,1fr) 55mm;align-items:start;gap:6mm;border-bottom:1.5px solid #222;padding-bottom:4mm}
+.iso-form-print-v2 .iso-form-org strong,.iso-form-print-v2 .iso-form-org span,.iso-form-print-v2 .iso-form-control span{display:block}
+.iso-form-print-v2 .iso-form-org{font-size:10pt;line-height:1.4}.iso-form-print-v2 .iso-form-org strong{font-size:10pt}
+.iso-form-print-v2 .iso-form-control{font-size:9pt;line-height:1.6;text-align:right;white-space:normal}
+.iso-form-print-v2 h1{font-size:14pt;line-height:1.3;text-align:center;margin:7mm 0 2mm}
+.iso-form-print-v2 h3{font-size:11pt;margin:5mm 0 2mm}.iso-form-print-v2 .iso-form-source-line{text-align:center;font-size:9pt;color:#333;margin:0 0 5mm}
+.iso-form-print-v2 .iso-form-print-table{width:100%!important;max-width:100%;min-width:0!important;border-collapse:collapse;table-layout:fixed}
+.iso-form-print-v2 .iso-form-print-table th,.iso-form-print-v2 .iso-form-print-table td{border:1px solid #777;vertical-align:top;padding:2.3mm!important;font:normal 10pt/1.35 Arial,"Noto Sans",sans-serif!important;overflow-wrap:break-word;white-space:pre-wrap;word-break:normal;color:#111!important}
+.iso-form-print-v2 .iso-form-print-table th{font-weight:700!important;background:#f6f6f6!important}
+.iso-form-print-v2 .iso-form-field-table th{width:36%;text-align:left}.iso-form-print-v2 .iso-form-field-table td{width:64%}
+.iso-form-print-v2 .iso-form-register-table th{font-size:9pt!important;hyphens:auto}
+.iso-form-print-v2 .iso-form-empty{height:12mm}.iso-form-print-v2 .iso-form-register-table .iso-form-empty{height:11mm}.iso-form-print-v2 .iso-form-ordinal{text-align:center}
+.iso-form-print-v2 .iso-form-register-part{break-inside:avoid;page-break-inside:avoid;margin-top:3mm}
+.iso-form-print-v2 .form-signatures{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4mm;text-align:center;min-height:27mm;margin-top:7mm;padding-top:4mm;font:bold 10pt Arial,"Noto Sans",sans-serif}
+.iso-form-print-v2 .form-signatures small{font-weight:400;font-size:9pt}
+.iso-form-print-v2 .iso-form-footer{font-size:8.5pt;color:#444;margin-top:5mm;padding-top:2mm}
+.iso-form-print-v2 .iso-record-value{white-space:pre-wrap;overflow-wrap:break-word}
+@media print{.iso-form-print-v2{width:100%!important;max-width:100%!important;padding:0!important;margin:0!important;box-shadow:none!important}.iso-form-print-v2 table{table-layout:fixed!important}.iso-form-print-v2 tr{break-inside:avoid;page-break-inside:avoid}.iso-form-print-v2 thead{display:table-header-group}}
+@media(max-width:760px){.iso-form-print-v2{padding:6mm!important}.iso-form-print-v2 .iso-form-header{grid-template-columns:1fr}.iso-form-print-v2 .iso-form-control{text-align:left}}
+
+.iso-form-print-v2.iso-form-compact .iso-form-field-table .iso-form-empty{height:8mm}
+
+.iso-form-print-v2.iso-form-compact .iso-form-field-table th,.iso-form-print-v2.iso-form-compact .iso-form-field-table td{padding:1.3mm 2mm!important;font-size:9.4pt!important;line-height:1.22!important}
+/* v1.58.41: tệp nhập liệu, giữ bố cục các phân hệ đang có */
+.resource-import-tools{display:flex;justify-content:flex-end;margin:8px 0 12px;gap:8px}
+.bulk-import-form .form-actions{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0}
+.bulk-import-form .note{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.5}
+.bulk-import-form a{font-weight:600;text-decoration:underline;text-underline-offset:3px}
+
+/* Native application update required: isolated from page/form responsive styles. */
+.nah-native-update-overlay{position:fixed;inset:0;z-index:2147483000;background:rgba(15,23,42,.78);display:flex;align-items:center;justify-content:center;padding:20px;overflow-y:auto}
+.nah-native-update-dialog{box-sizing:border-box;width:min(100%,490px);max-height:calc(100vh - 40px);overflow:auto;background:var(--surface,#fff);color:var(--text,#18222d);border:1px solid var(--line,#e2e8f0);border-radius:20px;padding:clamp(22px,4vw,34px);box-shadow:0 22px 75px rgba(0,0,0,.28);text-align:left}
+.nah-native-update-dialog h2{margin:9px 0 14px;font-size:clamp(21px,3vw,26px);line-height:1.28;color:inherit}
+.nah-native-update-dialog p{font-size:14px;line-height:1.65;margin:0 0 14px}
+.nah-native-update-icon{height:46px;width:46px;border-radius:13px;background:rgba(9,147,89,.1);color:#0e8350;display:grid;place-items:center;font-size:29px;font-weight:700}
+.nah-native-update-caution{padding:11px 13px;border-radius:10px;background:rgba(217,119,6,.12);border-left:3px solid #d97706}
+.nah-native-update-notes{color:var(--muted,#52616b);font-size:13px!important}
+.nah-native-update-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}.nah-native-update-actions>.btn{white-space:normal;text-align:center;flex:1 1 180px;justify-content:center;min-height:44px;text-decoration:none}
+.nah-native-update-help{margin:14px 0 0!important;font-size:12px!important;color:var(--muted,#52616b)}
+@media(max-width:520px){.nah-native-update-overlay{padding:12px;align-items:center}.nah-native-update-dialog{border-radius:15px;padding:20px;max-height:calc(100dvh - 24px)}}
+
+
+/* v1.58.45 — header/search and ISO document-progress layout correction.
+   CSS-only presentation scope: preserve the native update gate, document status
+   persistence, print contracts and other workflow/data modules. */
+@media screen and (min-width:768px){
+  body.nah-ui-v158 .topbar-inner{
+    grid-template-columns:minmax(145px,.62fr) minmax(0,1fr) max-content!important;
+    column-gap:clamp(8px,1vw,18px)!important;
+    min-width:0!important;
+  }
+  body.nah-ui-v158 .topbar-inner{grid-template-rows:minmax(0,1fr)!important}
+  body.nah-ui-v158 .top-left{grid-column:1!important;grid-row:1!important;order:0!important}
+  body.nah-ui-v158 .header-search-slot{
+    grid-column:2!important;grid-row:1!important;order:0!important;
+    display:block!important;flex:none!important;
+  }
+  body.nah-ui-v158 .top-left{min-width:0!important;overflow:hidden}
+  body.nah-ui-v158 .header-search-slot{
+    min-width:0!important;width:100%!important;max-width:560px!important;
+    justify-self:center!important;align-self:center!important;
+  }
+  body.nah-ui-v158 .top-actions{
+    min-width:max-content!important;max-width:none!important;
+    grid-column:3!important;justify-self:end!important;
+    flex-shrink:0!important;position:relative;z-index:2;
+  }
+  body.nah-ui-v158 .global-search-wrap{
+    min-width:0!important;max-width:100%!important;box-sizing:border-box!important;
+    border-width:1px!important;isolation:isolate;
+  }
+  body.nah-ui-v158 .global-search-wrap input{
+    min-width:0!important;width:0!important;flex:1 1 0%!important;
+  }
+  body.nah-ui-v158 .top-actions :is(.icon-btn,.btn){flex-shrink:0!important}
+}
+@media screen and (min-width:768px) and (max-width:1199px){
+  body.nah-ui-v158 .topbar-inner{
+    grid-template-columns:minmax(136px,155px) minmax(0,1fr) max-content!important;
+    column-gap:8px!important;
+  }
+  body.nah-ui-v158 .top-actions{gap:3px!important}
+  body.nah-ui-v158 .top-actions .icon-btn{width:38px!important;height:38px!important}
+  body.nah-ui-v158 .top-title h1{max-width:130px!important}
+}
+@media screen and (max-width:767px){
+  body.nah-ui-v158 .topbar-inner{grid-template-columns:minmax(0,1fr) max-content!important}
+  body.nah-ui-v158 .top-left{min-width:0!important;grid-column:1!important;grid-row:1!important}
+  body.nah-ui-v158 .top-actions{min-width:0!important;grid-column:2!important;grid-row:1!important;justify-self:end!important}
+  body.nah-ui-v158 .header-search-slot{grid-column:1/-1!important;grid-row:2!important;min-width:0!important;width:100%!important}
+  body.nah-ui-v158 .global-search-wrap{box-sizing:border-box!important;width:100%!important;min-width:0!important;max-width:100%!important}
+  body.nah-ui-v158 .global-search-wrap input{min-width:0!important;width:0!important;flex:1 1 0%!important}
+}
+/* ISO progress is an 11-column record table, not a card-list.
+   Never squeeze a complete ISO register into a narrow viewport. */
+@media screen{
+  body.nah-ui-v158 #content .docplan-table-card{
+    display:block!important;min-width:0!important;width:100%!important;
+    max-width:100%!important;overflow-x:auto!important;overflow-y:auto!important;
+    -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;
+    scrollbar-gutter:stable;
+  }
+  body.nah-ui-v158 #content .docplan-data-table{
+    width:1496px!important;min-width:1496px!important;max-width:none!important;
+    table-layout:fixed!important;border-collapse:separate;border-spacing:0;
+  }
+  body.nah-ui-v158 #content .docplan-data-table thead{display:table-header-group}
+  body.nah-ui-v158 #content .docplan-data-table tbody{display:table-row-group}
+  body.nah-ui-v158 #content .docplan-data-table tr{display:table-row!important}
+  body.nah-ui-v158 #content .docplan-data-table :is(th,td){
+    display:table-cell!important;box-sizing:border-box!important;
+    padding:11px 12px!important;vertical-align:middle!important;
+    overflow-wrap:break-word!important;word-break:normal!important;
+    border-bottom:1px solid var(--line);
+  }
+  body.nah-ui-v158 #content .docplan-data-table :is(th,td):nth-child(1),
+  body.nah-ui-v158 #content .docplan-data-table :is(th,td):nth-child(5),
+  body.nah-ui-v158 #content .docplan-data-table :is(th,td):nth-child(6),
+  body.nah-ui-v158 #content .docplan-data-table th:nth-child(7),
+  body.nah-ui-v158 #content .docplan-data-table th:nth-child(8){white-space:nowrap!important}
+  body.nah-ui-v158 #content .docplan-data-table td:nth-child(7)>.badge,
+  body.nah-ui-v158 #content .docplan-data-table td:nth-child(7) :is(button,select){
+    display:inline-flex!important;width:max-content!important;min-width:max-content!important;
+    white-space:nowrap!important;flex-wrap:nowrap!important;word-break:keep-all!important;
+  }
+  body.nah-ui-v158 #content .docplan-data-table td:nth-child(8) .progress{
+    max-width:100%;width:75px!important;
+  }
+  body.nah-ui-v158 #content .docplan-data-table .meta{overflow-wrap:break-word!important}
+}
+
+/* v1.58.46 — ISO progress table: compact authors and visible horizontal navigation. */
+@media screen {
+ body.nah-ui-v158 #content .docplan-horizontal-nav {
+   display:grid;grid-template-columns:auto 32px minmax(0,1fr) 32px;
+   align-items:center;gap:10px;box-sizing:border-box;
+   width:100%;max-width:100%;min-width:0;
+   margin:0 0 8px;padding:8px 12px;
+   border:1px solid var(--line);border-radius:12px;
+   background:var(--surface);color:var(--muted);
+ }
+ body.nah-ui-v158 #content .docplan-horizontal-nav[hidden]{display:none!important}
+ body.nah-ui-v158 #content .docplan-scroll-label{font-size:12px;font-weight:600;white-space:nowrap}
+ body.nah-ui-v158 #content .docplan-scroll-arrow{
+   display:inline-flex;align-items:center;justify-content:center;
+   box-sizing:border-box;min-width:32px;width:32px;height:32px;
+   border:1px solid var(--line);border-radius:9px;
+   background:var(--surface2);color:var(--text);cursor:pointer;
+   font:600 18px/1 var(--font-sans);
+ }
+ body.nah-ui-v158 #content .docplan-scroll-arrow:disabled{opacity:.35;cursor:default}
+ body.nah-ui-v158 #content .docplan-scroll-range{
+   width:100%;min-width:0;height:24px;margin:0;
+   accent-color:var(--brand-strong);cursor:ew-resize;
+ }
+ body.nah-ui-v158 #content .docplan-data-table{
+   width:1496px!important;min-width:1496px!important;
+ }
+ body.nah-ui-v158 #content .docplan-data-table :is(th,td):nth-child(3),
+ body.nah-ui-v158 #content .docplan-data-table :is(th,td):nth-child(4){
+   overflow-wrap:normal!important;word-break:normal!important;
+ }
+ body.nah-ui-v158 #content .docplan-data-table th:nth-child(4){
+   white-space:normal!important;overflow-wrap:normal!important;
+   line-height:1.35!important;
+ }
+ body.nah-ui-v158 #content .docplan-data-table td:nth-child(3) .meta{
+   line-height:1.4!important;overflow-wrap:break-word!important;
+ }
+ body.nah-ui-v158 #content .docplan-table-card{
+   scrollbar-width:auto;scrollbar-color:var(--muted) var(--surface2);
+ }
+ body.nah-ui-v158 #content .docplan-table-card::-webkit-scrollbar{height:12px}
+ body.nah-ui-v158 #content .docplan-table-card::-webkit-scrollbar-track{background:var(--surface2)}
+ body.nah-ui-v158 #content .docplan-table-card::-webkit-scrollbar-thumb{
+   background:var(--muted);border:2px solid var(--surface2);border-radius:8px;
+ }
+}
+@media screen and (max-width:600px){
+ body.nah-ui-v158 #content .docplan-horizontal-nav{grid-template-columns:32px minmax(0,1fr) 32px;gap:8px}
+ body.nah-ui-v158 #content .docplan-scroll-label{display:none}
+}
+@media print {body.nah-ui-v158 #content .docplan-horizontal-nav{display:none!important}}
+
+/* v1.58.48: ISO document progress uses six meaningful columns, no horizontal toolbar. */
+@media screen {
+ body.nah-ui-v158 #content .docplan-horizontal-nav{display:none!important}
+ body.nah-ui-v158 #content .docplan-table-card{width:100%!important;max-width:100%!important;overflow-x:hidden!important;overflow-y:visible!important;min-width:0!important;scrollbar-gutter:auto!important}
+ body.nah-ui-v158 #content .docplan-data-table{width:100%!important;min-width:0!important;max-width:100%!important;table-layout:fixed!important;border-collapse:collapse!important}
+ body.nah-ui-v158 #content .docplan-data-table th{white-space:normal!important;line-height:1.45!important}
+ body.nah-ui-v158 #content .docplan-data-table :is(th,td){padding:13px 11px!important;overflow-wrap:anywhere!important;vertical-align:top!important}
+ body.nah-ui-v158 #content .docplan-data-table tbody tr.docplan-details-row[hidden]{display:none!important}
+ body.nah-ui-v158 #content .docplan-document .code{display:block;font-size:11px;margin-bottom:5px;white-space:normal!important}
+ body.nah-ui-v158 #content .docplan-document strong{display:block;font-size:13px;line-height:1.45;word-break:normal}
+ body.nah-ui-v158 #content .docplan-person>div,.docplan-deadlines>div,.docplan-file-summary>div{display:flex;flex-direction:column;gap:3px;margin:0 0 8px}
+ body.nah-ui-v158 #content .docplan-person small,.docplan-deadlines small,.docplan-file-summary small{font-size:11px;color:var(--muted);line-height:1.25}
+ body.nah-ui-v158 #content .docplan-person strong,.docplan-deadlines span,.docplan-file-summary span{font-size:12px;line-height:1.35;overflow-wrap:anywhere}
+ body.nah-ui-v158 #content .docplan-status-progress>.badge{white-space:nowrap!important;display:inline-flex!important;width:max-content!important;max-width:100%;font-size:11px}
+ body.nah-ui-v158 #content .docplan-progress-line{display:flex;align-items:center;gap:7px;margin-top:12px}
+ body.nah-ui-v158 #content .docplan-progress-line .progress{width:100%!important;min-width:30px!important;max-width:120px!important}
+ body.nah-ui-v158 #content .docplan-actions{white-space:normal!important;text-align:left}
+ body.nah-ui-v158 #content .docplan-actions .btn{display:block;width:100%;min-width:0;white-space:normal;margin-bottom:6px;padding:7px 5px!important;text-align:center}
+ body.nah-ui-v158 #content .docplan-details-row>td{background:var(--surface2);padding:14px 16px!important}
+ body.nah-ui-v158 #content .docplan-detail-panel{display:grid;grid-template-columns:1.15fr 1fr 1fr;gap:14px;min-width:0}
+ body.nah-ui-v158 #content .docplan-detail-panel>div{min-width:0;overflow-wrap:anywhere}
+ body.nah-ui-v158 #content .docplan-detail-panel h4{font-size:13px;margin:0 0 8px}
+ body.nah-ui-v158 #content .docplan-detail-panel p{margin:5px 0;font-size:12px;line-height:1.5}
+}
+@media screen and (max-width:1290px){
+ body.nah-ui-v158 #content .docplan-data-table colgroup,body.nah-ui-v158 #content .docplan-data-table thead{display:none!important}
+ body.nah-ui-v158 #content .docplan-data-table tbody{display:block!important}
+ body.nah-ui-v158 #content .docplan-data-table tbody tr.docplan-main-row{display:grid!important;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) minmax(0,1fr)!important;gap:7px 14px;margin:0 0 10px;border:1px solid var(--line);border-radius:13px;padding:10px 12px;min-width:0;background:var(--surface)}
+ body.nah-ui-v158 #content .docplan-data-table tbody tr.docplan-main-row td{display:block!important;padding:6px!important;border:0!important;min-width:0}
+ body.nah-ui-v158 #content .docplan-data-table tbody tr.docplan-main-row td::before{content:attr(data-label);display:block;font-size:10px;font-weight:700;letter-spacing:.02em;color:var(--muted);margin-bottom:6px;text-transform:uppercase}
+ body.nah-ui-v158 #content .docplan-data-table tbody tr.docplan-main-row .docplan-document{grid-row:span 2}
+ body.nah-ui-v158 #content .docplan-data-table tbody tr.docplan-details-row{display:block!important;margin:-7px 0 10px}
+ body.nah-ui-v158 #content .docplan-data-table tbody tr.docplan-details-row[hidden]{display:none!important}
+ body.nah-ui-v158 #content .docplan-data-table tbody tr.docplan-details-row td{display:block!important;padding:12px!important}
+ body.nah-ui-v158 #content .docplan-detail-panel{grid-template-columns:repeat(2,minmax(0,1fr))}
+ body.nah-ui-v158 #content .docplan-actions .btn{display:inline-flex;align-items:center;justify-content:center;width:auto;min-width:85px;margin:0 6px 3px 0;padding:7px 9px!important}
+}
+@media screen and (max-width:750px){
+ body.nah-ui-v158 #content .docplan-data-table tbody tr.docplan-main-row{grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;gap:5px 10px}
+ body.nah-ui-v158 #content .docplan-data-table tbody tr.docplan-main-row .docplan-document{grid-row:auto;grid-column:1/-1}
+ body.nah-ui-v158 #content .docplan-data-table tbody tr.docplan-main-row .docplan-actions{grid-column:1/-1}
+ body.nah-ui-v158 #content .docplan-detail-panel{grid-template-columns:1fr}
+}
+@media screen and (max-width:420px){
+ body.nah-ui-v158 #content .docplan-data-table tbody tr.docplan-main-row{grid-template-columns:1fr!important}
+ body.nah-ui-v158 #content .docplan-data-table tbody tr.docplan-main-row .docplan-document,body.nah-ui-v158 #content .docplan-data-table tbody tr.docplan-main-row .docplan-actions{grid-column:auto}
+}
+@media print{body.nah-ui-v158 #content .docplan-details-row:not([hidden]){display:table-row!important}}
+
+/* v1.58.48 final compact-card spacing refinements */
+@media screen{
+ body.nah-ui-v158 #content .docplan-document strong{white-space:normal!important;overflow-wrap:break-word!important}
+ body.nah-ui-v158 #content .docplan-data-table .docplan-details-row[hidden]{display:none!important}
+}
+@media screen and (min-width:751px) and (max-width:1290px){
+ body.nah-ui-v158 #content .docplan-data-table tbody tr.docplan-main-row{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+ body.nah-ui-v158 #content .docplan-data-table tbody tr.docplan-main-row .docplan-document{grid-column:1/-1;grid-row:auto}
+ body.nah-ui-v158 #content .docplan-data-table tbody tr.docplan-main-row .docplan-actions{grid-column:2/-1}
+}
+/* v1.58.49 — Editable ISO reports, normalized import and private group conversations. */
+.electronic-report,.er-history{max-width:100%;min-width:0}.electronic-report .form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.electronic-report .field.full{grid-column:1/-1}.electronic-report .field{min-width:0;margin:0 0 10px}.electronic-report .field label{display:block;margin:0 0 5px;font-weight:600}.electronic-report input,.electronic-report textarea,.electronic-report select{max-width:100%;width:100%;box-sizing:border-box}.electronic-report .iso-form-a4{background:#fff;color:#111}.er-row{border:1px solid var(--line,#dee4ea);border-radius:12px;padding:14px;margin:12px 0}.er-row-head,.er-row-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:10px}.er-share{border:1px solid var(--line,#dee4ea);border-radius:12px;padding:14px;margin:14px 0}.er-share strong,.er-share small{display:block}.er-share-options{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px;margin:10px 0;max-height:180px;overflow:auto}.er-share-options label{display:flex;gap:8px;align-items:center;min-height:32px}.er-share-options input{width:auto}.er-history-list{display:grid;gap:9px}.er-history-card{background:var(--card,#fff);color:inherit;border:1px solid var(--line,#dee4ea);border-radius:10px;text-align:left;padding:12px;cursor:pointer}.er-history-card span,.er-history-card strong,.er-history-card small{display:block;margin-bottom:3px}.chat-workspace{display:grid;grid-template-columns:minmax(230px,310px) minmax(0,1fr);min-height:520px;height:min(73vh,760px);gap:12px}.chat-sidebar,.chat-conversation{min-width:0;min-height:0;display:flex;flex-direction:column;border:1px solid var(--line,#dde5eb);border-radius:14px;background:var(--card,#fff);overflow:hidden}.chat-heading{padding:14px;display:flex;align-items:center;justify-content:space-between;gap:8px;border-bottom:1px solid var(--line,#dde5eb)}.chat-room-list{flex:1;min-height:50px;overflow:auto;padding:8px}.chat-room,.chat-record-link{display:block;width:100%;border:0;background:transparent;text-align:left;color:inherit;border-radius:8px;padding:11px;cursor:pointer}.chat-room strong,.chat-room small,.chat-record-link strong,.chat-record-link small{display:block}.chat-room small,.chat-record-link small{font-size:12px;opacity:.72;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.chat-room.active,.chat-room:hover,.chat-record-link:hover{background:var(--soft,#eaf4f2)}.chat-record-discussions{border-top:1px solid var(--line,#dde5eb);max-height:190px;overflow:auto;padding:8px}.chat-record-discussions summary{cursor:pointer;font-weight:600;padding:8px}.chat-conversation header{padding:14px 18px;border-bottom:1px solid var(--line,#dde5eb);font-weight:700}.chat-messages{overflow-y:auto;flex:1;min-height:100px;padding:14px 18px}.chat-bubble{max-width:min(92%,700px);padding:10px 12px;border:1px solid var(--line,#e3e9ef);background:var(--soft,#f7fafb);border-radius:12px;margin:0 0 10px;overflow-wrap:anywhere}.chat-bubble div{display:flex;justify-content:space-between;gap:12px;font-size:12px}.chat-bubble time{opacity:.72}.chat-bubble p{white-space:pre-wrap;margin:6px 0 0}.chat-conversation form{border-top:1px solid var(--line,#dde5eb);padding:12px;display:flex;align-items:flex-end;gap:10px}.chat-conversation textarea{flex:1;min-width:0;resize:vertical;max-height:130px}.chat-conversation form button{flex-shrink:0}@media(max-width:750px){.chat-workspace{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(130px,auto) minmax(350px,1fr);height:auto;min-height:0}.chat-sidebar{max-height:240px}.chat-conversation{height:60vh;min-height:390px}.electronic-report .form-grid{grid-template-columns:minmax(0,1fr)}.chat-conversation form{flex-wrap:wrap}.chat-conversation form button{width:100%}}
+
+/* Windows desktop: persistent offline form queue status, never hidden by transient sync messages. */
+.nah-form-outbox-badge{position:fixed;inset:auto 20px 84px auto;max-width:min(420px,calc(100vw - 24px));z-index:11020;display:flex;align-items:center;gap:12px;justify-content:space-between;padding:10px 13px;border:1px solid #9fb8cb;border-radius:12px;background:#f3f9fc;color:#173a50;box-shadow:0 8px 26px #16384c26;font-size:13px;font-weight:600}
+.nah-form-outbox-badge[hidden]{display:none!important}.nah-form-outbox-badge[data-error="1"]{border-color:#d79c8a;background:#fff5ef;color:#7e2d25}
+.nah-form-outbox-badge button{white-space:nowrap;border:1px solid currentColor;background:transparent;color:inherit;border-radius:8px;padding:6px 10px;cursor:pointer;font:inherit}
+.nah-form-outbox-badge button:disabled{opacity:.45;cursor:not-allowed}
+@media(max-width:600px){.nah-form-outbox-badge{inset:auto 12px 74px 12px;max-width:none}}
+
+/* v1.58.51 — Confirm sent messages without waiting for polling */
+.chat-delivery-status{min-height:20px;padding:2px 14px 8px;font-size:12px;color:var(--muted,#64748b)}
+.chat-conversation form textarea[readonly]{opacity:.85}
+/* v1.58.52 · Actionable notification categories and accessible team mentions */
+.notification-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:10px 0 18px}.notification-summary-item{background:var(--surface2);border:1px solid var(--line);color:var(--text);border-radius:12px;min-width:0;min-height:86px;padding:14px;text-align:left;display:flex;flex-direction:column;gap:4px;cursor:pointer;transition:border-color .15s,transform .15s}.notification-summary-item:hover{border-color:var(--brand);transform:translateY(-1px)}.notification-summary-item strong{font-size:22px;line-height:1.2;color:var(--brand-deep)}.notification-summary-item span{font-size:12px;font-weight:700}.notification-summary-item small{font-size:10px;color:var(--muted)}.chat-room-head{display:flex;align-items:center;justify-content:space-between;gap:8px;min-width:0}.chat-room-head strong{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.chat-room-unread{display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:22px;border-radius:999px;padding:0 6px;background:var(--brand);color:#fff;font-size:11px;line-height:1;flex-shrink:0}.chat-compose-editor{position:relative;flex:1;min-width:0}.chat-compose-editor textarea{width:100%;box-sizing:border-box}.chat-mention-suggestions{position:absolute;left:0;right:0;bottom:calc(100% + 5px);z-index:25;display:flex;flex-direction:column;max-height:245px;overflow-y:auto;padding:5px;background:var(--surface);border:1px solid var(--line);border-radius:11px;box-shadow:var(--shadow)}.chat-mention-suggestions[hidden]{display:none!important}.chat-mention-option{width:100%;border:0;border-radius:7px;background:transparent;padding:10px;text-align:left;color:var(--text);font-size:12px;cursor:pointer}.chat-mention-option:hover,.chat-mention-option[aria-selected="true"]{background:var(--brand-soft);color:var(--brand-deep)}.chat-mention{font-weight:700;color:var(--brand-deep);background:var(--brand-soft);padding:0 2px;border-radius:4px}.notification-actions{flex-wrap:wrap}@media(max-width:950px){.notification-summary{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:500px){.notification-summary-item{padding:11px;min-height:80px}.notification-summary-item span{font-size:11px}.chat-conversation form .chat-compose-editor{width:100%;flex-basis:100%}}
+
+/* v1.58.53: responsive, incremental ISO library folder browser */
+.iso-library-browser .source-table{width:100%;max-width:100%;overflow-x:auto}
+.iso-library-browser .source-table table{min-width:540px;width:100%;table-layout:auto}
+.iso-library-breadcrumbs{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin:8px 0 14px}
+.iso-library-folder{border:0;background:none;color:var(--primary,#126a8b);text-align:left;font:inherit;font-weight:650;cursor:pointer;padding:4px 0;overflow-wrap:anywhere}
+.iso-library-folder:hover{text-decoration:underline}
+.iso-library-browser #sourceLibraryStatus:not(:empty){margin-top:12px;font-size:13px}
+@media(max-width:620px){.iso-library-browser .panel-head{flex-wrap:wrap;gap:12px}.iso-library-browser .source-filter{min-width:0;width:100%}}
+
+/* v1.58.54: ISO committee meeting minutes. */
+.meetinglog-editor{max-width:1100px;margin:auto}.meetinglog-subhead{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:18px 0 10px}.meetinglog-subhead h3{margin:0}.meetinglog-line{display:grid;grid-template-columns:minmax(130px,0.75fr) minmax(210px,2.5fr) auto;gap:8px;margin-bottom:8px;align-items:start}.meetinglog-follow{grid-template-columns:minmax(180px,1.5fr) minmax(140px,1fr) 150px minmax(180px,1.5fr) auto}.meetinglog-line input,.meetinglog-line textarea{width:100%;min-width:0}.meetinglog-line textarea{min-height:52px;resize:vertical}.meetinglog-print .meetinglog-signatures{display:flex;justify-content:space-around;margin:30px 0 40px;text-align:center;gap:20px}.meetinglog-print table td{white-space:normal;overflow-wrap:anywhere}@media(max-width:820px){.meetinglog-line,.meetinglog-follow{grid-template-columns:1fr}.meetinglog-line .btn{justify-self:end}.meetinglog-subhead{align-items:flex-start}.meetinglog-editor .form-grid{grid-template-columns:1fr}}

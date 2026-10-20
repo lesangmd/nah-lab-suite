@@ -1,0 +1,1 @@
+NAH LAB SUITE Windows v1.3.27 / Web v1.58.56 – đồng bộ giao diện/offline v1.58.56; Native rebuilt from 1.3.26 with unchanged business logic, preserved WebView2 profile and Taskbar integration; unsigned release candidate, do not enable auto-update until Authenticode signed and QA.
