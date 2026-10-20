@@ -24,13 +24,13 @@ need('30 unique chapters',len(chapters)==30 and len({x['slug'] for x in chapters
 need('38 ISO forms',len(c['knowledge/handbook']['formTemplates'])==38)
 need('45 QD2429 forms',len(c['knowledge/qd2429']['form_hub']['new_templates'])==45)
 android_cert='d528e789425c8914d5034c98c00aff8b1f407fee4fdd5584683cbfe81218752c'
-meta=json.loads((r/'signing-baseline.json').read_text())
+meta=json.loads((r/'signing-baseline.json').read_text(encoding='utf-8-sig'))
 need('new Android signer',digest(r/'release-certificate.der')==android_cert and meta['certificateSha256']==android_cert)
 need('migration HOLD',meta.get('releaseReady') is False and meta.get('requiresMigrationFromPreviousSigner') is True)
-wm=json.loads((r/'native/windows/signer-baseline.json').read_text())
+wm=json.loads((r/'native/windows/signer-baseline.json').read_text(encoding='utf-8-sig'))
 thumb='77EFA11665FC70E54D392A3582AFB2C2F484230E'
 cert=r/'native/windows/public-internal-codesign.crt'
-need('Windows signer',hashlib.sha1(ssl.PEM_cert_to_DER_cert(cert.read_text())).hexdigest().upper()==thumb)
+need('Windows signer',hashlib.sha1(ssl.PEM_cert_to_DER_cert(cert.read_text(encoding='utf-8-sig'))).hexdigest().upper()==thumb)
 need('Windows HOLD',wm['certificateThumbprintSha1']==thumb and wm.get('releaseReady') is False and wm.get('publiclyTrusted') is False)
 need('Windows updater signer pinned',thumb in (r/'native/windows/NAH-UPDATE.ps1').read_text(encoding='utf-8-sig'))
 for ext in ('.p12','.pfx','.jks','.keystore','.key'):

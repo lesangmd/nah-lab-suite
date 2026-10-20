@@ -11,24 +11,24 @@ for path, expected in checks.items():
 cert='d528e789425c8914d5034c98c00aff8b1f407fee4fdd5584683cbfe81218752c'
 if hashlib.sha256((root/'release-certificate.der').read_bytes()).hexdigest()!=cert:
     raise SystemExit('RELEASE HOLD: new baseline certificate changed')
-meta=json.loads((root/'signing-baseline.json').read_text())
+meta=json.loads((root/'signing-baseline.json').read_text(encoding='utf-8-sig'))
 if any([meta.get('certificateSha256')!=cert,meta.get('releaseVersionCode')!=11015,meta.get('releaseVersion')!='1.1.15',meta.get('webVersion')!='1.58.56']):
     raise SystemExit('RELEASE HOLD: signing baseline metadata mismatch')
-gradle=(root/'app/build.gradle').read_text()
+gradle=(root/'app/build.gradle').read_text(encoding='utf-8-sig')
 if any(s not in gradle for s in ["applicationId 'vn.nah.iso15189suite'",'versionCode 11015',"versionName '1.1.15'"]):
     raise SystemExit('RELEASE HOLD: version or application ID mismatch')
-factory=(root/'app/src/main/java/vn/nah/iso15189suite/FactoryShell.java').read_text()
+factory=(root/'app/src/main/java/vn/nah/iso15189suite/FactoryShell.java').read_text(encoding='utf-8-sig')
 if ('static final String VERSION = "1.58.56"' not in factory
         or 'native-shell-v1.58.56/assets/' not in factory):
     raise SystemExit('RELEASE HOLD: unknown offline shell minimum')
-html=(root/'app/src/main/assets/offline/index.html').read_text()
+html=(root/'app/src/main/assets/offline/index.html').read_text(encoding='utf-8-sig')
 if ('"version": "1.58.56"' not in html or 'Android v1.1.15' not in html
         or 'native-shell-v1.58.56/assets/' not in html):
     raise SystemExit('RELEASE HOLD: offline shell version mismatch')
-js=(root/'app/src/main/assets/offline/assets/app.js').read_text()
+js=(root/'app/src/main/assets/offline/assets/app.js').read_text(encoding='utf-8-sig')
 for key in ['docplan-main-row','renderMeeting','form-reports','notificationCount']:
     if key not in js: raise SystemExit('RELEASE HOLD: missing WebApp feature: '+key)
 
-if 'android-v1.1.15-web-v1.58.56' not in (root/'app/src/main/java/vn/nah/iso15189suite/MainActivity.java').read_text():
+if 'android-v1.1.15-web-v1.58.56' not in (root/'app/src/main/java/vn/nah/iso15189suite/MainActivity.java').read_text(encoding='utf-8-sig'):
     raise SystemExit('RELEASE HOLD: offline shell contract version mismatch')
 print('PASS: v1.1.15 / Web v1.58.56; new pinned certificate; private signing key absent')

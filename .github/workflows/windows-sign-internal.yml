@@ -11,8 +11,8 @@ jobs:
       WIN_PFX_PASS: ${{ secrets.NAH_WINDOWS_PFX_PASSWORD }}
       WIN_THUMB: ${{ secrets.NAH_WINDOWS_CERT_THUMBPRINT }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: '3.12'
       - name: Require complete and consistent Native source
