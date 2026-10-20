@@ -1,4 +1,4 @@
-name: Windows 1.3.27 internal signing (HOLD)
+name: Windows 1.3.28 internal signing (HOLD)
 on:
   workflow_dispatch:
 permissions:
@@ -27,6 +27,20 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Source release gate failed' }
           python -X utf8 tools/verify-native-parity.py
           if ($LASTEXITCODE -ne 0) { throw 'Cross-platform parity gate failed' }
+      - name: Upgrade and verify pinned Windows 1.3.28 / Web 1.58.58 source
+        shell: pwsh
+        run: |
+          python -X utf8 tools/prepare-windows-v1.3.28.py
+          if ($LASTEXITCODE -ne 0) { throw 'Windows v1.3.28 source upgrade or SHA256 gate failed' }
+          python -X utf8 tools/prepare-windows-v1.3.28.py
+          if ($LASTEXITCODE -ne 0) { throw 'Windows v1.3.28 idempotence check failed' }
+      - name: Validate native and web asset syntax
+        shell: pwsh
+        run: |
+          node --check native/windows/offline/assets/app.js
+          if ($LASTEXITCODE -ne 0) { throw 'Web 1.58.58 JavaScript syntax gate failed' }
+          python -m py_compile native/windows/MAKE-RESOURCES.py
+          if ($LASTEXITCODE -ne 0) { throw 'Resource version metadata syntax invalid' }
       - name: Check prerequisites and trust policy
         shell: pwsh
         run: |
@@ -81,7 +95,7 @@ jobs:
         run: |
           $ErrorActionPreference='Stop'
           $src=Join-Path $PWD 'native/windows'
-          $dst=Join-Path $PWD 'publish/NAH-LAB-SUITE-Windows-v1.3.27'
+          $dst=Join-Path $PWD 'publish/NAH-LAB-SUITE-Windows-v1.3.28'
           New-Item -ItemType Directory -Path $dst -Force | Out-Null
           foreach ($n in @('NAH-LAB-SUITE.exe','NAH-UPDATE.ps1','NAH-UPDATE.cmd','INSTALL-OR-UPDATE.ps1','INSTALL-OR-UPDATE.cmd','signer-baseline.json','public-internal-codesign.crt','INTERNAL-TRUST-REQUIRED.txt')) {
             $p=Join-Path $src $n
@@ -91,12 +105,12 @@ jobs:
           Copy-Item -LiteralPath (Join-Path $src 'offline') -Destination $dst -Recurse
           $sha=@(Get-ChildItem $dst -Recurse -File | ForEach-Object { [pscustomobject]@{name=$_.FullName.Substring($dst.Length+1).Replace('\','/');sha256=(Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant()} })
           $sha | ConvertTo-Json -Depth 4 | Set-Content (Join-Path $dst 'SHA256-FILES.json') -Encoding UTF8
-          $zip='publish/NAH-LabSuite-Windows-v1.3.27-Web-v1.58.56-INTERNAL-SIGNED-HOLD.zip'
+          $zip='publish/NAH-LabSuite-Windows-v1.3.28-Web-v1.58.58-INTERNAL-SIGNED-HOLD.zip'
           Compress-Archive -Path $dst -DestinationPath $zip -CompressionLevel Optimal -Force
           Get-FileHash $zip -Algorithm SHA256 | Format-List | Out-File 'publish/ZIP-SHA256.txt'
       - uses: actions/upload-artifact@v4
         with:
-          name: windows-v1.3.27-INTERNAL-ONLY-NO-AUTO-UPDATE
+          name: windows-v1.3.28-INTERNAL-ONLY-NO-AUTO-UPDATE
           path: publish/
           if-no-files-found: error
           retention-days: 7
