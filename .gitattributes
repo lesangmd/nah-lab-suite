@@ -1,0 +1,20 @@
+# Freeze exact text bytes across Windows and Unix checkout; SHA-256 release gates are byte-exact.
+*.js text eol=lf
+*.css text eol=lf
+*.html text eol=lf
+*.json text eol=lf
+*.py text eol=lf
+*.svg text eol=lf
+*.gradle text eol=lf
+*.java text eol=lf
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.ico binary
+*.icns binary
+*.crt text eol=lf
+*.der binary
+*.apk binary
+*.exe binary
+*.pfx binary
+*.p12 binary
