@@ -1302,12 +1302,12 @@ function xmlEsc(v){return String(v??'').replace(/[&<>\"']/g,c=>({'&':'&amp;','<'
 function docxP(text,style=''){return `<w:p>${style?`<w:pPr><w:pStyle w:val="${style}"/></w:pPr>`:''}<w:r><w:t xml:space="preserve">${xmlEsc(text)}</w:t></w:r></w:p>`}
 function docxSignatureTable(labels){
  const parts=(labels||[]).map(v=>String(v||'').replace(/\s+/g,' ').trim());
- const columns=Math.max(1,parts.length),width=Math.floor(10000/columns);
+ const columns=Math.max(1,parts.length),width=Math.floor(9000/columns);
  const cells=parts.map(label=>{const match=label.match(/^(.*?)(\(Ký, ghi rõ họ tên\))$/i);const head=match?match[1].trim():label;const foot=match?match[2]:'';
   const paragraph=(value,bold=false,after=0)=>`<w:p><w:pPr><w:jc w:val="center"/><w:spacing w:after="${after}"/></w:pPr><w:r><w:rPr>${bold?'<w:b/>':''}</w:rPr><w:t xml:space="preserve">${xmlEsc(value)}</w:t></w:r></w:p>`;
   return `<w:tc><w:tcPr><w:tcW w:w="${width}" w:type="dxa"/><w:vAlign w:val="top"/></w:tcPr>${paragraph(head,true,80)}${foot?paragraph(foot,false,1000):paragraph('',false,1000)}</w:tc>`;
  }).join('');
- return `<w:tbl><w:tblPr><w:tblW w:w="10000" w:type="dxa"/><w:tblLayout w:type="fixed"/><w:tblBorders><w:top w:val="nil"/><w:left w:val="nil"/><w:bottom w:val="nil"/><w:right w:val="nil"/><w:insideH w:val="nil"/><w:insideV w:val="nil"/></w:tblBorders></w:tblPr><w:tr><w:trPr><w:cantSplit/></w:trPr>${cells}</w:tr></w:tbl>`;
+ return `<w:tbl><w:tblPr><w:tblW w:w="9000" w:type="dxa"/><w:tblLayout w:type="fixed"/><w:tblBorders><w:top w:val="nil"/><w:left w:val="nil"/><w:bottom w:val="nil"/><w:right w:val="nil"/><w:insideH w:val="nil"/><w:insideV w:val="nil"/></w:tblBorders></w:tblPr><w:tr><w:trPr><w:cantSplit/></w:trPr>${cells}</w:tr></w:tbl>`;
 }
 function docxTable(table){
  if(table.classList.contains('meetinglog-signature-table'))return docxSignatureTable(['THƯ KÝ (Ký, ghi rõ họ tên)','CHỦ TỌA CUỘC HỌP (Ký, ghi rõ họ tên)']);
