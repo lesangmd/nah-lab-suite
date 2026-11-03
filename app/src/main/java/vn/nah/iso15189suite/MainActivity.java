@@ -705,26 +705,32 @@ public class MainActivity extends Activity {
         }
     }
 
-    /** Show system bars and apply Android 15+ safe insets to the existing root. */
+    /**
+     * Keep the system bars visible on Android 8+, render the native surface behind
+     * transparent bars and reserve the actual safe/IME insets for WebView controls.
+     * No JS bridge, account state, offline storage or navigation behavior is changed.
+     */
     private void applyImmersiveMode() {
         final android.view.Window window = getWindow();
         final boolean dark = (getResources().getConfiguration().uiMode
                 & android.content.res.Configuration.UI_MODE_NIGHT_MASK)
                 == android.content.res.Configuration.UI_MODE_NIGHT_YES;
-        final int header = dark ? Color.rgb(14, 33, 27) : Color.rgb(243, 251, 247);
-        final int footer = dark ? Color.rgb(14, 33, 27) : Color.WHITE;
+        final int backdrop = dark ? Color.rgb(14, 33, 27) : Color.rgb(243, 251, 247);
+
         window.clearFlags(android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN);
         window.addFlags(android.view.WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        window.setStatusBarColor(Build.VERSION.SDK_INT >= 35 ? Color.TRANSPARENT : header);
-        window.setNavigationBarColor(Build.VERSION.SDK_INT >= 35 ? Color.TRANSPARENT : footer);
+        window.setStatusBarColor(Color.TRANSPARENT);
+        window.setNavigationBarColor(Color.TRANSPARENT);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            window.setNavigationBarContrastEnforced(false);
             window.setStatusBarContrastEnforced(false);
+            window.setNavigationBarContrastEnforced(false);
         }
+
         final View root = findViewById(R.id.root);
+        if (root != null) root.setBackgroundColor(backdrop);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            final boolean modernEdgeToEdge = Build.VERSION.SDK_INT >= 35;
-            window.setDecorFitsSystemWindows(!modernEdgeToEdge);
+            window.setDecorFitsSystemWindows(false);
             WindowInsetsController controller = window.getInsetsController();
             if (controller != null) {
                 controller.show(WindowInsets.Type.statusBars() | WindowInsets.Type.navigationBars());
@@ -732,22 +738,38 @@ public class MainActivity extends Activity {
                         | WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS;
                 controller.setSystemBarsAppearance(dark ? 0 : mask, mask);
             }
-            if (root != null && modernEdgeToEdge) {
+            if (root != null) {
                 root.setOnApplyWindowInsetsListener((view, insets) -> {
-                    android.graphics.Insets bars = insets.getInsets(WindowInsets.Type.systemBars());
-                    view.setPadding(bars.left, bars.top, bars.right, bars.bottom);
+                    android.graphics.Insets bars = insets.getInsets(
+                            WindowInsets.Type.systemBars() | WindowInsets.Type.displayCutout());
+                    android.graphics.Insets ime = insets.getInsets(WindowInsets.Type.ime());
+                    view.setPadding(bars.left, bars.top, bars.right,
+                            Math.max(bars.bottom, ime.bottom));
                     return insets;
                 });
-                root.requestApplyInsets();
-            } else if (root != null) {
-                root.setOnApplyWindowInsetsListener(null);
-                root.setPadding(0, 0, 0, 0);
             }
         } else {
-            int flags = dark ? 0 : View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) flags |= dark ? 0 : View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
+            int flags = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION;
+            if (!dark) {
+                flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    flags |= View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
+                }
+            }
             window.getDecorView().setSystemUiVisibility(flags);
+            if (root != null) {
+                root.setOnApplyWindowInsetsListener((view, insets) -> {
+                    view.setPadding(insets.getSystemWindowInsetLeft(),
+                            insets.getSystemWindowInsetTop(),
+                            insets.getSystemWindowInsetRight(),
+                            insets.getSystemWindowInsetBottom());
+                    return insets;
+                });
+            }
         }
+        if (root != null) root.requestApplyInsets();
     }
 
     @Override
