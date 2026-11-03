@@ -76,6 +76,30 @@ public class MainActivity extends Activity {
     private OfflineStore offlineStore;
     private UpdateManager updateManager;
     private final Handler handler = new Handler(Looper.getMainLooper());
+    // Match Android system-bar icon contrast to the WebApp Light/Dark mode.
+    // Read a DOM attribute only; do not expose JavaScript interfaces or sessions.
+    private Boolean webThemeDark = null;
+    private final Runnable webThemeProbe = new Runnable() {
+        @Override public void run() {
+            if (webView != null) {
+                try {
+                    webView.evaluateJavascript(
+                            "(document.documentElement.dataset.theme||'')",
+                            value -> {
+                                if (value == null) return;
+                                String theme = value.replace("\\\"", "").trim();
+                                if (!"dark".equals(theme) && !"light".equals(theme)) return;
+                                boolean nextDark = "dark".equals(theme);
+                                if (webThemeDark == null || webThemeDark.booleanValue() != nextDark) {
+                                    webThemeDark = nextDark;
+                                    applyImmersiveMode();
+                                }
+                            });
+                } catch (Throwable ignored) { }
+            }
+            handler.postDelayed(this, 1800L);
+        }
+    };
     private boolean coreSyncInFlight = false;
     private boolean deepSyncInFlight = false;
     private boolean firstUiRendered = false;
@@ -537,6 +561,8 @@ public class MainActivity extends Activity {
             try { view.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT); } catch (Throwable ignored) { }
             injectLogoutCacheHook(view);
             firstUiRendered = true;
+            handler.removeCallbacks(webThemeProbe);
+            handler.postDelayed(webThemeProbe, 400L);
             startBackgroundWorkAfterUi();
         }
 
@@ -712,7 +738,8 @@ public class MainActivity extends Activity {
      */
     private void applyImmersiveMode() {
         final android.view.Window window = getWindow();
-        final boolean dark = (getResources().getConfiguration().uiMode
+        final boolean dark = webThemeDark != null ? webThemeDark.booleanValue()
+                : (getResources().getConfiguration().uiMode
                 & android.content.res.Configuration.UI_MODE_NIGHT_MASK)
                 == android.content.res.Configuration.UI_MODE_NIGHT_YES;
         final int backdrop = dark ? Color.rgb(14, 33, 27) : Color.rgb(243, 251, 247);
@@ -777,6 +804,8 @@ public class MainActivity extends Activity {
         super.onResume();
         if (updateManager != null) updateManager.check(false);
         applyImmersiveMode();
+        handler.removeCallbacks(webThemeProbe);
+        handler.post(webThemeProbe);
         if (firstUiRendered) {
             handler.postDelayed(() -> requestSilentCore(false), 5_000L);
             handler.postDelayed(() -> requestDeepHydration(false), INITIAL_DEEP_SYNC_DELAY_MS);
@@ -791,6 +820,7 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onPause() {
+        handler.removeCallbacks(webThemeProbe);
         try { CookieManager.getInstance().flush(); } catch (Throwable ignored) { }
         super.onPause();
     }
