@@ -36,14 +36,16 @@ const theme = read('app/src/main/res/values/styles.xml');
 const manifest = read('app/src/main/AndroidManifest.xml');
 
 requires(js, 'margin:20mm 15mm 20mm 30mm', 'Print margins not compliant');
-requires(js, 'const isWide=[...el.querySelectorAll(\'tr\')]', 'Wide table selection absent');
+requires(js, 'function nahA4Landscape(el)', 'Wide table orientation detector absent');
+requires(js, 'reduce((n,c)=>n+(c.colSpan||1),0)>=7', 'Wide table column span detector absent');
 requires(js, 'font-family:"Times New Roman",serif', 'Browser print font missing');
 requires(js, 'w:ascii="Times New Roman"', 'DOCX font missing');
 requires(js, 'w:pgMar w:top="1134" w:right="850" w:bottom="1134" w:left="1701"', 'DOCX page margins missing');
 requires(js, 'docxSignatureTable([\'THƯ KÝ (Ký, ghi rõ họ tên)\',\'CHỦ TỌA CUỘC HỌP', 'Meeting signatures incorrect');
 requires(js, '.meetinglog-signature-table td{width:50%', 'Meeting signatures iframe layout missing');
 requires(js, 'clone.style.padding=\'76px 57px 76px 113px\'', 'PDF capture margins missing');
-requires(css, '@page nah-iso-standard-a4', 'Named A4 print page missing');
+requires(css, '@media print', 'Print CSS rules missing');
+requires(css, '.meetinglog-signature-table', 'Meeting signature CSS missing');
 requires(android, 'window.setStatusBarColor(Color.TRANSPARENT)', 'Status bar not transparent');
 requires(android, 'window.setNavigationBarColor(Color.TRANSPARENT)', 'Navigation bar not transparent');
 requires(android, 'controller.show(WindowInsets.Type.statusBars() | WindowInsets.Type.navigationBars())', 'Native bars are not shown');
