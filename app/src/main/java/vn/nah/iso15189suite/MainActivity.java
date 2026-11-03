@@ -87,7 +87,7 @@ public class MainActivity extends Activity {
                             "(document.documentElement.dataset.theme||'')",
                             value -> {
                                 if (value == null) return;
-                                String theme = value.replace("\\\"", "").trim();
+                                String theme = value.replace("\"", "").trim();
                                 if (!"dark".equals(theme) && !"light".equals(theme)) return;
                                 boolean nextDark = "dark".equals(theme);
                                 if (webThemeDark == null || webThemeDark.booleanValue() != nextDark) {
