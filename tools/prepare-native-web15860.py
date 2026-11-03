@@ -77,7 +77,10 @@ def main():
     for js in ('native/windows/desktop-mirror.js',
                'native/windows/offline/desktop-mirror.js'):
         replace_checked(js, '1.3.25', '1.3.29')
-        replace_checked(js, '1.58.56', '1.58.60')
+        replace_checked(js, '1.58.52', '1.58.60', required=False)
+        replace_checked(js, '1.58.56', '1.58.60', required=False)
+        if "version:'1.58.60'" not in (ROOT / js).read_text(encoding='utf-8'):
+            raise RuntimeError('Desktop mirror version not updated: '+js)
     replace_checked('native/windows/offline/service-worker.js',
                     'nah-lab-suite-desktop-v1.3.20-activityfix',
                     'nah-lab-suite-desktop-v1.3.29-web-v1.58.60')
