@@ -3312,3 +3312,24 @@ body.nah-ui-v158 .mobile-login-art img{
 
 @page nah-meeting-a4{size:A4 portrait;margin:20mm 15mm 20mm 30mm}
 @media print{.meetinglog-print{page:nah-meeting-a4}}
+
+
+/* 2026-11-03. Controlled A4 template typography and signature QA (draft only).
+ * Print iframe and DOCX output apply the same 30/15/20/20 mm page margins.
+ * Do not apply this to live Web v1.58.59 until the exact source is rebased.
+ */
+@page nah-iso-standard-a4{size:A4 portrait;margin:20mm 15mm 20mm 30mm}
+.iso-form-a4{font-family:"Times New Roman",serif!important;line-height:1.4}
+.iso-form-a4 h1,.iso-form-a4 h2,.iso-form-a4 h3{font-family:"Times New Roman",serif!important}
+.iso-form-print-v2 .iso-form-print-table th,
+.iso-form-print-v2 .iso-form-print-table td{font:normal 11pt/1.35 "Times New Roman",serif!important;word-break:normal!important;overflow-wrap:break-word!important}
+.iso-form-print-v2 .iso-form-print-table th{font-weight:700!important}
+.iso-form-a4 .form-signatures{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:3mm;min-height:34mm;text-align:center;break-inside:avoid!important;page-break-inside:avoid!important}
+@media print{
+ .iso-form-a4:not(.meetinglog-print),.print-report,.periodic-report{page:nah-iso-standard-a4;font-family:"Times New Roman",serif!important;font-size:13pt!important;line-height:1.4!important}
+ .iso-form-a4 .iso-form-print-table,.iso-form-a4 .data-table{width:100%!important;max-width:100%!important;table-layout:fixed!important;border-collapse:collapse!important}
+ .iso-form-a4 th,.iso-form-a4 td{overflow-wrap:break-word!important;word-break:normal!important;white-space:normal!important}
+ .iso-form-a4 thead{display:table-header-group!important}
+ .iso-form-a4 tfoot{display:table-footer-group!important}
+ .iso-form-a4 .form-signatures,.meetinglog-print .meetinglog-signature-table{break-inside:avoid!important;page-break-inside:avoid!important}
+}
