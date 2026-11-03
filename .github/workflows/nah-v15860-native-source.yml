@@ -1,0 +1,27 @@
+name: NAH v1.58.60 native source integrity check
+on:
+  push:
+    branches: [release/nah-native-v15860-candidates-20261103]
+    paths:
+      - '.github/workflows/nah-v15860-native-source.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify-published-web-assets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch and pin deployed v1.58.60 web assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/nah-web
+          curl -fsSL --retry 2 --connect-timeout 15 --max-time 75 \
+            'https://www.sachyhoc.com/wp-content/plugins/nah-iso15189-suite_/assets/app.js' -o /tmp/nah-web/app.js
+          curl -fsSL --retry 2 --connect-timeout 15 --max-time 75 \
+            'https://www.sachyhoc.com/wp-content/plugins/nah-iso15189-suite_/assets/app.css' -o /tmp/nah-web/app.css
+          echo '75b87f4014bae853e34915df98a0329c62479e1d638e93ea53755ace0ea0ebc8  /tmp/nah-web/app.js' | sha256sum -c -
+          echo '1ad375c7ccaa8bbb59fc0b89a7dc8229e6cb5cddc1f4bac5fe73d4e1faba7d6f  /tmp/nah-web/app.css' | sha256sum -c -
+          node --check /tmp/nah-web/app.js
+          echo 'PASS: deployed assets match user-supplied v1.58.60 ZIP exactly'
