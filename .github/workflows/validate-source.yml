@@ -2,7 +2,7 @@ name: Validate Android v1.1.15 source
 
 on:
   push:
-    branches: [ main, "fix/native-dataset-20261014" , release/android-v1.1.15-web-v1.58.56-signing-gate ]
+    branches: [ main, "fix/native-dataset-20261014", "fix/iso-a4-docx-android-status-bars-20261101", release/android-v1.1.15-web-v1.58.56-signing-gate ]
     paths:
       - "app/**"
       - "build.gradle"
@@ -12,6 +12,8 @@ on:
       - "tools/verify-source-release.py"
       - "tools/verify-native-parity.py"
       - "native/windows/**"
+      - "webapp/**"
+      - "tools/validate-a4-system-bars.cjs"
   workflow_dispatch:
 
 permissions:
@@ -47,6 +49,9 @@ jobs:
           python3 tools/verify-source-release.py
           python3 tools/verify-native-parity.py
           python3 tools/verify-source-release.py
+
+      - name: A4 and Android system bars regression gate
+        run: node tools/validate-a4-system-bars.cjs
 
       - name: Install Android SDK packages
         run: |
