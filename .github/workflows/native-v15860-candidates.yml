@@ -7,6 +7,7 @@ on:
       - 'tools/prepare-native-web15860.py'
       - 'tools/validate-a4-system-bars.cjs'
       - 'app/src/main/java/vn/nah/iso15189suite/MainActivity.java'
+      - 'native/windows/NAH-UPDATE.ps1'
       - '.github/workflows/native-v15860-candidates.yml'
   workflow_dispatch:
 permissions:
