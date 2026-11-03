@@ -26,7 +26,7 @@ function Fail([string]$s) { Log "FAILED $s"; throw $s }
 function EnsureHttpsDownload([string]$url) {
     $u = [uri]$url
     if ($u.Scheme -ne 'https' -or $u.Host -notin @('sachyhoc.com','www.sachyhoc.com') -or
-        $u.AbsolutePath -notmatch '^/wp-content/plugins/nah-iso15189-suite/updates/[A-Za-z0-9_.-]+\.zip$' -or
+        $u.AbsolutePath -notmatch '^/wp-content/plugins/nah-iso15189-suite_?/updates/[A-Za-z0-9_.-]+\.zip$' -or
         $u.UserInfo -or $u.Fragment) { Fail 'Đường dẫn tải bản cập nhật không hợp lệ.' }
 }
 function GetSignedExe([string]$path,[string]$trustedSigner) {
