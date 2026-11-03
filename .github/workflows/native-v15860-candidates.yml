@@ -5,6 +5,7 @@ on:
       - release/nah-native-v15860-candidates-20261103
     paths:
       - 'tools/prepare-native-web15860.py'
+      - 'tools/validate-a4-system-bars.cjs'
       - 'app/src/main/java/vn/nah/iso15189suite/MainActivity.java'
       - '.github/workflows/native-v15860-candidates.yml'
   workflow_dispatch:
