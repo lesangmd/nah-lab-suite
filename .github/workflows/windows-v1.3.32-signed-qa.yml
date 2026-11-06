@@ -1,7 +1,7 @@
 name: NAH Windows Native 1.3.32 original-signer binary (INTERNAL QA)
 on:
   push:
-    branches: [release/windows-v1.3.32-web-v1.58.64-qa]
+    branches: [release/windows-v1.3.32-web-v1.58.64-ui-qa]
     paths:
       - 'tools/prepare-windows-v1.3.32.py'
       - '.github/workflows/windows-v1.3.32-signed-qa.yml'
