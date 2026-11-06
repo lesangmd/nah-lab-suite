@@ -62,7 +62,7 @@ jobs:
           $ErrorActionPreference='Stop'
           $exe=Join-Path $PWD 'native/windows/NAH-LAB-SUITE.exe'
           $version=[Diagnostics.FileVersionInfo]::GetVersionInfo($exe).FileVersion
-          if ($version -notmatch '^1\.3\.30(?:\.0)?$') { throw "Incorrect EXE file version: $version" }
+          if ($version -notmatch '^1\.3\.31(?:\.0)?$') { throw "Incorrect EXE file version: $version" }
           $pfx=Join-Path $env:RUNNER_TEMP 'nah-original-signing.pfx'
           try {
             [IO.File]::WriteAllBytes($pfx,[Convert]::FromBase64String($env:WIN_PFX_B64))
