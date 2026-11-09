@@ -1,0 +1,105 @@
+name: NAH Windows Native 1.3.36 original-signer binary (INTERNAL QA)
+on:
+  push:
+    branches: [release/windows-v1.3.36-web-v1.58.68-save-search-qa]
+    paths:
+      - 'tools/prepare-windows-v1.3.36.py'
+      - '.github/workflows/windows-v1.3.36-signed-qa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build-sign-internal:
+    runs-on: windows-latest
+    env:
+      PYTHONUTF8: '1'
+      PYTHONIOENCODING: utf-8
+      WIN_PFX_B64: ${{ secrets.NAH_WINDOWS_PFX_B64 }}
+      WIN_PFX_PASS: ${{ secrets.NAH_WINDOWS_PFX_PASSWORD }}
+      WIN_THUMB: ${{ secrets.NAH_WINDOWS_CERT_THUMBPRINT }}
+    steps:
+      - name: Keep native sources LF on Windows
+        shell: pwsh
+        run: git config --global core.autocrlf false
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Stage 1.3.36 version data without altering persisted user data
+        shell: pwsh
+        run: |
+          python -X utf8 tools/prepare-windows-v1.3.36.py
+          if ($LASTEXITCODE -ne 0) { throw 'Version staging failed' }
+          python -X utf8 tools/prepare-windows-v1.3.36.py
+          if ($LASTEXITCODE -ne 0) { throw 'Not idempotent' }
+      - name: Check original Windows signing identity
+        shell: pwsh
+        run: |
+          $ErrorActionPreference='Stop'
+          if (-not $env:WIN_PFX_B64 -or -not $env:WIN_PFX_PASS -or -not $env:WIN_THUMB) { throw 'HOLD: Windows signing secrets missing' }
+          $meta=Get-Content 'native/windows/signer-baseline.json' -Raw | ConvertFrom-Json
+          if ($meta.certificateThumbprintSha1 -ne '77EFA11665FC70E54D392A3582AFB2C2F484230E') { throw 'Unexpected baseline certificate' }
+          if ($meta.certificateThumbprintSha1 -ne $env:WIN_THUMB.ToUpperInvariant()) { throw 'Signing identity mismatch' }
+          if ($meta.version -ne '1.3.36' -or $meta.webVersion -ne '1.58.68') { throw 'Unexpected version' }
+          if ($meta.publiclyTrusted -ne $false -or $meta.releaseReady -ne $false) { throw 'Release must remain internal HOLD' }
+      - name: Discover LLVM and build Windows EXE x64
+        shell: pwsh
+        run: |
+          $llvm='C:\Program Files\LLVM\bin'
+          if (Test-Path (Join-Path $llvm 'clang.exe')) {
+            $env:PATH="$llvm;$env:PATH"
+            $llvm | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          }
+          if (-not (Get-Command clang.exe -ErrorAction SilentlyContinue) -or -not (Get-Command lld-link.exe -ErrorAction SilentlyContinue)) { throw 'Missing LLVM toolchain' }
+          Push-Location native/windows
+          try {
+            cmd /c BUILD-X64.cmd
+            if ($LASTEXITCODE -ne 0) { throw 'Build failed' }
+          } finally { Pop-Location }
+      - name: Sign EXE and PowerShell updater with ORIGINAL certificate
+        shell: pwsh
+        run: |
+          $ErrorActionPreference='Stop'
+          $exe=Join-Path $PWD 'native/windows/NAH-LAB-SUITE.exe'
+          $version=[Diagnostics.FileVersionInfo]::GetVersionInfo($exe).FileVersion
+          if ($version -notmatch '^1\.3\.36(?:\.0)?$') { throw "Incorrect EXE file version: $version" }
+          $pfx=Join-Path $env:RUNNER_TEMP 'nah-original-signing.pfx'
+          try {
+            [IO.File]::WriteAllBytes($pfx,[Convert]::FromBase64String($env:WIN_PFX_B64))
+            $pw=ConvertTo-SecureString $env:WIN_PFX_PASS -AsPlainText -Force
+            $cert=Import-PfxCertificate -FilePath $pfx -Password $pw -CertStoreLocation Cert:\CurrentUser\My
+            if ($cert.Thumbprint -ne $env:WIN_THUMB.ToUpperInvariant()) { throw 'Wrong signing certificate' }
+            $signtool=Get-ChildItem -Path (Join-Path ${env:ProgramFiles(x86)} 'Windows Kits/10/bin') -Recurse -Filter signtool.exe | Where-Object {$_.FullName -like '*x64*'} | Select-Object -First 1 -ExpandProperty FullName
+            if (-not $signtool) { throw 'SignTool missing' }
+            & $signtool sign /fd SHA256 /sha1 $env:WIN_THUMB /s My /tr 'http://timestamp.digicert.com' /td SHA256 $exe
+            if ($LASTEXITCODE -ne 0) { throw 'EXE Authenticode signing failed' }
+            $exeSignature=Get-AuthenticodeSignature -LiteralPath $exe
+            if (-not $exeSignature.SignerCertificate -or $exeSignature.SignerCertificate.Thumbprint -ne $env:WIN_THUMB.ToUpperInvariant()) { throw 'EXE signer mismatch' }
+            $updater=Join-Path $PWD 'native/windows/NAH-UPDATE.ps1'
+            $scriptSignature=Set-AuthenticodeSignature -FilePath $updater -Certificate $cert -HashAlgorithm SHA256 -TimestampServer 'http://timestamp.digicert.com'
+            if (-not $scriptSignature.SignerCertificate -or $scriptSignature.SignerCertificate.Thumbprint -ne $env:WIN_THUMB.ToUpperInvariant()) { throw 'Updater signer mismatch' }
+            Write-Host "PASS: signed Windows 1.3.36 with original identity $env:WIN_THUMB"
+          } finally {
+            Remove-Item $pfx -Force -ErrorAction SilentlyContinue
+            if ($env:WIN_THUMB) {Remove-Item ("Cert:\CurrentUser\My\" + $env:WIN_THUMB) -Force -ErrorAction SilentlyContinue}
+          }
+      - name: Package signed binaries (full Web 1.58.68 offline assets assembled separately)
+        shell: pwsh
+        run: |
+          $ErrorActionPreference='Stop'
+          New-Item -ItemType Directory -Path publish/NAH-LabSuite-Windows-v1.3.36 -Force | Out-Null
+          $dst=Join-Path $PWD 'publish/NAH-LabSuite-Windows-v1.3.36'
+          $src=Join-Path $PWD 'native/windows'
+          foreach ($f in @('NAH-LAB-SUITE.exe','NAH-UPDATE.ps1','NAH-UPDATE.cmd','signer-baseline.json','public-internal-codesign.crt')) {
+            Copy-Item -LiteralPath (Join-Path $src $f) -Destination $dst
+          }
+          'Signed 1.3.36 binary overlay ONLY. Assemble with the already-verified Web 1.58.68 native offline package. Internal QA: manual device test required. Auto-update remains HOLD.' | Set-Content (Join-Path $dst 'README-BINARY-OVERLAY.txt')
+          $sha=@(Get-ChildItem $dst -File | ForEach-Object { [pscustomobject]@{path=$_.Name;sha256=(Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant()} })
+          $sha | ConvertTo-Json -Depth 5 | Set-Content (Join-Path $dst 'SHA256-FILES.json') -Encoding UTF8
+          Compress-Archive -Path $dst -DestinationPath 'publish/NAH-Windows-v1.3.36-signed-binaries-INTERNAL-HOLD.zip' -Force -CompressionLevel Optimal
+      - uses: actions/upload-artifact@v4
+        with:
+          name: NAH-Windows-v1.3.36-ORIGINAL-SIGNER-BINARIES-INTERNAL-HOLD
+          path: publish/NAH-Windows-v1.3.36-signed-binaries-INTERNAL-HOLD.zip
+          if-no-files-found: error
+          retention-days: 14
