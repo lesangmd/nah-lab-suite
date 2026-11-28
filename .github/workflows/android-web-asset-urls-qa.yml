@@ -1,0 +1,31 @@
+name: NAH Android download source URL check
+on:
+  push:
+    branches: [release/android-v1.1.17-web-v1.58.94-edge-qa]
+    paths: ['.github/workflows/android-web-asset-urls-qa.yml']
+permissions:
+  contents: read
+jobs:
+  check-web-assets:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Inspect exact public asset routes; never use HTML errors as app assets
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import urllib.request,hashlib
+          roots=[
+          "https://www.sachyhoc.com/wp-content/plugins/nah-iso15189-suite_/assets/",
+          "https://sachyhoc.com/wp-content/plugins/nah-iso15189-suite_/assets/",
+          "https://sachyhoc.com/nah-lab-iso/native-shell-v1.58.94/assets/",
+          "https://www.sachyhoc.com/nah-lab-iso/native-shell-v1.58.94/assets/",
+          "https://www.sachyhoc.com/nah-lab-iso/assets/",
+          "https://sachyhoc.com/nah-lab-iso/assets/",
+          ]
+          for i,u in enumerate(roots):
+              try:
+                  req=urllib.request.Request(u+"app.js",headers={'Accept':'application/javascript,*/*','User-Agent':'NAH-LabSuite/1.1.16'})
+                  with urllib.request.urlopen(req,timeout=25) as r: b=r.read(); status=r.status; contenttype=r.headers.get("Content-Type")
+                  print(i,status,contenttype,len(b),hashlib.sha256(b).hexdigest(),repr(b[:45]))
+              except Exception as e: print(i,'failed',str(e)[:120])
+          PY
