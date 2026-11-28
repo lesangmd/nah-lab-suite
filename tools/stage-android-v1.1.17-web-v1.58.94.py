@@ -30,7 +30,7 @@ def main():
     if m["certificateSha256"]!=CERT or m["applicationId"]!="vn.nah.iso15189suite":
         raise RuntimeError("Signer/package mismatch")
     for name,expected in DIGESTS.items():
-        req=urllib.request.Request(BASE+name,headers={"User-Agent":"NAH-LabSuite-Android-ReleaseBuild/1.1.17","Cache-Control":"no-cache"})
+        req=urllib.request.Request(BASE+name,headers={"User-Agent":"NAH-LabSuite/1.1.16","Accept":"application/javascript,text/css,*/*","Cache-Control":"no-cache"})
         with urllib.request.urlopen(req,timeout=90) as src:
             body=src.read()
         found=hashlib.sha256(body).hexdigest()
